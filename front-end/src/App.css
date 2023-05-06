@@ -40,3 +40,9 @@
 .read-the-docs {
   color: #888;
 }
+
+
+.imgP { 
+  max-width: 32rem;
+  width: 100%;
+}
