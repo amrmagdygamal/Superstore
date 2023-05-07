@@ -1,31 +1,46 @@
-import { useState } from 'react'
-import './App.css'
+
 import { Products } from './data'
+import { Col, Container, Nav, Navbar, Row } from 'react-bootstrap'
 
 function App() {
-  const [count, setCount] = useState(0)
+
 
   return (
     <>
-      <header>SuperStore</header>
+      <header>
+        <Navbar bg="dark" expand="lg">
+          <Container>
+            <Navbar.Brand href="/" className='logo'>
+              Super Store
+            </Navbar.Brand>
+          </Container>
+          <Nav >
+            <a href='/cart' className='text-white'>Cart</a>
+            <a href='/signin' className='text-white'>Sign In</a>
+          </Nav>
+        </Navbar>
+      </header>
       <main>
-        <ul>
-          {Products.map((product) => (
-            <li key={product.slug}>
-              <img
-                className='imgP'
-                src={product.image}
-                alt={product.name}
-              />
+        <Container className='mt-3'>
 
-              <h2>{product.name}</h2>
-              <p>${product.price}</p>
-            </li>
+          <Row>
+            {Products.map((product) => (
+              <Col key={product.slug} sm={6} md={4} lg={3}>
+                <img
+                  className='imgP'
+                  src={product.image}
+                  alt={product.name}
+                />
 
-          ))}
-        </ul>
+                <h2>{product.name}</h2>
+                <p>${product.price}</p>
+              </Col>
+
+            ))}
+          </Row>
+        </Container>
       </main>
-      <footer>All right reserved.</footer>
+      <footer className='text-center'>All right reserved.</footer>
     </>
   )
 }
