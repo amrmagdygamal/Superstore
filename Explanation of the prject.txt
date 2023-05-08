@@ -1,0 +1,84 @@
+1- install react with typescript using the command ( npm create vite@latest front-end -- --template react-ts).
+
+2- creating folders for (pages , components , types ....).
+
+3- Deleting unused files.
+
+4- creating github Repository for the project.
+
+5- creating (ProductInfo) file for defining types of products informations inside the folder (tyes).
+
+
+6- After finishing that we can create our products in data.ts.
+
+7- then we can render the products to see them using the folowing function (
+  {products.map((product) => (
+    <img src={product.image} />
+    <h2>{product.name}</h2>
+  ))}
+);
+
+8- We need to install bootstrap for stylling by using the command 
+(npm i bootstrap@latest -S).
+
+9- Create routing for our app after installing react-router-dom.
+
+10- Starting setUp our backend server by creating backend folder and head to it in the terminal to install express Using (npm install express & npm install -save-dev typescript ts-node-dev @types/express).
+
+11- Install eslint by this command (npm install --save-dev eslint @typescript-eslint/parser @typescript-eslint/eslint-plugin).
+
+12- creating .eslint.js file for configuration for ESLint to check your TypeScript code based on some recommended rules and using the appropriate parser to understand your code and check your TypeScript code for potential issues and enforce coding style.
+
+13- create tsconfig.json file for TypeScript configuration.
+
+14- create the "src" folder which we will write our code in .
+
+15- moving data.ts file and types folder from frontend to the backend inside src.
+
+16- create route for geting data from backend (for "/api/products).
+
+17- return products.
+
+18- fetching products from the backend Api to do this we'll use axios, after installing axios in frontend we head to main.tsx in frontend where we need to config base URL for axios like this
+
+axios.defaults.baseURL = 
+
+ and then check the node environment like this 
+ process.env.NODE_ENV === 'development' ? 'http:localhost:4000' : '/'; 
+ we will get process error so we install types node.
+
+19- defining types in the homePage : we use reducer hook to fetch data from backend so we need to define the initial state, Action, and state for reducer hook 
+
+20- define get error function : but we need first to create types/ApiError.ts and utils.ts file that we define getError function inside.
+
+21- Defining useReducer
+
+22- Define useEffect to fetch data.
+
+23- create LoadingBox component and MessageBox .
+
+24- update return statement.
+
+25- create rating and productitem componentس to render products  in instead of HomePage that for the code of home screen modular
+ 
+26- Change the page title in react application using helmet.
+
+27- Adding ReactQuery to the project to manage asynchronous states and getting data from backend: 
+ npm i @tanstack/react-query & npm i @tanstack/react-query-devtools 
+
+28- after doing this we don't need to import axios and define base url in the main.ts file  and then wrap the app inside query client provider and passing query client as props which is an object from query client of react query 
+and below the app we add div tools for react query and set initialIsOpen  to false 
+
+29- after this we need to implement Api call by react query. by creating apiClient.ts in src folder and defining apiClient like that 
+const apiClient = axios.create({ the rest of the code})
+
+30- creating hooks for react query to send axios requests to the backend : first a new folder in src (hooks) and create a new file (productHooks) in it we create a hook to load all products from backend by writting this code 
+const useGetProductsQuery = () => 
+  useQuery({
+    queryKey: ['products'],
+    queryFn: async () => (await apiClient.get<ProductInfo[]>(`api/products`)).data,
+  })
+
+then we need to update our HomePage to use this hook.
+
+31- It's time to create product page : first create an Api in the backend to return product informations by it's slug and then in the front end we create a hook using useQuery to get list of product details by slug and use it in the ProductPage to render the product details 
