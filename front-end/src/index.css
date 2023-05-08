@@ -51,3 +51,17 @@ button:focus-visible {
 .logo {
   color: goldenrod;
 }
+
+.photo-box {
+  width: 300px;
+  height: 300px;
+  margin: 10px;
+  border: 1px solid #ccc;
+  overflow: hidden;
+}
+
+.photo-box img {
+  width: 100%;
+  height: 100%;
+  object-fit:contain;
+}

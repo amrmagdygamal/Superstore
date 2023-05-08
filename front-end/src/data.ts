@@ -90,7 +90,7 @@ export const Products: ProductInfo[] = [
     name: 'Iphone14 Pro Max',
     slug: 'iphone-14-pro',
     category: 'Phone',
-    image: '../src/assets/Apple-iPhone-14-Pro-Max_52916.jpg',
+    image: '../src/assets/Iphone14promax3.webp',
     price: 1300,
     countInStock: 6,
     brand: 'Iphone',
