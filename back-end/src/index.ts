@@ -1,10 +1,27 @@
+import 'dotenv/config';
+import mongoose from 'mongoose';
 import cors from 'cors';
+import env from './Util/validateEnv'
 import express, { Request, Response } from "express";
 
-
 import { Products } from "./data";
+import productRouter from './routes/productsRouter';
+
+
+
+
 
 const app = express();
+
+mongoose
+  .connect(env.MONGODB_CONNECT)
+  .then(() => {
+    console.log('connected to mongodb')
+  })
+  .catch(() => {
+    console.log("cannot connect to mongodb")
+  })
+
 
   app.use(
     cors({
@@ -13,16 +30,12 @@ const app = express();
     })
   )
 
-app.get('/api/products', (req: Request, res: Response) => {
-  res.json(Products)
-});
 
-app.get('/api/products/:slug', (req: Request, res: Response) => {
-  res.json(Products.find((x) => x.slug === req.params.slug))
-})
+const port = env.PORT
 
-const PORT = 4000;
 
-app.listen(PORT, () => {
-  console.log(`server started at http://localhost:${PORT}`)
+app.use('/api/products', productRouter)
+
+app.listen(port, () => {
+  console.log(`server started at http://localhost:${port}`)
 });

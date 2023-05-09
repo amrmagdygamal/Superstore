@@ -81,4 +81,27 @@ const useGetProductsQuery = () =>
 
 then we need to update our HomePage to use this hook.
 
-31- It's time to create product page : first create an Api in the backend to return product informations by it's slug and then in the front end we create a hook using useQuery to get list of product details by slug and use it in the ProductPage to render the product details 
+31- It's time to create product page : first create an Api in the backend to return product informations by it's slug and then in the front end we create a hook using useQuery to get list of product details by slug and use it in the ProductPage to render the product details.
+
+32- create react context to handle state throughout the application.
+to do this we a create a store and define type for appstate and the initialstate and the reducer function, the defaultDispatch , store using React.creatteContext after this we go the main.ts and wrap the whole component inside Store.Proviser
+
+and in the app.tsx we implement the function to use this hook.
+
+33- create mongodb database and put mongodb url in .env
+then : npm install dotenv mongoose @typegoose/typegoose.
+and we need to define mongodb url using validatenv 
+
+then connect mongoose to the url
+
+
+34- creating product model and define the terms of every product.
+
+35- creating a router for the products. 
+
+36- we need to define a methods to get products and product by slug using router.get.
+
+37- then we implement  app.use with the new router instead of the old one.
+
+38- now we could fetch our products from our database but it's empty so let's add our products to it by implement router.post in the router file and use it in the index.ts.
+
