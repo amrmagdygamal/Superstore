@@ -1,4 +1,5 @@
 export type ProductInfo = {
+  _id: string
   name: string;
   description: string;
   image: string;

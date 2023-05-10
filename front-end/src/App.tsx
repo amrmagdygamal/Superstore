@@ -1,13 +1,13 @@
 import { useContext, useEffect } from 'react';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import { Button, Container, Nav, Navbar } from 'react-bootstrap';
+import { BrowserRouter, Link, Route, Routes } from 'react-router-dom';
+import { Badge, Button, Container, Nav, Navbar } from 'react-bootstrap';
 import HomePage from './pages/HomePage';
 import ProductPage from './pages/ProductPage';
 import { Store } from './Store';
 
 function App() {
   const {
-    state: { mode },
+    state: { mode, cart },
     dispatch,
   } = useContext(Store);
 
@@ -34,12 +34,17 @@ function App() {
               <Button variant={mode} onClick={switchModelHandler}>
                 <i className={mode === 'light' ? 'fa fa-sun' : 'fa fa-moon'}></i>
               </Button>
-              <a href="/cart" className="text-white">
+              <Link to="/cart" className="text-white">
                 Cart
-              </a>
-              <a href="/signin" className="text-white">
+                {cart.cartItems.length > 0 && (
+                  <Badge pill bg="danger">
+                    {cart.cartItems.reduce((a,c) => a + c.quantity, 0)}
+                  </Badge>
+                )}
+              </Link>
+              <Link to="/signin" className="text-white">
                 Sign In
-              </a>
+              </Link>
             </Nav>
           </Navbar>
         </header>

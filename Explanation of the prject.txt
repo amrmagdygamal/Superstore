@@ -105,3 +105,16 @@ then connect mongoose to the url
 
 38- now we could fetch our products from our database but it's empty so let's add our products to it by implement router.post in the router file and use it in the index.ts.
 
+39- implement add to cart buttons in the react constext
+
+40- to do this first in the types folder we need to define some types object like cartItem and shippingAddress and Cart 
+
+41- Creating cart object int application store then we need to define the initialState for the cart but first we need to check our localStorage before setting the initial value to empty array.
+
+42- We need to define the action of add_cart_item and then define a case for addcartitem that increase the number of items in the cart then we save cart items in the localStorage 
+
+43- then in the app.tsx we get the cart from the store and show it in the cart component
+
+44- in the utils we define the Addproducttocart function which take the product and return a cartitem
+
+45- and the then in the produstItem.tsx component at the very beginning use context we get the state and dispatch from the store and from the state we get cartItem and add it to the cart function which we define next and call it when pressing the add ot cart button.

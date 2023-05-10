@@ -2,9 +2,8 @@ import 'dotenv/config';
 import mongoose from 'mongoose';
 import cors from 'cors';
 import env from './Util/validateEnv'
-import express, { Request, Response } from "express";
+import express, {  } from "express";
 
-import { Products } from "./data";
 import productRouter from './routes/productsRouter';
 
 
