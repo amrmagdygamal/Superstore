@@ -131,3 +131,4 @@ then connect mongoose to the url
 
 51- In the return part we put helmet for the page and create the heading and rendering the list of the cart items and adding buttons for updating the list of the cartItems and then create a card for subtotal.
 
+52- Implementing the remove button to remove item from the cart: first create action type 'CART_REMOVE_ITEM' and create case for this in the reducer function which filter the cartItems to delete the particular item and implement a function in the cart page to dispatch this action when pressing the delete button.
