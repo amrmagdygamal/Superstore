@@ -123,3 +123,11 @@ then connect mongoose to the url
 
 47- installing react router bootstrap for creating link for component that we cannot set a link directly to them like navbar.brand for the logo for the app
 
+48- implementing cart page: first create CartPage.tsx inside this file we create cartPage component and then we need to get access to navigate using navigatehook
+
+49- Then we using useContext React hook we get the carItems list from the cart in the state 
+
+50- Implementing updateCartHandler function
+
+51- In the return part we put helmet for the page and create the heading and rendering the list of the cart items and adding buttons for updating the list of the cartItems and then create a card for subtotal.
+

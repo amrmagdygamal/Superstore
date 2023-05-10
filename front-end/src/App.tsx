@@ -7,6 +7,7 @@ import HomePage from './pages/HomePage';
 import { LinkContainer } from 'react-router-bootstrap';
 import ProductPage from './pages/ProductPage';
 import { Store } from './Store';
+import CartPage from './pages/CartPage';
 
 function App() {
   const {
@@ -59,6 +60,7 @@ function App() {
             <Routes>
               <Route path="/" element={<HomePage />} />
               <Route path="product/:slug" element={<ProductPage />} />
+              <Route path="cart" element={<CartPage />} />
             </Routes>
           </Container>
         </main>

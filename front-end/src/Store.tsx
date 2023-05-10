@@ -5,7 +5,6 @@ import { Cart, CartItem } from './types/Cart';
 
 type AppState = {
   mode: string;
-
   cart: Cart;
 };
 
@@ -44,7 +43,9 @@ type Action =
 function reducer(state: AppState, action: Action): AppState {
   switch (action.type) {
     case 'SWITCH_MODE':
-      return { ...state, mode: state.mode === 'dark' ? 'light' : 'dark' };
+      const newMode = state.mode === 'dark' ? 'light' : 'dark';
+      localStorage.setItem('mode', newMode);
+      return { ...state, mode: newMode };
 
     case 'CART_ADD_ITEM': 
       const newItem = action.payload
@@ -57,7 +58,7 @@ function reducer(state: AppState, action: Action): AppState {
           item._id === existItem._id ? newItem : item
         )
         : [...state.cart.cartItems, newItem]
-      localStorage.setItem('cartItem', JSON.stringify(cartItems))
+      localStorage.setItem('cartItems', JSON.stringify(cartItems))
 
       return { ...state, cart: { ...state.cart, cartItems }}
     default:

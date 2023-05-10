@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { Helmet } from 'react-helmet-async';
-import { Navigate, useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useGetProductDetailsBySlugQuery } from '../hooks/productHooks';
 import LoadingBox from '../components/LoadingBox';
 import MessageBox from '../components/MessageBox';
@@ -56,7 +56,7 @@ const ProductPage = () => {
     <>
       <Row>
         <Col md={6}>
-          <img className='w-100' src={product.image} alt={product.name}></img>
+          <img className="img-fluid rounded thumbnail" src={product.image} alt={product.name}></img>
         </Col>
         <Col md={3}>
           <ListGroup variant='flush'>

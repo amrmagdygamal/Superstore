@@ -37,7 +37,7 @@ const ProductItem = ({ product }: { product: ProductInfo}) => {
     <Card>
       <Link to={`/product/${product.slug}`}>
         <div className="photo-box">
-        <img src={product.image} alt={product.name} />
+          <img className="img-fluid rounded thumbnail" src={product.image} alt={product.name} />
         </div>
       </Link>
 
