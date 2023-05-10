@@ -4,8 +4,8 @@ import { Link } from "react-router-dom"
 import Rating from "./Rating"
 import { useContext } from "react"
 import { Store } from "../Store"
-import { CartItem } from "../types/Cart"
 import { AddProductToCart } from "../utils"
+import { toast } from "react-toastify"
 
 
 
@@ -17,18 +17,19 @@ const ProductItem = ({ product }: { product: ProductInfo}) => {
     cart: { cartItems },
   } = state
 
-  const addToCartHandler = (item: CartItem) => {
+  const addToCartHandler = () => {
     const existItem = cartItems.find((x) => x._id === product._id)
     const quantity = existItem ? existItem.quantity + 1 : 1
 
     if (product.countInStock < quantity) {
-      alert('Sorry. Product is out of stock')
+      toast.warn('Sorry. Product is out of stock')
       return
     }
     dispatch({
       type: 'CART_ADD_ITEM',
-      payload: { ...item, quantity},
+      payload: { ...AddProductToCart(product), quantity},
     })
+    toast.success('Item added to the cart')
   }
 
 
@@ -52,7 +53,7 @@ const ProductItem = ({ product }: { product: ProductInfo}) => {
             Out of stock
           </Button>
         ) : (
-          <Button onClick={() => addToCartHandler(AddProductToCart(product))}>Add to Cart</Button>
+          <Button onClick={addToCartHandler}>Add to Cart</Button>
         )}
       </Card.Body>
     </Card>

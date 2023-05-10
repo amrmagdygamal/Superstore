@@ -118,3 +118,8 @@ then connect mongoose to the url
 44- in the utils we define the Addproducttocart function which take the product and return a cartitem
 
 45- and the then in the produstItem.tsx component at the very beginning use context we get the state and dispatch from the store and from the state we get cartItem and add it to the cart function which we define next and call it when pressing the add ot cart button.
+
+46- implement add to cart in the product page : first get state and dispatch from usecontext hook  and get the cart from the state and we then we implement addToCartHandler function we will use Toastify for notifications 
+
+47- installing react router bootstrap for creating link for component that we cannot set a link directly to them like navbar.brand for the logo for the app
+

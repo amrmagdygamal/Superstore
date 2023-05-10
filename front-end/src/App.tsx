@@ -1,7 +1,10 @@
 import { useContext, useEffect } from 'react';
 import { BrowserRouter, Link, Route, Routes } from 'react-router-dom';
 import { Badge, Button, Container, Nav, Navbar } from 'react-bootstrap';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import HomePage from './pages/HomePage';
+import { LinkContainer } from 'react-router-bootstrap';
 import ProductPage from './pages/ProductPage';
 import { Store } from './Store';
 
@@ -23,12 +26,15 @@ function App() {
   return (
     <BrowserRouter>
       <>
+      <ToastContainer position='bottom-center' limit={1} />
         <header>
           <Navbar bg="dark" expand="lg">
             <Container>
-              <Navbar.Brand href="/" className="logo">
-                Super Store
-              </Navbar.Brand>
+              <LinkContainer to='/'>
+                <Navbar.Brand className="logo">
+                  Super Store
+                </Navbar.Brand>
+              </LinkContainer>
             </Container>
             <Nav>
               <Button variant={mode} onClick={switchModelHandler}>
