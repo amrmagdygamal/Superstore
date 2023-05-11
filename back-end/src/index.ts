@@ -29,11 +29,14 @@ mongoose
     })
   )
 
+app.use(express.json())
+
 
 const port = env.PORT
 
 
-app.use('/api/products', productRouter)
+app.use('/api/products', productRouter);
+app.use('/api/users', userRouter)
 
 app.listen(port, () => {
   console.log(`server started at http://localhost:${port}`)

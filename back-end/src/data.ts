@@ -1,6 +1,6 @@
-import { ProductInfo } from "./types/ProductInfo";
+import UserModel from "./model/UserModel";
 
-export const Products: ProductInfo[] = [
+export const Products: (typeof UserModel)[] = [
   {
     name: 'Nike Slim shirt',
     slug: 'nike-slim-shirt',
