@@ -50,6 +50,7 @@ type Action =
   | { type: 'USER_SIGNIN'; payload: UserInfo}
   | { type: 'USER_SIGNOUT'}
   | { type: 'SAVE_SHIPPING_ADDRESS'; payload: ShippingAddress}
+  | { type: 'CHOOSE_PAYMENT_METHOD'; payload: string}
 
 function reducer(state: AppState, action: Action): AppState {
   switch (action.type) {
@@ -122,6 +123,11 @@ function reducer(state: AppState, action: Action): AppState {
         },
       }
 
+      case 'CHOOSE_PAYMENT_METHOD':
+        return {
+          ...state,
+          cart: { ...state.cart, paymentMethod: action.payload },
+        }
 
     default:
       return state;

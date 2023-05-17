@@ -18,6 +18,7 @@ import CartPage from './pages/CartPage';
 import LoginPage from './pages/LoginPage';
 import SignUpPage from './pages/SignUpPage';
 import ShippingPage from './pages/ShippingPage';
+import PaymentPage from './pages/PaymentPage';
 
 function App() {
   const {
@@ -94,6 +95,7 @@ function App() {
               <Route path="login" element={<LoginPage />} />
               <Route path="signup" element={<SignUpPage />} />
               <Route path="shipping" element={<ShippingPage />} />
+              <Route path="payment" element={<PaymentPage />} />
             </Routes>
           </Container>
         </main>

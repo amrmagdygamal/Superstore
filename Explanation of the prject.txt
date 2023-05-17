@@ -153,4 +153,6 @@ then create UserInfo.ts for defining types of user fields
 
 61- Create a Status bar to show Checkout steps.
 
-62- 
+62- Creating Payment Page : first we need to implement a case for using payment method.
+
+63- In pages forlder we create PaymentPage.tsx for defining payment method function.
