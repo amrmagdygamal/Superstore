@@ -1,7 +1,6 @@
 import express from 'express';
 import ProductModel from '../model/ProductModel';
 import asyncHandler from 'express-async-handler';
-import { Products } from '../data';
 
 const productRouter = express.Router();
 
@@ -17,17 +16,14 @@ productRouter.get(
   '/slug/:slug',
   asyncHandler(async (req, res) => {
     const product = await ProductModel.findOne({ slug: req.params.slug });
-    res.json(product);
+    if (product) {
+      res.json(product);
+    } else {
+      res.status(404).json({ message: 'Product Not found.'})
+    }
   })
 );
 
-productRouter.post(
-  '/',
-  asyncHandler(async (req, res) => {
-    await ProductModel.deleteMany({})
-    const createdProducts = await ProductModel.insertMany(Products)
-    res.send({ createdProducts})
-  })
-)
+
 
 export default productRouter;

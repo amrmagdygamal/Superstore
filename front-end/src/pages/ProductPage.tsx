@@ -11,7 +11,7 @@ import Rating from '../components/Rating';
 import { useContext } from 'react';
 import { Store } from '../Store';
 import { toast } from 'react-toastify';
-import { CartItem } from '../types/Cart';
+
 
 const ProductPage = () => {
   const params = useParams();

@@ -1,6 +1,6 @@
-import UserModel from "./model/UserModel";
+import ProductModel from "./model/ProductModel";
 
-export const Products: (typeof UserModel)[] = [
+export const Products: (typeof ProductModel)[] = [
   {
     name: 'Nike Slim shirt',
     slug: 'nike-slim-shirt',
@@ -12,6 +12,8 @@ export const Products: (typeof UserModel)[] = [
     rating: 4.5,
     numReviews: 10,
     description: 'high quality shirt',
+    createdAt: new Date(),
+    updatedAt: new Date(),
   },
   {
     name: 'Nike Slim shirt',
@@ -24,6 +26,8 @@ export const Products: (typeof UserModel)[] = [
     rating: 4.5,
     numReviews: 10,
     description: 'high quality shirt',
+    createdAt: new Date(),
+    updatedAt: new Date(),
   },
   {
     name: 'Nike Slim shirt',
@@ -36,6 +40,8 @@ export const Products: (typeof UserModel)[] = [
     rating: 4.5,
     numReviews: 10,
     description: 'high quality shirt',
+    createdAt: new Date(),
+    updatedAt: new Date(),
   },
   {
     name: 'Nike Slim shirt',
@@ -48,6 +54,8 @@ export const Products: (typeof UserModel)[] = [
     rating: 4.5,
     numReviews: 10,
     description: 'high quality shirt',
+    createdAt: new Date(),
+    updatedAt: new Date(),
   },
 
   {
@@ -61,6 +69,8 @@ export const Products: (typeof UserModel)[] = [
     rating: 4.0,
     numReviews: 10,
     description: 'high quality product',
+    createdAt: new Date(),
+    updatedAt: new Date(),
   },
   {
     name: 'Lacoste Free Pants',
@@ -73,6 +83,8 @@ export const Products: (typeof UserModel)[] = [
     rating: 4.8,
     numReviews: 17,
     description: 'high quality product',
+    createdAt: new Date(),
+    updatedAt: new Date(),
   },
   {
     name: 'Nike Slim Pant',
@@ -85,6 +97,8 @@ export const Products: (typeof UserModel)[] = [
     rating: 4.5,
     numReviews: 14,
     description: 'high quality product',
+    createdAt: new Date(),
+    updatedAt: new Date(),
   },
   {
     name: 'Iphone14 Pro Max',
@@ -97,6 +111,8 @@ export const Products: (typeof UserModel)[] = [
     rating: 5,
     numReviews: 50,
     description: 'high quality product',
+    createdAt: new Date(),
+    updatedAt: new Date(),
   },
   {
     name: 'Iphone13 Pro Max',
@@ -109,6 +125,8 @@ export const Products: (typeof UserModel)[] = [
     rating: 5,
     numReviews: 40,
     description: 'high quality product',
+    createdAt: new Date(),
+    updatedAt: new Date(),
   },
   {
     name: 'Samsung S22 Ultra',
@@ -121,6 +139,8 @@ export const Products: (typeof UserModel)[] = [
     rating: 5,
     numReviews: 40,
     description: 'high quality product',
+    createdAt: new Date(),
+    updatedAt: new Date(),
   },
   {
     name: 'Xioami 13',
@@ -133,6 +153,8 @@ export const Products: (typeof UserModel)[] = [
     rating: 5,
     numReviews: 40,
     description: 'high quality product',
+    createdAt: new Date(),
+    updatedAt: new Date(),
   },
 
 ]

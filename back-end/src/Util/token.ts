@@ -5,7 +5,6 @@ import { User } from '../model/UserModel';
 export const generateToken = (user: User) => {
   return jwt.sign(
     {
-      _id: user._id,
       username: user.username,
       email: user.email,
     }, 

@@ -33,6 +33,7 @@
     "express-async-handler": "^1.2.0",
     "http-errors": "^2.0.0",
     "jsonwebtoken": "^9.0.0",
-    "mongoose": "^7.1.0"
+    "mongoose": "^7.1.0",
+    "mongoose-ts-ua": "^1.2.5"
   }
 }

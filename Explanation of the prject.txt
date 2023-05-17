@@ -144,3 +144,13 @@ first we create the user module
 
 57- use the new router in the app.
 
+58- it's time to create front end signin page first create a hook to call the signin Api in backend in userHooks.ts we need to define user terms types (create UserInfo.ts) 
+
+59- Create sign in page: first we need to create a hook for user authentication
+then create UserInfo.ts for defining types of user fields
+
+60- It's time to use all this stuff in the SigninPage file.
+
+61- Create a Status bar to show Checkout steps.
+
+62- 

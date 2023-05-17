@@ -1,38 +1,42 @@
 import 'dotenv/config';
 import mongoose from 'mongoose';
-import cors from 'cors';
 import env from './Util/validateEnv'
 import express, {  } from "express";
 
 import productRouter from './routes/productsRouter';
+import {userRouter} from './routes/userRouter';
+import cors from 'cors';
 
 
-
-
-
-const app = express();
-
-mongoose
-  .connect(env.MONGODB_CONNECT)
-  .then(() => {
-    console.log('connected to mongodb')
-  })
-  .catch(() => {
-    console.log("cannot connect to mongodb")
-  })
-
-
-  app.use(
-    cors({
-      credentials: true,
-      origin: ['http://localhost:5173'],
-    })
-  )
-
-app.use(express.json())
 
 
 const port = env.PORT
+
+mongoose.set('strictQuery', true)
+mongoose
+.connect(env.MONGODB_CONNECT)
+.then(() => {
+  console.log('connected to mongodb')
+})
+.catch(() => {
+  console.log("cannot connect to mongodb")
+})
+
+const app = express();
+
+app.use(
+  cors({
+    credentials: true,
+    origin: ['http://localhost:5173'],
+  })
+)
+
+
+app.use(express.json())
+app.use(express.urlencoded({ extended: true }));
+
+
+
 
 
 app.use('/api/products', productRouter);
