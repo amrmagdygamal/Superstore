@@ -4,7 +4,7 @@ declare namespace Express {
   export interface Request {
     user: {
       _id: string
-      name: string
+      username: string
       email: string
       token: string
     }

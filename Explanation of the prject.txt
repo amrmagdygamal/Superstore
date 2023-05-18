@@ -156,3 +156,11 @@ then create UserInfo.ts for defining types of user fields
 62- Creating Payment Page : first we need to implement a case for using payment method.
 
 63- In pages forlder we create PaymentPage.tsx for defining payment method function.
+
+64- It's time to create a backend Api for user order: first as usual we need to create order model. 
+
+65- create a router for creating order api and we need to create a middleware to only allow authenticated user to access this api. 
+
+66- use asyncHandler to create order in the backend
+
+67- use the router in the index.ts
