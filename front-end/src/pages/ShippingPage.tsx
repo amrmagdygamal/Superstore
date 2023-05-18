@@ -17,12 +17,12 @@ const ShippingPage = () => {
     cart: { shippingAddress },
   } = state;
 
-  useEffect(() => {
-    if(!userInfo) {
-      navigate('/login?redirect=/shipping')
+  // useEffect(() => {
+  //   if(!userInfo) {
+  //     navigate('/login?redirect=/shipping')
 
-    }
-  }, [userInfo, navigate])
+  //   }
+  // }, [userInfo, navigate])
 
   const [ fullName, setFullName] = useState(shippingAddress.fullName || '')
   const [ address, setAddress] = useState(shippingAddress.address || '')

@@ -164,3 +164,21 @@ then create UserInfo.ts for defining types of user fields
 66- use asyncHandler to create order in the backend
 
 67- use the router in the index.ts
+
+68- It's time to create place order Page in the front end : first we need to authenticate the api request to create an order and we need also to make sure that place order is protected by routing system so unauthenticated user shouldn't be able to see this page
+
+69- to do that we need to create component named protectedRoute.tsx  and use it in the App.tsx.
+
+70- create a feature to the Api client to add the user token in the header Request when we send ApI to the backend  by using apiClient.interceptors.request.use and update the config of the request.
+
+71- create Order.ts for order type.
+
+72- Creating orderHooks.tsx to send an Ajax request to backend so we need to define a hook of this hook is modifying data in backend .
+
+73- after that it's time to use it in PlaceHolderPage.tsx so we create PlaceHolderPage.tsx and inside it we grap cart and userInfo from Store.ts using context.
+
+74- create PlaceHolderHandler function after defining useCreateOrderMutation imported from hooks
+
+75- inside this function we call createOrder from useCreateOrderMutation and pass cart elements as payload and them clear the cart using a new case in reducer function
+
+76- then finishing implementing components inside PlaceHolderPage .

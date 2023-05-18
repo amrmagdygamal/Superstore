@@ -19,6 +19,8 @@ import LoginPage from './pages/LoginPage';
 import SignUpPage from './pages/SignUpPage';
 import ShippingPage from './pages/ShippingPage';
 import PaymentPage from './pages/PaymentPage';
+import ProtectedRoute from './components/ProtectedRoute';
+import PlaceOrderPage from './pages/PlaceOrderPage';
 
 function App() {
   const {
@@ -94,8 +96,10 @@ function App() {
               <Route path="cart" element={<CartPage />} />
               <Route path="login" element={<LoginPage />} />
               <Route path="signup" element={<SignUpPage />} />
+              <Route path='' element={<ProtectedRoute />} />
               <Route path="shipping" element={<ShippingPage />} />
               <Route path="payment" element={<PaymentPage />} />
+              <Route path="placeorder" element={<PlaceOrderPage />} />
             </Routes>
           </Container>
         </main>
