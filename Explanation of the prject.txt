@@ -181,4 +181,6 @@ then create UserInfo.ts for defining types of user fields
 
 75- inside this function we call createOrder from useCreateOrderMutation and pass cart elements as payload and them clear the cart using a new case in reducer function
 
-76- then finishing implementing components inside PlaceHolderPage .
+76- then finishing implementing components inside PlaceOrderPage .
+
+77- It's time to implement OrderPage first we need to create a backend Api for getting orders from database using get method
