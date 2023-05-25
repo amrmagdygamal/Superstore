@@ -21,10 +21,10 @@ class ShippingAddress {
   public country?: string
   
   @prop()
-  public lat?: string
+  public lat?: number
   
   @prop()
-  public lng?: string
+  public lng?: number
 }
 
 class Item {
@@ -78,8 +78,8 @@ export class Order {
   @prop({ required: true})
   public paymentMethod!: string
 
-  @prop({ required: true})
-  public paymentResult!: PaymentResult
+  @prop()
+  public paymentResult?: PaymentResult
 
   @prop({ required: true, default: 0 })
   public itemPrice!: number
