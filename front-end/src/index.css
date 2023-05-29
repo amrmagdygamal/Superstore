@@ -93,8 +93,7 @@ img.thumbnail {
   width: 3rem;
 }
 
-.dropdown-menu.show {
-  margin-left: -7rem;
-  padding: 0.3rem 0rem;
-  text-align: center;
+.dropdown-menu[data-bs-popper] {
+  left: auto;
+  right: 1px;
 }

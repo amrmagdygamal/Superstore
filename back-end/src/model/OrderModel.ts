@@ -1,4 +1,4 @@
-import { ModelOptions, Ref, getModelForClass, prop } from "@typegoose/typegoose";
+import { ModelOptions, Ref, getModelForClass, modelOptions, prop } from "@typegoose/typegoose";
 import ProductModel, { Product } from "./ProductModel";
 import UserModel, { User } from "./UserModel";
 
@@ -42,7 +42,7 @@ class Item {
   public price!: number
   
   @prop({ ref: ProductModel })
-  public product!: Ref<Product>
+  public product?: Ref<Product>
   
 }
 
@@ -57,55 +57,40 @@ class PaymentResult {
   public update_time!: string
   
   @prop()
-  public email_aaddress!: string
+  public email_address!: string
 }
 
-ModelOptions({ schemaOptions: { timestamps: true}})
 
+
+@modelOptions({ schemaOptions: { timestamps: true } })
 export class Order {
-
   public _id!: string
-  
   @prop()
   public orderItems!: Item[]
-  
   @prop()
   public shippingAddress?: ShippingAddress
-
-  @prop({ ref: UserModel})
+  @prop({ ref: User })
   public user?: Ref<User>
-
-  @prop({ required: true})
+  @prop({ required: true })
   public paymentMethod!: string
-
   @prop()
   public paymentResult?: PaymentResult
-
   @prop({ required: true, default: 0 })
   public itemsPrice!: number
-  
-
   @prop({ required: true, default: 0 })
   public shippingPrice!: number
-
   @prop({ required: true, default: 0 })
   public taxPrice!: number
-
   @prop({ required: true, default: 0 })
   public totalPrice!: number
-
   @prop({ required: true, default: false })
   public isPaid!: boolean
-
   @prop()
-  public PaidAt!: Date
-
+  public paidAt!: Date
   @prop({ required: true, default: false })
   public isDelivered!: boolean
-
   @prop()
   public deliveredAt!: Date
-
 }
 
 export const OrderModel = getModelForClass(Order)

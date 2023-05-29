@@ -184,3 +184,13 @@ then create UserInfo.ts for defining types of user fields
 76- then finishing implementing components inside PlaceOrderPage .
 
 77- It's time to implement OrderPage first we need to create a backend Api for getting orders from database using get method
+
+78- Creating OrderPage.
+
+79- implementing pay order by paypal: first we create paypal developer Account
+
+80- get paypal client id
+
+81- installing paypal package
+
+82- create a router for sending the clientId to the front end

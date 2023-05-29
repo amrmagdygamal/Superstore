@@ -22,6 +22,7 @@ import PaymentPage from './pages/PaymentPage';
 import ProtectedRoute from './components/ProtectedRoute';
 import PlaceOrderPage from './pages/PlaceOrderPage';
 import OrderPage from './pages/OrderPage';
+import OrdersHistory from './pages/OrdersHistory';
 
 function App() {
   const {
@@ -73,6 +74,9 @@ function App() {
               </Link>
               {userInfo ? (
                 <NavDropdown title={userInfo.username} id="basic-nav-dropdown">
+                  <LinkContainer to="/orderhistory">
+                    <NavDropdown.Item>Order History</NavDropdown.Item>
+                  </LinkContainer>
                   <Link
                     className="dropdown-item l--10"
                     to="#signout"
@@ -99,10 +103,11 @@ function App() {
               <Route path="signup" element={<SignUpPage />} />
               <Route path='' element={<ProtectedRoute />}>
 
-              <Route path="shipping" element={<ShippingPage />} />
-              <Route path="payment" element={<PaymentPage />} />
-              <Route path="placeorder" element={<PlaceOrderPage />} />
-              <Route path="/order/:id" element={<OrderPage />} />
+                <Route path="shipping" element={<ShippingPage />} />
+                <Route path="payment" element={<PaymentPage />} />
+                <Route path="placeorder" element={<PlaceOrderPage />} />
+                <Route path="/order/:id" element={<OrderPage />} />
+                <Route path="/orderhistory" element={<OrdersHistory />} />
               </Route>
             </Routes>
           </Container>
