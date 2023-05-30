@@ -78,3 +78,57 @@ export const login = asyncHandler(async (req: Request, res: Response, next: Next
   }
 });
 
+
+
+// FETCHING all users
+
+export const allUsers = asyncHandler(async(req, res, next) => {
+  try {
+    const getusers = await UserModel.find().select('-password');
+    res.json(getusers);
+  } catch (error) {
+    next(error);
+  }
+})
+
+
+
+// fetching specific user
+export const getuser = asyncHandler(async (req, res, next) => {
+  try {
+    const getuser = await UserModel.findById(req.params._id).select('-password');
+    res.json(getuser);
+  } catch(error) {
+    next(error)
+  }
+})
+
+
+
+
+// deleting specific user
+export const deleteUser = asyncHandler(async (req, res, next) => {
+  try {
+    const deleteuser = await UserModel.findByIdAndDelete(req.params._id);
+
+    res.json(deleteuser);
+  } catch(error) {
+    next(error)
+  }
+})
+
+
+
+// updating  user
+export const updateUser = asyncHandler(async (req, res, next) => {
+  try {
+    const updateuser = await UserModel.findByIdAndUpdate(req.params._id, req.body, {
+      new: true,
+      runValidators: true
+
+      });
+  res.json(updateuser);
+  } catch(error) {
+    next(error)
+  }
+})
