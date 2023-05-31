@@ -4,6 +4,20 @@ import asyncHandler from 'express-async-handler';
 
 const productRouter = express.Router();
 
+productRouter.post(
+  '/',
+  asyncHandler(async(req, res, next) => {
+    try {
+      
+      const newProduct = await ProductModel.create(req.body);
+      res.json(newProduct);
+
+    } catch (error) {
+      next(error)
+    }
+  })
+)
+
 productRouter.get(
   '/',
   asyncHandler(async (req, res) => {
@@ -11,6 +25,23 @@ productRouter.get(
     res.json(products);
   })
 );
+
+
+productRouter.get(
+  '/:id',
+  asyncHandler (async (req, res, next) => {
+    try {
+      const { _id }= req.params;
+      const findProduct = await ProductModel.findById(_id);
+
+      res.json(findProduct);
+
+    } catch (error) {
+      next(error)
+    }
+  })
+)
+
 
 productRouter.get(
   '/slug/:slug',
