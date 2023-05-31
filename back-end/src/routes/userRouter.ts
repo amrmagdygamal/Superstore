@@ -8,6 +8,8 @@ userRouter.post('/signup', UserControllers.signup);
 userRouter.post('/login', UserControllers.login);
 userRouter.get('/all-users', auhtMiddleware, isAdmin, UserControllers.allUsers);
 userRouter.get('/refresh', UserControllers.handleRefreshToken)
+userRouter.get('/logout', UserControllers.logout)
+
 userRouter.get('/:id', auhtMiddleware, isAdmin, UserControllers.getuser);
 userRouter.delete('/:id', auhtMiddleware, isAdmin, UserControllers.deleteUser);
 userRouter.put('/edit-user', auhtMiddleware, UserControllers.updateUser)

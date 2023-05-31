@@ -7,6 +7,7 @@ declare namespace Express {
       username: string
       email: string
       token: string
+      role: string
     }
   }
 }

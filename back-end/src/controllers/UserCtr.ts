@@ -128,6 +128,37 @@ export const handleRefreshToken = asyncHandler(async (req: Request, res: Respons
 });
 
 
+
+// logout user 
+export const logout = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+  const { refreshToken } = req.cookies;
+
+  if (!refreshToken) {
+    res.status(400).json({ message: 'No Refresh Token in Cookies' });
+    return
+  }
+
+  const user = await UserModel.findOne({ refreshToken });
+
+  if (!user) {
+    res.clearCookie('refreshToken', {
+      httpOnly: true,
+      secure: true,
+    });
+    res.sendStatus(204);
+    return
+  }
+
+  await user.updateOne({ $unset: { refreshToken: '' } });
+
+  res.clearCookie('refreshToken', {
+    httpOnly: true,
+    secure: true,
+  });
+  res.sendStatus(204);
+});
+
+
 // FETCHING all users
 
 export const allUsers = asyncHandler(async (req, res, next) => {
