@@ -1,9 +1,9 @@
 import mongoose, { InferSchemaType, model } from "mongoose";
 import bcrypt from 'bcryptjs';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import { Order, OrderModel } from './OrderModel'
 
 const  UserModel = new mongoose.Schema({
-
-    _id: {type: String},
 
     username:{
         type:String,
@@ -27,8 +27,17 @@ const  UserModel = new mongoose.Schema({
     role:{
       type: String,
       default: "user",
+    },
+    isBlocked: {
+      type: Boolean, default: false
+    },
+    orders: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Order' }],
+    wishlist: [{type: mongoose.Schema.Types.ObjectId, ref: "Product"}],
+  },
+    {
+      timestamps: true,
     }
-});
+);
 
 
 UserModel.pre("save", async function (next) {

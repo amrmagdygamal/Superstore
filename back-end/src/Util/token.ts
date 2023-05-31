@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import jwt from 'jsonwebtoken';
 
-export const generateToken = (id: string) => {
+export const generateToken = (id: string | undefined) => {
   return jwt.sign(
     { id }, 
     process.env.JWEBT_SECRET!, 

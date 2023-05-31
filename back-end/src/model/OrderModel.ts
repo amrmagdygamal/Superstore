@@ -1,96 +1,43 @@
-import { ModelOptions, Ref, getModelForClass, modelOptions, prop } from "@typegoose/typegoose";
-import ProductModel, { Product } from "./ProductModel";
-import UserModel, { User } from "./UserModel";
+import mongoose, { InferSchemaType, model } from "mongoose";
+import UserModel from "./UserModel";
+import ProductModel from "./ProductModel";
+
+const OrderModel = new mongoose.Schema({
+  orederItems: [{
+    name: { type: String, required: true },
+    quantity: { type: Number, required: true },
+    image: { type: String, required: true },
+    price: { type: Number, required: true },
+    product: { type: mongoose.Schema.Types.ObjectId, ref: 'Product' }
+  }],
+  shippingAddress: {
+    fullName: { type: String },
+    address: { type: String },
+    city: { type: String },
+    postalCode: { type: String },
+    country: { type: String },
+    lat: { type: Number },
+    lng: { type: Number }
+  },
+  user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+  paymentMethod: { type: String, required: true },
+  paymentResult: {
+    paymentId: { type: String },
+    status: { type: String },
+    update_time: { type: String },
+    email_address: { type: String }
+  },
+  itemsPrice: { type: Number, required: true, default: 0 },
+  shippingPrice: { type: Number, required: true, default: 0 },
+  taxPrice: { type: Number, required: true, default: 0 },
+  totalPrice: { type: Number, required: true, default: 0 },
+  isPaid: { type: Boolean, required: true, default: false },
+  paidAt: { type: Date },
+  isDelivered: { type: Boolean, required: true, default: false },
+  deliveredAt: { type: Date }
+}, { timestamps: true });
 
 
+type Order = InferSchemaType<typeof OrderModel>;
 
-class ShippingAddress {
-  @prop()
-  public fullName?: string
-  
-  @prop()
-  public address?: string
-  
-  @prop()
-  public city?: string
-  
-  @prop()
-  public postalCode?: string
-  
-  @prop()
-  public country?: string
-  
-  @prop()
-  public lat?: number
-  
-  @prop()
-  public lng?: number
-}
-
-class Item {
-  @prop({ required: true })
-  public name!: string
-  
-  @prop({ required: true })
-  public quantity!: number
-  
-  
-  @prop({ required: true })
-  public image!: string
-  
-  @prop({ required: true })
-  public price!: number
-  
-  @prop({ ref: ProductModel })
-  public product?: Ref<Product>
-  
-}
-
-class PaymentResult {
-  @prop()
-  public paymentId!: string
-  
-  @prop()
-  public status!: string
-  
-  @prop()
-  public update_time!: string
-  
-  @prop()
-  public email_address!: string
-}
-
-
-
-@modelOptions({ schemaOptions: { timestamps: true } })
-export class Order {
-  public _id!: string
-  @prop()
-  public orderItems!: Item[]
-  @prop()
-  public shippingAddress?: ShippingAddress
-  @prop({ ref: User })
-  public user?: Ref<User>
-  @prop({ required: true })
-  public paymentMethod!: string
-  @prop()
-  public paymentResult?: PaymentResult
-  @prop({ required: true, default: 0 })
-  public itemsPrice!: number
-  @prop({ required: true, default: 0 })
-  public shippingPrice!: number
-  @prop({ required: true, default: 0 })
-  public taxPrice!: number
-  @prop({ required: true, default: 0 })
-  public totalPrice!: number
-  @prop({ required: true, default: false })
-  public isPaid!: boolean
-  @prop()
-  public paidAt!: Date
-  @prop({ required: true, default: false })
-  public isDelivered!: boolean
-  @prop()
-  public deliveredAt!: Date
-}
-
-export const OrderModel = getModelForClass(Order)
+export default model<Order>("Order", OrderModel);

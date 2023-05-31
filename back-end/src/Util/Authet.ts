@@ -25,3 +25,23 @@ const isAuth = (req: Request, res: Response, next: NextFunction) => {
 }
 
 export default isAuth;
+
+/*
+please explain this code simply : 
+let token;
+
+if (req?.headers?.authorization?.startsWith(`Bearer`)) {
+  token = req.headers.authorization.split(" ")[1];
+
+  try{
+
+    if (token) {
+      const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+    }
+  }
+  catch (error) {
+    next(error)
+  }
+}
+ */
