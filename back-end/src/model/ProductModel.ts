@@ -5,9 +5,9 @@ const productSchema = new Schema({
   slug: { type: String, required: true, unique: true},
   images: { type: Array, required: true},
   brand: {
-    type: String, enum: ['Apple', "Samsung", "Lenovo"],
+    type: String, required: true,
   },
-  category: { type: mongoose.Schema.Types.ObjectId,ref: "Category", required: true},
+  category: { type: String,  required: true},
   description: { type: String, required: true},
   price: { type: Number, required: true},
   countInStock: { type: Number, required: true},
@@ -22,7 +22,7 @@ const productSchema = new Schema({
   },
   numReviews: { type: Number, required: true, default: 0},
   color: {
-    type: String, enum: ['Black', "Brown", "Red"]
+    type: String, required: true
   }
   
 }, {

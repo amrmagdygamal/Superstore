@@ -10,6 +10,7 @@ import orderRouter from './routes/orderRouter';
 import { KeyRouter } from './routes/KeyRouter';
 import createHttpError, { isHttpError } from 'http-errors';
 import cookieParser from 'cookie-parser';
+import morgan from 'morgan';
 
 
 
@@ -26,6 +27,8 @@ mongoose
   });
 
 const app = express();
+
+app.use(morgan("dev"))
 
 app.use(
   cors({
