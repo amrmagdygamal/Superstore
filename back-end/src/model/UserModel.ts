@@ -33,6 +33,10 @@ const  UserModel = new mongoose.Schema({
     },
     orders: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Order' }],
     wishlist: [{type: mongoose.Schema.Types.ObjectId, ref: "Product"}],
+    refreshToken: {
+      type: String,
+      
+    }
   },
     {
       timestamps: true,

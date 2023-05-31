@@ -5,6 +5,9 @@ import UserModel from '../model/UserModel';
 import bcrypt from 'bcryptjs';
 import createHttpError from 'http-errors';
 import { validateMongoDbId } from '../Util/validateMongodbId';
+import generateRefreshToken from '../../config/refreshToken';
+import jwt from 'jsonwebtoken';
+import validateEnv from '../Util/validateEnv';
 
 // register a user
 export const signup = asyncHandler(
@@ -72,18 +75,58 @@ export const login = asyncHandler(
       if (!passwordMatch) {
         throw createHttpError(401, 'Invalid credentials');
       }
+      const refreshToken = await generateRefreshToken(finduser?._id.toString());
 
+      const updateuser = await UserModel.findByIdAndUpdate(
+        finduser?._id,
+        {
+          refreshToken: refreshToken,
+        },
+        { new: true }
+      );
+
+      res.cookie('refreshToken', refreshToken, {
+        httpOnly: true,
+        maxAge: 24 * 60 * 60 * 1000,
+      });
       res.json({
         _id: finduser?._id,
         username: finduser?.username,
         email: finduser?.email,
-        token: generateToken(finduser._id.toString()),
+        token: generateToken(finduser?._id.toString()),
       });
     } catch (error) {
       next(error);
     }
   }
 );
+
+//handle refresh token
+
+
+export const handleRefreshToken = asyncHandler(async (req: Request, res: Response) => {
+  const cookie = req.cookies;
+  // console.log(cookie)
+
+  if (!cookie?.refreshToken) throw new Error("No Refresh Token in Cookies");
+
+  const refreshToken = cookie.refreshToken;
+
+  const user = await UserModel.findOne({ refreshToken });
+
+  if (!user) {
+    throw new Error("No Refresh Token Present in db or not mathced");
+  }
+
+  jwt.verify(refreshToken, validateEnv.JWEBT_SECRET, (err: jwt.VerifyErrors | null, decoded: any) => {
+    if (err || user._id.toString() !== decoded?._id) {
+      throw new Error("There is something wrong with refresh token");
+    }
+    const accessToken = generateToken(user._id.toString());
+    res.json({ accessToken });
+  });
+});
+
 
 // FETCHING all users
 

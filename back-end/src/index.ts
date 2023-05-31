@@ -9,6 +9,7 @@ import cors from 'cors';
 import orderRouter from './routes/orderRouter';
 import { KeyRouter } from './routes/KeyRouter';
 import createHttpError, { isHttpError } from 'http-errors';
+import cookieParser from 'cookie-parser';
 
 
 
@@ -33,11 +34,15 @@ app.use(
   })
 );
 
+
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.use('/api/products', productRouter);
+app.use(cookieParser())
+
 app.use('/api/users', userRouter);
+app.use('/api/products', productRouter);
 app.use('/api/orders', orderRouter);
 app.use('/api/keys', KeyRouter);
 
