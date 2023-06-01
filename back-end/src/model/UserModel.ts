@@ -1,5 +1,7 @@
 import mongoose, { InferSchemaType, model } from "mongoose";
-import bcrypt from 'bcryptjs';
+import bcrypt  from 'bcryptjs';
+import crypto from 'crypto';
+
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { Order, OrderModel } from './OrderModel'
 
@@ -36,7 +38,10 @@ const  UserModel = new mongoose.Schema({
     refreshToken: {
       type: String,
       
-    }
+    },
+    passwordChangeAt: Date,
+    passwordResetToken: String,
+    passwordResetExpires: Date,
   },
     {
       timestamps: true,
@@ -45,6 +50,10 @@ const  UserModel = new mongoose.Schema({
 
 
 UserModel.pre("save", async function (next) {
+
+  if (!this.isModified('password')){
+    next();
+  }
 
     // Generate a salt
     const salt = await bcrypt.genSalt(10);
@@ -56,6 +65,18 @@ UserModel.pre("save", async function (next) {
     this.password = hashedPassword;
   
 });
+
+UserModel.methods.createPasswordResetToken = async function() {
+  const resetTokenBuffer = Buffer.alloc(32);
+  crypto.randomFillSync(resetTokenBuffer);
+  const resetToken = resetTokenBuffer.toString("hex");
+
+  this.passwordResetToken = crypto.createHash("sha256").update(resetToken).digest("hex");
+
+  this.passwordResetExpires = Date.now() + 30 * 60 * 1000;
+
+  return resetToken;
+};
 
 
 type User = InferSchemaType<typeof UserModel>;
