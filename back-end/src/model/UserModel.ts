@@ -1,4 +1,4 @@
-import { Document, Model, model, Schema } from "mongoose";
+import mongoose, { Document, Model, model, Schema } from "mongoose";
 import crypto from "crypto";
 
 export interface User extends Document {
@@ -7,10 +7,12 @@ export interface User extends Document {
   password: string;
   role: string;
   isBlocked: boolean;
-  orders: Schema.Types.ObjectId[];
+  wishlist: mongoose.Schema.Types.ObjectId[];
+  refreshToken?: string;
+  orders: mongoose.Schema.Types.ObjectId[];
+  passwordChangedAt?: string;
   passwordResetToken?: string;
   passwordResetExpires?: Date;
-  refreshToken?: string;
   createPasswordResetToken: () => Promise<string>;
 }
 
@@ -38,25 +40,27 @@ const userSchema = new Schema<User>({
     type: Boolean,
     default: false,
   },
+  wishlist: [{ type: mongoose.Schema.Types.ObjectId, ref: "Product" }],
+  refreshToken: String,
   orders: [
     {
-      type: Schema.Types.ObjectId,
+      type: mongoose.Schema.Types.ObjectId,
       ref: "Order",
     },
   ],
+  passwordChangedAt: Date
   passwordResetToken: String,
   passwordResetExpires: Date,
-  refreshToken: String,
 });
 
 userSchema.methods.createPasswordResetToken = async function () {
   const resetTokenBuffer = Buffer.alloc(32);
   crypto.randomFillSync(resetTokenBuffer);
   const resetToken = resetTokenBuffer.toString("hex");
-
+  
   this.passwordResetToken = crypto
-    .createHash("sha256")
-    .update(resetToken)
+  .createHash("sha256")
+  .update(resetToken)
     .digest("hex");
 
   this.passwordResetExpires = Date.now() + 30 * 60 * 1000;
