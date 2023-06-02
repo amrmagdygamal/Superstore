@@ -1,11 +1,12 @@
 import { NextFunction, Request, Response } from 'express';
 import asyncHandler from 'express-async-handler';
 import { validateMongoDbId } from '../Util/validateMongodbId';
-import prodCategModel from '../model/prodcategoryModel';
+import blogCategModel from '../model/blogCategModel';
+
 
 export const createCategory = asyncHandler(async (req, res, next) => {
   try {
-    const newCategory = await prodCategModel.create(req.body);
+    const newCategory = await blogCategModel.create(req.body);
 
     res.json(newCategory);
   } catch (error) {
@@ -17,7 +18,7 @@ export const updateCategory = asyncHandler(async (req, res, next) => {
   const { _id } = req.params;
   validateMongoDbId(_id)
   try {
-    const updatedCategory = await prodCategModel.findByIdAndUpdate(
+    const updatedCategory = await blogCategModel.findByIdAndUpdate(
       _id,
       req.body,
       { new: true }
@@ -33,7 +34,7 @@ export const deletCategory = asyncHandler(async (req, res, next) => {
   const { _id } = req.params;
   validateMongoDbId(_id)
   try {
-    const deletedcategory = await prodCategModel.findByIdAndDelete(_id);
+    const deletedcategory = await blogCategModel.findByIdAndDelete(_id);
 
     res.json(deletedcategory);
   } catch (error) {
@@ -45,7 +46,7 @@ export const getCategory = asyncHandler(async (req, res, next) => {
   const { _id } = req.params;
   validateMongoDbId(_id)
   try {
-    const getcategory = await prodCategModel.findById(
+    const getcategory = await blogCategModel.findById(
       _id
     );
 
@@ -57,7 +58,7 @@ export const getCategory = asyncHandler(async (req, res, next) => {
 
 export const getAllCategoies = asyncHandler(async (req, res, next) => {
   try {
-    const allcategories = await prodCategModel.find();
+    const allcategories = await blogCategModel.find();
 
     res.json(allcategories);
   } catch (error) {

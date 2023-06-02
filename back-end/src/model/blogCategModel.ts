@@ -1,7 +1,7 @@
 import mongoose, { InferSchemaType, model } from "mongoose";
 
 // Declare the Schema of the Mongo model
-const  BlogCategorySchema = new mongoose.Schema(
+const  BlogCategoryModel = new mongoose.Schema(
     {
       title: {
         type: String,
@@ -17,6 +17,6 @@ const  BlogCategorySchema = new mongoose.Schema(
 );
 
 //Export the model
-export type BlogCategory = InferSchemaType<typeof BlogCategorySchema>;
+export type BlogCategory = InferSchemaType<typeof BlogCategoryModel>;
 
-export default model<BlogCategory>('BlogCategory', BlogCategorySchema);
+export default model<BlogCategory>('BlogCategory', BlogCategoryModel);

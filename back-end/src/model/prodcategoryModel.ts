@@ -1,7 +1,7 @@
 import mongoose, { InferSchemaType, model } from "mongoose";
 
 // Declare the Schema of the Mongo model
-const  ProdCategorySchema = new mongoose.Schema(
+const  ProdCategoryModel = new mongoose.Schema(
     {
       title: {
         type: String,
@@ -17,6 +17,6 @@ const  ProdCategorySchema = new mongoose.Schema(
 );
 
 //Export the model
-export type ProdCategory = InferSchemaType<typeof ProdCategorySchema>;
+export type ProdCategory = InferSchemaType<typeof ProdCategoryModel>;
 
-export default model<ProdCategory>('ProdCategory', ProdCategorySchema);
+export default model<ProdCategory>('ProdCategory', ProdCategoryModel);
