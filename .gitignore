@@ -1,6 +1,7 @@
 back-end/.env
-node_modules/nodemailer/.gitattributes
+```
 node_modules/.package-lock.json
+node_modules/nodemailer/.gitattributes
 node_modules/nodemailer/.ncurc.js
 node_modules/nodemailer/.prettierrc.js
 node_modules/nodemailer/CHANGELOG.md

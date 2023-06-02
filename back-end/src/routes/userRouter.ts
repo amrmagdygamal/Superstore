@@ -5,8 +5,10 @@ import { auhtMiddleware, isAdmin } from '../middlewares/authentication';
 export const userRouter = express.Router();
 
 userRouter.post('/signup', UserControllers.signup);
+userRouter.post('/forgot-password-token', UserControllers.forgotPasswordToken)
+userRouter.post('/reset-password/:token', UserControllers.resetPassword)
 userRouter.post('/login', UserControllers.login);
-userRouter.put('/:id', auhtMiddleware, UserControllers.updatePassword)
+userRouter.put('/:id', auhtMiddleware, UserControllers.updatePassword);
 userRouter.get('/all-users', auhtMiddleware, isAdmin, UserControllers.allUsers);
 userRouter.get('/refresh', UserControllers.handleRefreshToken)
 userRouter.get('/logout', UserControllers.logout)

@@ -3,11 +3,13 @@ import asyncHandler from 'express-async-handler';
 import { generateToken } from '../Util/token';
 import UserModel from '../model/UserModel';
 import bcrypt from 'bcryptjs';
+import crypto from 'crypto';
 import createHttpError from 'http-errors';
 import { validateMongoDbId } from '../Util/validateMongodbId';
 import generateRefreshToken from '../../config/refreshToken';
 import jwt from 'jsonwebtoken';
 import validateEnv from '../Util/validateEnv';
+import { sendEmail } from './emailCtr';
 
 // register a user
 export const signup = asyncHandler(
@@ -103,61 +105,65 @@ export const login = asyncHandler(
 
 //handle refresh token
 
+export const handleRefreshToken = asyncHandler(
+  async (req: Request, res: Response) => {
+    const cookie = req.cookies;
+    // console.log(cookie)
 
-export const handleRefreshToken = asyncHandler(async (req: Request, res: Response) => {
-  const cookie = req.cookies;
-  // console.log(cookie)
+    if (!cookie?.refreshToken) throw new Error('No Refresh Token in Cookies');
 
-  if (!cookie?.refreshToken) throw new Error("No Refresh Token in Cookies");
+    const refreshToken = cookie.refreshToken;
 
-  const refreshToken = cookie.refreshToken;
+    const user = await UserModel.findOne({ refreshToken });
 
-  const user = await UserModel.findOne({ refreshToken });
-
-  if (!user) {
-    throw new Error("No Refresh Token Present in db or not mathced");
-  }
-
-  jwt.verify(refreshToken, validateEnv.JWEBT_SECRET, (err: jwt.VerifyErrors | null, decoded: any) => {
-    if (err || user._id.toString() !== decoded?._id) {
-      throw new Error("There is something wrong with refresh token");
+    if (!user) {
+      throw new Error('No Refresh Token Present in db or not mathced');
     }
-    const accessToken = generateToken(user._id.toString());
-    res.json({ accessToken });
-  });
-});
 
-
-
-// logout user 
-export const logout = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
-  const { refreshToken } = req.cookies;
-
-  if (!refreshToken) {
-    res.status(400).json({ message: 'No Refresh Token in Cookies' });
-    return
+    jwt.verify(
+      refreshToken,
+      validateEnv.JWEBT_SECRET,
+      (err: jwt.VerifyErrors | null, decoded: any) => {
+        if (err || user._id.toString() !== decoded?._id) {
+          throw new Error('There is something wrong with refresh token');
+        }
+        const accessToken = generateToken(user._id.toString());
+        res.json({ accessToken });
+      }
+    );
   }
+);
 
-  const user = await UserModel.findOne({ refreshToken });
+// logout user
+export const logout = asyncHandler(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const { refreshToken } = req.cookies;
 
-  if (!user) {
+    if (!refreshToken) {
+      res.status(400).json({ message: 'No Refresh Token in Cookies' });
+      return;
+    }
+
+    const user = await UserModel.findOne({ refreshToken });
+
+    if (!user) {
+      res.clearCookie('refreshToken', {
+        httpOnly: true,
+        secure: true,
+      });
+      res.sendStatus(204);
+      return;
+    }
+
+    await user.updateOne({ $unset: { refreshToken: '' } });
+
     res.clearCookie('refreshToken', {
       httpOnly: true,
       secure: true,
     });
     res.sendStatus(204);
-    return
   }
-
-  await user.updateOne({ $unset: { refreshToken: '' } });
-
-  res.clearCookie('refreshToken', {
-    httpOnly: true,
-    secure: true,
-  });
-  res.sendStatus(204);
-});
-
+);
 
 // FETCHING all users
 
@@ -265,24 +271,74 @@ export const unBlockUser = asyncHandler(async (req, res, next) => {
   }
 });
 
-
-export const updatePassword = asyncHandler ( async (req, res) => {
-
+export const updatePassword = asyncHandler(async (req, res) => {
   const { _id } = req.user;
 
-  const {password} = req.body;
+  const { password } = req.body;
 
-  validateMongoDbId(_id)
+  validateMongoDbId(_id);
 
-  const user = await UserModel.findById(_id); 
+  const user = await UserModel.findById(_id);
 
-  if(user) {
-    if(password) {
+  if (user) {
+    if (password) {
       user.password = password;
       const updatedPassword = await user.save();
-      res.json(updatedPassword)
-    }else {
+      res.json(updatedPassword);
+    } else {
       res.json(user);
     }
   }
+});
+
+
+
+
+export const forgotPasswordToken = asyncHandler ( async (req, res, next) => {
+
+  const { email } = req.body;
+
+  const user = await UserModel.findOne({ email });
+  
+  if (!user) throw new Error("User not found with this email");
+  
+  try {
+    const token = await user.createPasswordResetToken();
+    await user.save();
+  
+    const resetURL = `Hi, Please follow this link to reset Your Password. This link is valid till 10 minutes from now. <a href='http://localhost:5000/api/user/reset-password/${token}'>Click here</a>`;
+    const data = {
+      to: email,
+      text: "Hey User",
+      subject: "Forgot Password Link",
+      html: resetURL,
+    };
+    await sendEmail(data);
+    res.json(token)
+  } catch (error) {
+    next(error)
+  }
+})
+
+
+export const resetPassword = asyncHandler (async (req, res) => {
+  const { password } = req.body;
+  const {token} = req.params;
+
+  const hashedToken = crypto.createHash('sha256').update(token).digest("hex");
+  const user = await UserModel.findOne({
+    passwordResetToken: hashedToken,
+    passwordResetExpires: { $gt: Date.now() }
+  });
+
+  if(!user) throw new Error("Token Expired, Please try again later.");
+
+  user.password = password;
+  user.passwordResetToken = undefined;
+  user.passwordResetExpires = undefined;
+
+  await user.save();
+  res.json(user);
+
+
 })

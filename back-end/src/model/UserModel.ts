@@ -1,84 +1,69 @@
-import mongoose, { InferSchemaType, model } from "mongoose";
-import bcrypt  from 'bcryptjs';
-import crypto from 'crypto';
+import { Document, Model, model, Schema } from "mongoose";
+import crypto from "crypto";
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { Order, OrderModel } from './OrderModel'
+export interface User extends Document {
+  username: string;
+  email: string;
+  password: string;
+  role: string;
+  isBlocked: boolean;
+  orders: Schema.Types.ObjectId[];
+  passwordResetToken?: string;
+  passwordResetExpires?: Date;
+  refreshToken?: string;
+  createPasswordResetToken: () => Promise<string>;
+}
 
-const  UserModel = new mongoose.Schema({
-
-    username:{
-        type:String,
-        required:true,
-        unique:true,
-        index:true,
-    },
-
-    email:{
-        type:String,
-        required:true,
-        unique:true,
-        select: false
-    },
-
-    password:{
-        type:String,
-        required:true,
-        select: false
-    },
-    role:{
-      type: String,
-      default: "user",
-    },
-    isBlocked: {
-      type: Boolean, default: false
-    },
-    orders: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Order' }],
-    wishlist: [{type: mongoose.Schema.Types.ObjectId, ref: "Product"}],
-    refreshToken: {
-      type: String,
-      
-    },
-    passwordChangeAt: Date,
-    passwordResetToken: String,
-    passwordResetExpires: Date,
+const userSchema = new Schema<User>({
+  username: {
+    type: String,
+    required: true,
+    unique: true,
   },
+  email: {
+    type: String,
+    required: true,
+    unique: true,
+  },
+  password: {
+    type: String,
+    required: true,
+  },
+  role: {
+    type: String,
+    enum: ["user", "admin"],
+    default: "user",
+  },
+  isBlocked: {
+    type: Boolean,
+    default: false,
+  },
+  orders: [
     {
-      timestamps: true,
-    }
-);
-
-
-UserModel.pre("save", async function (next) {
-
-  if (!this.isModified('password')){
-    next();
-  }
-
-    // Generate a salt
-    const salt = await bcrypt.genSalt(10);
-
-    // Hash the password using the salt
-    const hashedPassword = await bcrypt.hash(this.password, salt);
-
-    // Replace the plaintext password with the hashed password
-    this.password = hashedPassword;
-  
+      type: Schema.Types.ObjectId,
+      ref: "Order",
+    },
+  ],
+  passwordResetToken: String,
+  passwordResetExpires: Date,
+  refreshToken: String,
 });
 
-UserModel.methods.createPasswordResetToken = async function() {
+userSchema.methods.createPasswordResetToken = async function () {
   const resetTokenBuffer = Buffer.alloc(32);
   crypto.randomFillSync(resetTokenBuffer);
   const resetToken = resetTokenBuffer.toString("hex");
 
-  this.passwordResetToken = crypto.createHash("sha256").update(resetToken).digest("hex");
+  this.passwordResetToken = crypto
+    .createHash("sha256")
+    .update(resetToken)
+    .digest("hex");
 
   this.passwordResetExpires = Date.now() + 30 * 60 * 1000;
 
   return resetToken;
 };
 
+const UserModel: Model<User> = model<User>("User", userSchema);
 
-type User = InferSchemaType<typeof UserModel>;
-
-export default model<User>("User", UserModel);
+export default UserModel;
