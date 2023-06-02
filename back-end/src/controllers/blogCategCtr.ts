@@ -1,11 +1,11 @@
 import { NextFunction, Request, Response } from 'express';
 import asyncHandler from 'express-async-handler';
 import { validateMongoDbId } from '../Util/validateMongodbId';
-import categoryModel from '../model/prodcategoryModel';
+import prodCategModel from '../model/prodcategoryModel';
 
 export const createCategory = asyncHandler(async (req, res, next) => {
   try {
-    const newCategory = await categoryModel.create(req.body);
+    const newCategory = await prodCategModel.create(req.body);
 
     res.json(newCategory);
   } catch (error) {
@@ -15,9 +15,9 @@ export const createCategory = asyncHandler(async (req, res, next) => {
 
 export const updateCategory = asyncHandler(async (req, res, next) => {
   const { _id } = req.params;
-  validateMongoDbId(_id);
+  validateMongoDbId(_id)
   try {
-    const updatedCategory = await categoryModel.findByIdAndUpdate(
+    const updatedCategory = await prodCategModel.findByIdAndUpdate(
       _id,
       req.body,
       { new: true }
@@ -31,9 +31,9 @@ export const updateCategory = asyncHandler(async (req, res, next) => {
 
 export const deletCategory = asyncHandler(async (req, res, next) => {
   const { _id } = req.params;
-  validateMongoDbId(_id);
+  validateMongoDbId(_id)
   try {
-    const deletedcategory = await categoryModel.findByIdAndDelete(_id);
+    const deletedcategory = await prodCategModel.findByIdAndDelete(_id);
 
     res.json(deletedcategory);
   } catch (error) {
@@ -43,9 +43,9 @@ export const deletCategory = asyncHandler(async (req, res, next) => {
 
 export const getCategory = asyncHandler(async (req, res, next) => {
   const { _id } = req.params;
-  validateMongoDbId(_id);
+  validateMongoDbId(_id)
   try {
-    const getcategory = await categoryModel.findById(
+    const getcategory = await prodCategModel.findById(
       _id
     );
 
@@ -57,7 +57,7 @@ export const getCategory = asyncHandler(async (req, res, next) => {
 
 export const getAllCategoies = asyncHandler(async (req, res, next) => {
   try {
-    const allcategories = await categoryModel.find();
+    const allcategories = await prodCategModel.find();
 
     res.json(allcategories);
   } catch (error) {

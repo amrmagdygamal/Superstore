@@ -1,6 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
 import asyncHandler from 'express-async-handler';
-import { generateToken } from '../Util/token';
 import UserModel from '../model/UserModel';
 import blogModel from '../model/blogModel';
 import { validateMongoDbId } from '../Util/validateMongodbId';

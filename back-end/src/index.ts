@@ -12,7 +12,8 @@ import createHttpError, { isHttpError } from 'http-errors';
 import cookieParser from 'cookie-parser';
 import morgan from 'morgan';
 import blogRouter from './routes/blogRouter';
-import categoryRouter from './routes/prodcategoryRouter';
+import prodCategRouter from './routes/prodcategoryRouter';
+import blogCategRouter from './routes/blogCategRouter';
 
 
 
@@ -49,7 +50,8 @@ app.use(cookieParser())
 app.use('/api/users', userRouter);
 app.use('/api/products', productRouter);
 app.use('/api/blog', blogRouter);
-app.use('/api/category', categoryRouter);
+app.use('/api/prodcategory', prodCategRouter);
+app.use('/api/blogcategory', blogCategRouter);
 
 app.use('/api/orders', orderRouter);
 app.use('/api/keys', KeyRouter);
