@@ -11,6 +11,7 @@ import { KeyRouter } from './routes/KeyRouter';
 import createHttpError, { isHttpError } from 'http-errors';
 import cookieParser from 'cookie-parser';
 import morgan from 'morgan';
+import blogRouter from './routes/blogRouter';
 
 
 
@@ -46,6 +47,8 @@ app.use(cookieParser())
 
 app.use('/api/users', userRouter);
 app.use('/api/products', productRouter);
+app.use('/api/blog', blogRouter);
+
 app.use('/api/orders', orderRouter);
 app.use('/api/keys', KeyRouter);
 
