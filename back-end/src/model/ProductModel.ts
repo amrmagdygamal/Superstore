@@ -11,12 +11,16 @@ const productSchema = new Schema({
   description: { type: String, required: true},
   price: { type: Number, required: true},
   countInStock: { type: Number, required: true},
-  rating: [
+  ratings: [
     {
       star: Number,
       postedBy: { type: mongoose.Schema.Types.ObjectId, ref: "User"},
     }
   ],
+  totalrating: {
+    type: String,
+    default: 0,
+  },
   sold: {
     type: Number, default: 0, select: false
   },

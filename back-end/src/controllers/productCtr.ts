@@ -5,7 +5,6 @@ import slugify from 'slugify';
 import ProductModel from '../model/ProductModel';
 import UserModel from '../model/UserModel';
 
-
 export const createProduct = asyncHandler(async (req, res, next) => {
   try {
     if (req.body.title) {
@@ -16,7 +15,7 @@ export const createProduct = asyncHandler(async (req, res, next) => {
   } catch (error) {
     next(error);
   }
-})
+});
 export const updateProduct = asyncHandler(async (req, res, next) => {
   const { _id } = req.params;
   try {
@@ -34,7 +33,7 @@ export const updateProduct = asyncHandler(async (req, res, next) => {
   } catch (error) {
     next(error);
   }
-})
+});
 export const deleteProduct = asyncHandler(async (req, res, next) => {
   const { _id } = req.params;
   try {
@@ -66,14 +65,11 @@ export const getAllProducts = asyncHandler(async (req, res, next) => {
     const excludeFields = ['page', 'sort', 'limit', 'fields'];
     excludeFields.forEach((el) => delete queryOb[el]);
     let queryStr = JSON.stringify(queryOb);
-    queryStr = queryStr.replace(
-      /\b(gte|gt|lte|lt)\b/g,
-      (match) => `$${match}`
-    );
+    queryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, (match) => `$${match}`);
 
     let query = ProductModel.find(JSON.parse(queryStr));
 
-    // Sorting 
+    // Sorting
 
     const sort = req.query.sort;
     if (typeof sort === 'string') {
@@ -90,11 +86,10 @@ export const getAllProducts = asyncHandler(async (req, res, next) => {
       const fields = field.split(',').join(' ');
       query = query.sort(fields);
     } else {
-      query = query.select('-__v')
+      query = query.select('-__v');
     }
 
-
-    // pagination 
+    // pagination
 
     const page = Number(req.query.page);
     const limit = Number(req.query.limit);
@@ -103,47 +98,114 @@ export const getAllProducts = asyncHandler(async (req, res, next) => {
 
     if (req.query.page) {
       const productCount = await ProductModel.countDocuments();
-      if(skip >= productCount) throw new Error('This Page does not exists');
+      if (skip >= productCount) throw new Error('This Page does not exists');
     }
-
 
     const product = await query;
     res.json(product);
   } catch (error) {
     next(error);
   }
-})
+});
 
-
-export const addToWishList = asyncHandler ( async (req, res, next) => {
+export const addToWishList = asyncHandler(async (req, res, next) => {
   const { _id } = req.user;
 
-  const {prodId} = req.body;
+  const { prodId } = req.body;
 
   try {
-
     const user = await UserModel.findById(_id);
-    const alreadyadded = user?.wishlist.find((id) => id.toString() === prodId.toString())
+    const alreadyadded = user?.wishlist.find(
+      (id) => id.toString() === prodId.toString()
+    );
 
-    if(alreadyadded) {
-      const user = await UserModel.findByIdAndUpdate(_id, {
-        $pull: {wishlist: prodId},
-      },
-      {
-        new: true,
-      })
+    if (alreadyadded) {
+      const user = await UserModel.findByIdAndUpdate(
+        _id,
+        {
+          $pull: { wishlist: prodId },
+        },
+        {
+          new: true,
+        }
+      );
       res.json(user);
-    }else {
-      const user = await UserModel.findByIdAndUpdate(_id, {
-        $push: {wishlist: prodId},
-      },
-      {
-        new: true,
-      });
+    } else {
+      const user = await UserModel.findByIdAndUpdate(
+        _id,
+        {
+          $push: { wishlist: prodId },
+        },
+        {
+          new: true,
+        }
+      );
       res.json(user);
     }
-    
   } catch (error) {
-    next(error)
+    next(error);
   }
-}) 
+});
+
+export const rating = asyncHandler(async (req, res, next) => {
+  const { _id } = req.user;
+
+  const { star, prodId } = req.body;
+
+  try {
+    const product = await ProductModel.findById(prodId);
+
+    const alreadyRated = product?.ratings.find(
+      (userId) => userId.postedBy?.toString() === _id.toString()
+    );
+
+    if (alreadyRated) {
+      const updateRating = await ProductModel.updateOne(
+        {
+          ratings: { $elemMatch: alreadyRated },
+        },
+        {
+          $set: { 'ratings.$.star': star },
+        },
+        {
+          new: true,
+        }
+      );
+      res.json(updateRating);
+    } else {
+      const rateProduct = await ProductModel.findByIdAndUpdate(
+        prodId,
+        {
+          $push: {
+            ratings: {
+              star: star,
+              postedBy: _id,
+            },
+          },
+        },
+        {
+          new: true,
+        }
+      );
+      res.json(rateProduct);
+    }
+
+    const getAllRatings = await ProductModel.findById(prodId);
+    const totalrating = getAllRatings?.ratings.length;
+    const ratingSum = getAllRatings?.ratings.map((item) => item.star).reduce((prev, curr) => prev && curr ? (prev + curr) : 0 , 0);
+    const actualRating = Math.round(ratingSum && totalrating ? ratingSum / totalrating : 0);
+    const finalprod = await ProductModel.findByIdAndUpdate(
+      prodId,
+      {
+        totalrating: actualRating,
+      },
+      {
+        new: true
+      }
+    )
+    res.json(finalprod);
+  } catch (error) {
+    next(error);
+  }
+});
+

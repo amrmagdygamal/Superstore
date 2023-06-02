@@ -19,7 +19,12 @@ productRouter.put(
 );
 
 productRouter.put(
-  '/wishlist', auhtMiddleware, ProductControllers.addToWishList);
+  '/wishlist', auhtMiddleware, ProductControllers.addToWishList
+);
+
+productRouter.put(
+  '/rating', auhtMiddleware, ProductControllers.rating
+);
 
 
 productRouter.delete(
