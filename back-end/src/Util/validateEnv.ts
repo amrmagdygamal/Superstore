@@ -6,5 +6,8 @@ export default cleanEnv(process.env, {
   JWEBT_SECRET: str(),
   PAYPAL_CLIENT_ID: str(),
   EMAIL_ID: str(),
-  MP: str()
+  MP: str(),
+  CLOUD_NAME: str(),
+  API_KEY: str(),
+  API_SECRET: str()
 })

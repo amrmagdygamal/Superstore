@@ -4,6 +4,8 @@ import { validateMongoDbId } from '../Util/validateMongodbId';
 import slugify from 'slugify';
 import ProductModel from '../model/ProductModel';
 import UserModel from '../model/UserModel';
+import cloudinaryUploadImg from '../Util/cloudinary';
+import fs from 'fs';
 
 export const createProduct = asyncHandler(async (req, res, next) => {
   try {
@@ -191,20 +193,58 @@ export const rating = asyncHandler(async (req, res, next) => {
 
     const getAllRatings = await ProductModel.findById(prodId);
     const totalrating = getAllRatings?.ratings.length;
-    const ratingSum = getAllRatings?.ratings.map((item) => item.star).reduce((prev, curr) => prev && curr ? (prev + curr) : 0 , 0);
-    const actualRating = Math.round(ratingSum && totalrating ? ratingSum / totalrating : 0);
+    const ratingSum = getAllRatings?.ratings
+      .map((item) => item.star)
+      .reduce((prev, curr) => (prev && curr ? prev + curr : 0), 0);
+    const actualRating = Math.round(
+      ratingSum && totalrating ? ratingSum / totalrating : 0
+    );
     const finalprod = await ProductModel.findByIdAndUpdate(
       prodId,
       {
         totalrating: actualRating,
       },
       {
-        new: true
+        new: true,
       }
-    )
+    );
     res.json(finalprod);
   } catch (error) {
     next(error);
   }
 });
 
+export const uploadImages = asyncHandler(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const { _id } = req.params;
+    validateMongoDbId(_id);
+    try {
+      const uploader = (path: string) => cloudinaryUploadImg(path);
+
+      const urls = [];
+      const files = req.files;
+      if (Array.isArray(files)) {
+        for (const file of files) {
+          const { path } = file;
+          const newPath = await uploader(path);
+          urls.push(newPath);
+          fs.unlinkSync(path);
+        }
+      }
+      const findProduct = await ProductModel.findByIdAndUpdate(
+        _id,
+        {
+          images: urls.map((file) => {
+            return file;
+          }),
+        },
+        {
+          new: true,
+        }
+      );
+      res.json(findProduct);
+    } catch (error) {
+      next(error);
+    }
+  }
+);

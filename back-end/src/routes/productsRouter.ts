@@ -1,6 +1,7 @@
 import express from 'express';
 import { auhtMiddleware, isAdmin } from '../middlewares/authentication';
 import * as ProductControllers from '../controllers/productCtr'
+import { productImgResize, uploadPhoto } from '../middlewares/uploadImgs';
 
 const productRouter = express.Router();
 
@@ -10,6 +11,15 @@ productRouter.post(
   isAdmin,
   ProductControllers.createProduct
 );
+
+productRouter.put(
+  '/upload/:id' ,
+  auhtMiddleware,
+  isAdmin,
+  uploadPhoto.array("images", 10),
+  productImgResize,
+  ProductControllers.uploadImages
+)
 
 productRouter.put(
   '/:id',

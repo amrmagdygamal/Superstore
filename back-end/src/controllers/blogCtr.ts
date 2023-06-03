@@ -3,6 +3,7 @@ import asyncHandler from 'express-async-handler';
 import UserModel from '../model/UserModel';
 import blogModel from '../model/blogModel';
 import { validateMongoDbId } from '../Util/validateMongodbId';
+import cloudinaryUploadImg from '../Util/cloudinary';
 
 export const createBlog = asyncHandler(async (req, res, next) => {
   try {
@@ -171,3 +172,38 @@ export const disLikeTheBlog = asyncHandler(async (req, res, next) => {
   }  
 });  
 
+
+
+export const uploadImages = asyncHandler(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const { _id } = req.params;
+    validateMongoDbId(_id);
+    try {
+      const uploader = (path: string) => cloudinaryUploadImg(path);
+
+      const urls = [];
+      const files = req.files;
+      if (Array.isArray(files)) {
+        for (const file of files) {
+          const { path } = file;
+          const newPath = await uploader(path);
+          urls.push(newPath);
+        }
+      }
+      const findBlog = await blogModel.findByIdAndUpdate(
+        _id,
+        {
+          images: urls.map((file) => {
+            return file;
+          }),
+        },
+        {
+          new: true,
+        }
+      );
+      res.json(findBlog);
+    } catch (error) {
+      next(error);
+    }
+  }
+);
