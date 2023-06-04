@@ -16,6 +16,7 @@ import prodCategRouter from './routes/prodcategoryRouter';
 import blogCategRouter from './routes/blogCategRouter';
 import brandRouter from './routes/brandRouter';
 import couponRouter from './routes/couponRouter';
+import colorRouter from './routes/colorRouter';
 
 
 
@@ -56,6 +57,7 @@ app.use('/api/prodcategory', prodCategRouter);
 app.use('/api/blogcategory', blogCategRouter);
 app.use('/api/brand', brandRouter);
 app.use('/api/coupon', couponRouter);
+app.use('/api/color', colorRouter);
 
 app.use('/api/orders', orderRouter);
 app.use('/api/keys', KeyRouter);

@@ -203,30 +203,30 @@ export const logout = asyncHandler(
       return;
     }
 
-try {
-  const user = await UserModel.findOne({ refreshToken });
+    try {
+      const user = await UserModel.findOne({ refreshToken });
 
-  if (!user) {
-    res.clearCookie('refreshToken', {
-      httpOnly: true,
-      secure: true,
-    });
-    res.sendStatus(204);
-    return;
+      if (!user) {
+        res.clearCookie('refreshToken', {
+          httpOnly: true,
+          secure: true,
+        });
+        res.sendStatus(204);
+        return;
+      }
+
+      await user.updateOne({ $unset: { refreshToken: '' } });
+
+      res.clearCookie('refreshToken', {
+        httpOnly: true,
+        secure: true,
+      });
+      res.sendStatus(204);
+    } catch (error) {
+      next(error);
+    }
   }
-
-  await user.updateOne({ $unset: { refreshToken: '' } });
-
-  res.clearCookie('refreshToken', {
-    httpOnly: true,
-    secure: true,
-  });
-  res.sendStatus(204);
-
-} catch (error) {
-  next(error)
-  }
-});
+);
 
 // fetching specific user
 export const getuser = asyncHandler(async (req, res, next) => {
@@ -311,7 +311,6 @@ export const allUsers = asyncHandler(async (req, res, next) => {
   }
 });
 
-
 // Block User
 export const blockUser = asyncHandler(async (req, res, next) => {
   const { _id } = req.params;
@@ -382,14 +381,20 @@ export const updatePassword = asyncHandler(async (req, res) => {
 export const forgotPasswordToken = asyncHandler(async (req, res, next) => {
   const { email } = req.body;
 
+  // Find the user associated with the email address
   const user = await UserModel.findOne({ email });
 
-  if (!user) throw new Error('User not found with this email');
+  // Throw an error if the user is not found
+  if (!user) {
+    throw new Error('User not found with this email');
+  }
 
   try {
+    // Generate a password reset token for the user
     const token = await user.createPasswordResetToken();
     await user.save();
 
+    // Construct the password reset URL and send the reset link to the user's email
     const resetURL = `Hi, Please follow this link to reset Your Password. This link is valid till 10 minutes from now. <a href='http://localhost:5000/api/user/reset-password/${token}'>Click here</a>`;
     const data = {
       to: email,
@@ -398,8 +403,11 @@ export const forgotPasswordToken = asyncHandler(async (req, res, next) => {
       html: resetURL,
     };
     await sendEmail(data);
+
+    // Send the password reset token back to the client
     res.json(token);
   } catch (error) {
+    // Handle any errors that occur during the password reset process
     next(error);
   }
 });
@@ -408,19 +416,29 @@ export const resetPassword = asyncHandler(async (req, res) => {
   const { password } = req.body;
   const { token } = req.params;
 
+  // Hash the token using sha256
   const hashedToken = crypto.createHash('sha256').update(token).digest('hex');
+
+  // Find the user associated with the hashed token
   const user = await UserModel.findOne({
     passwordResetToken: hashedToken,
     passwordResetExpires: { $gt: Date.now() },
   });
 
-  if (!user) throw new Error('Token Expired, Please try again later.');
+  // Throw an error if the user is not found
+  if (!user) {
+    throw new Error('Token Expired, Please try again later.');
+  }
 
+  // Reset the user's password and remove the reset token and expiry date
   user.password = password;
   user.passwordResetToken = undefined;
   user.passwordResetExpires = undefined;
 
+  // Save the updated user object to the database
   await user.save();
+
+  // Send the updated user object back to the client
   res.json(user);
 });
 
@@ -436,45 +454,43 @@ export const getWishList = asyncHandler(async (req, res, next) => {
   }
 });
 
-
 // Add to Cart Function
 
-export const addToCart = asyncHandler ( async (req, res, next) => {
-  const {_id} = req.user;
-  const {prodId} = req.body;
-  validateMongoDbId(_id)
+export const addToCart = asyncHandler(async (req, res, next) => {
+  const { _id } = req.user;
+  const { prodId } = req.body;
+  validateMongoDbId(_id);
 
   try {
-
     const user = await UserModel.findById(_id);
 
     // Find the cart for the current user
-    let cart = await CartModel.findOne({ customer: user?._id});
+    let cart = await CartModel.findOne({ customer: user?._id });
 
-    if(!cart) {
+    if (!cart) {
       cart = new CartModel({
         customer: user?._id,
         products: [],
         cartTotol: 0,
         totalAfterDiscount: 0,
-      })
+      });
     }
 
-    // Find the product to add to the cart 
+    // Find the product to add to the cart
     const product = await ProductModel.findById(prodId);
 
+    // Check If the product is Already in the cart
 
-    // Check If the product is Already in the cart 
-
-    const existProdIndex = cart.products.findIndex((p) => p.product?.toString() === prodId.toString());
+    const existProdIndex = cart.products.findIndex(
+      (p) => p.product?.toString() === prodId.toString()
+    );
 
     if (existProdIndex !== -1) {
       // the product is already exists in the cart update the quantity
-      if(product?.countInStock && product.countInStock >= 1) {
-
+      if (product?.countInStock && product.countInStock >= 1) {
         cart.products[existProdIndex].quantity += 1;
       } else {
-        createHttpError('400', "Product is out of stock")
+        createHttpError('400', 'Product is out of stock');
       }
     } else {
       // add the product to the cart
@@ -497,48 +513,44 @@ export const addToCart = asyncHandler ( async (req, res, next) => {
 
     await cart.save();
 
-    res.status(200).json({ cart})
+    res.status(200).json({ cart });
   } catch (error) {
-    next(error)
+    next(error);
   }
-})
+});
 
-
-
-// Delete from Cart Function 
-export const deleteFromCart = asyncHandler ( async (req, res, next) => {
-
-  const {_id} = req.user;
-  const {prodId} = req.body;
-  validateMongoDbId(_id)
+// Delete from Cart Function
+export const deleteFromCart = asyncHandler(async (req, res, next) => {
+  const { _id } = req.user;
+  const { prodId } = req.body;
+  validateMongoDbId(_id);
 
   try {
-
     const user = await UserModel.findById(_id);
 
     // Find the cart for the current user
-    let cart = await CartModel.findOne({ customer: user?._id});
+    let cart = await CartModel.findOne({ customer: user?._id });
 
-    if(!cart) {
+    if (!cart) {
       cart = new CartModel({
         customer: user?._id,
         products: [],
         cartTotol: 0,
         totalAfterDiscount: 0,
-      })
+      });
     }
 
-    // Find the product to delete from the cart 
+    // Find the product to delete from the cart
     const product = await ProductModel.findById(prodId);
 
+    // Check If the product is Already in the cart
 
-    // Check If the product is Already in the cart 
-
-    const existProdIndex = cart.products.findIndex((p) => p.product?.toString() === prodId.toString());
+    const existProdIndex = cart.products.findIndex(
+      (p) => p.product?.toString() === prodId.toString()
+    );
 
     if (existProdIndex !== -1) {
       // the product is already exists in the cart update the quantity
-
 
       if (cart.products[existProdIndex].quantity > 1) {
         cart.products[existProdIndex].quantity -= 1;
@@ -547,7 +559,7 @@ export const deleteFromCart = asyncHandler ( async (req, res, next) => {
         cart.products.splice(existProdIndex, 1);
       }
     } else {
-      res.json("doesn't exist in the cart")
+      res.json("doesn't exist in the cart");
     }
 
     // Calculate the cart total
@@ -558,70 +570,81 @@ export const deleteFromCart = asyncHandler ( async (req, res, next) => {
 
     await cart.save();
 
-    res.status(200).json({ cart})
+    res.status(200).json({ cart });
   } catch (error) {
-    next(error)
+    next(error);
   }
-})
+});
 
-
-export const getUserCart = asyncHandler ( async (req, res, next) => {
-  const {_id} = req.user;
-  validateMongoDbId(_id) 
+export const getUserCart = asyncHandler(async (req, res, next) => {
+  const { _id } = req.user;
+  validateMongoDbId(_id);
 
   try {
-    
-    const cart = await CartModel.findOne({customer: _id}).populate("products.product");
+    const cart = await CartModel.findOne({ customer: _id }).populate(
+      'products.product'
+    );
     // Check if User already has product in cart
 
-    
     res.json(cart);
   } catch (error) {
-    next(error)
+    next(error);
   }
 });
 
-
-export const emptyCart = asyncHandler ( async (req, res, next) => {
-
-  const {_id} = req.user;
-  validateMongoDbId(_id) 
+export const emptyCart = asyncHandler(async (req, res, next) => {
+  const { _id } = req.user;
+  validateMongoDbId(_id);
 
   try {
-    const user = await UserModel.findOne({_id})
-    const emptycart = await CartModel.findOneAndRemove({customer: user?._id})
+    const user = await UserModel.findOne({ _id });
+    const emptycart = await CartModel.findOneAndRemove({ customer: user?._id });
     // Check if User already has product in cart
 
-    
     res.json(emptycart);
   } catch (error) {
-    next(error)
+    next(error);
   }
-
 });
 
-export const applyCoupon = asyncHandler ( async (req, res, next) => {
+export const applyCoupon = asyncHandler(async (req, res, next) => {
   const { _id } = req.user;
   const { coupon } = req.body;
   validateMongoDbId(_id);
 
   try {
-    
-    const validCoupon = await couponModel.findOne({ name: coupon})
-    if(validCoupon === null) {
-      throw new Error("Invalid Coupon");
-    } 
+    // Check if the coupon is valid
+    const validCoupon = await couponModel.findOne({ name: coupon });
+    if (validCoupon === null) {
+      throw new Error('Invalid Coupon');
+    }
+
+    // Get the user and the cart
     const user = await UserModel.findOne({ _id });
     const cart = await CartModel.findOne({
       customer: user?._id,
-    }).populate("products.product");
+    }).populate('products.product');
+
+    // Calculate the discounted total
     const cartTotal = cart?.cartTotal;
     const discount = cartTotal ? cartTotal * (validCoupon.discount / 100) : 0;
-    const totalAfterDiscount = (cartTotal ? cartTotal - discount : 0).toFixed(2);
-      await CartModel.findOneAndUpdate({ customer: user?._id}, {totalAfterDiscount}, {new: true})
-    res.json(totalAfterDiscount)
-  } catch (error) {
-    next(error)
-  }
+    const totalAfterDiscount = (cartTotal ? cartTotal - discount : 0).toFixed(
+      2
+    );
 
-})
+    // Update the cart with the discounted total
+    await CartModel.findOneAndUpdate(
+      { customer: user?._id },
+      { totalAfterDiscount },
+      { new: true }
+    );
+
+    // Send the discounted total back to the client
+    res.json(totalAfterDiscount);
+  } catch (error) {
+    // Handle any errors that occur during the coupon application process
+    next(error);
+  }
+});
+
+

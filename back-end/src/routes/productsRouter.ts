@@ -13,7 +13,7 @@ productRouter.post(
 );
 
 productRouter.put(
-  '/upload/:id' ,
+  '/upload/' ,
   auhtMiddleware,
   isAdmin,
   uploadPhoto.array("images", 10),
@@ -52,6 +52,13 @@ productRouter.get(
 productRouter.get(
   '/',
   ProductControllers.getAllProducts
+);
+
+productRouter.delete(
+  '/delete-img/:id',
+  auhtMiddleware,
+  isAdmin,
+  ProductControllers.deleteImages
 );
 
 

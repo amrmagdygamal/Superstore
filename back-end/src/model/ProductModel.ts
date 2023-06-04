@@ -26,9 +26,8 @@ const productSchema = new Schema({
     type: Number, default: 0, select: false
   },
   numReviews: { type: Number, default: 0},
-  color: {
-    type: String, required: true
-  }
+  color: [],
+  tags: [],
   
 }, {
 

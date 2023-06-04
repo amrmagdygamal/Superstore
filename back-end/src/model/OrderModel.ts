@@ -27,7 +27,6 @@ const OrderModel = new mongoose.Schema({
     status: { type: String, default: "Not Processed", enum: [
       "Not Processed", "Cash On Delivery",  "Processing", "Dispatched", "Cancelled", "Delivered"
     ] },
-    update_time: { type: String },
     orderby: { type: mongoose.Schema.Types.ObjectId, ref: "User" }
   },
   itemsPrice: { type: Number, required: true, default: 0 },
@@ -44,3 +43,7 @@ const OrderModel = new mongoose.Schema({
 type Order = InferSchemaType<typeof OrderModel>;
 
 export default model<Order>("Order", OrderModel);
+
+
+
+
