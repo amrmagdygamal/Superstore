@@ -7,6 +7,8 @@ export interface User extends Document {
   password: string;
   role: string;
   isBlocked: boolean;
+  cart: Array;
+  address: string;
   wishlist: mongoose.Schema.Types.ObjectId[];
   refreshToken?: string;
   orders: mongoose.Schema.Types.ObjectId[];
@@ -40,6 +42,11 @@ const userSchema = new Schema<User>({
     type: Boolean,
     default: false,
   },
+  cart: {
+    type: Array,
+    default: [],
+  },
+  address: { type: String},
   wishlist: [{ type: mongoose.Schema.Types.ObjectId, ref: "Product" }],
   refreshToken: String,
   orders: [
@@ -48,7 +55,7 @@ const userSchema = new Schema<User>({
       ref: "Order",
     },
   ],
-  passwordChangedAt: Date
+  passwordChangedAt: Date,
   passwordResetToken: String,
   passwordResetExpires: Date,
 });

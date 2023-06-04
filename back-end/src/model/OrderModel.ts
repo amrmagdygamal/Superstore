@@ -3,11 +3,12 @@ import UserModel from "./UserModel";
 import ProductModel from "./ProductModel";
 
 const OrderModel = new mongoose.Schema({
-  orederItems: [{
+  products: [{
     name: { type: String, required: true },
     quantity: { type: Number, required: true },
     image: { type: String, required: true },
     price: { type: Number, required: true },
+    color: String,
     product: { type: mongoose.Schema.Types.ObjectId, ref: 'Product' }
   }],
   shippingAddress: {
@@ -23,9 +24,11 @@ const OrderModel = new mongoose.Schema({
   paymentMethod: { type: String, required: true },
   paymentResult: {
     paymentId: { type: String },
-    status: { type: String },
+    status: { type: String, default: "Not Processed", enum: [
+      "Not Processed", "Cash On Delivery",  "Processing", "Dispatched", "Cancelled", "Delivered"
+    ] },
     update_time: { type: String },
-    email_address: { type: String }
+    orderby: { type: mongoose.Schema.Types.ObjectId, ref: "User" }
   },
   itemsPrice: { type: Number, required: true, default: 0 },
   shippingPrice: { type: Number, required: true, default: 0 },

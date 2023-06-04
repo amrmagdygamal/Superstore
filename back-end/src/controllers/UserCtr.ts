@@ -10,6 +10,8 @@ import generateRefreshToken from '../../config/refreshToken';
 import jwt from 'jsonwebtoken';
 import validateEnv from '../Util/validateEnv';
 import { sendEmail } from './emailCtr';
+import CartModel from '../model/CartModel';
+import ProductModel from '../model/ProductModel';
 
 // register a user
 export const signup = asyncHandler(
@@ -63,7 +65,7 @@ export const login = asyncHandler(
           success: false,
         });
       }
-
+      // check if user exists or not
       const finduser = await UserModel.findOne({ email: email })
         .select('+password')
         .exec();
@@ -96,6 +98,62 @@ export const login = asyncHandler(
         username: finduser?.username,
         email: finduser?.email,
         token: generateToken(finduser?._id.toString()),
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+);
+
+// Admin login
+
+export const AdminLogin = asyncHandler(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const { email, password } = req.body;
+
+    try {
+      if (!email || !password) {
+        res.json({
+          msg: 'Parameters missing',
+          success: false,
+        });
+      }
+      // check if user exists or not
+      const findAdmin = await UserModel.findOne({ email: email })
+        .select('+password')
+        .exec();
+
+      if (!findAdmin) {
+        throw createHttpError(401, 'Invalid credentials');
+      }
+      if (findAdmin.role !== 'admin') throw new Error('Not Authorised');
+
+      const passwordMatch = await bcrypt.compare(password, findAdmin.password);
+
+      if (!passwordMatch) {
+        throw createHttpError(401, 'Invalid credentials');
+      }
+      const refreshToken = await generateRefreshToken(
+        findAdmin?._id.toString()
+      );
+
+      const updateuser = await UserModel.findByIdAndUpdate(
+        findAdmin?._id,
+        {
+          refreshToken: refreshToken,
+        },
+        { new: true }
+      );
+
+      res.cookie('refreshToken', refreshToken, {
+        httpOnly: true,
+        maxAge: 24 * 60 * 60 * 1000,
+      });
+      res.json({
+        _id: findAdmin?._id,
+        username: findAdmin?.username,
+        email: findAdmin?.email,
+        token: generateToken(findAdmin?._id.toString()),
       });
     } catch (error) {
       next(error);
@@ -165,17 +223,6 @@ export const logout = asyncHandler(
   }
 );
 
-// FETCHING all users
-
-export const allUsers = asyncHandler(async (req, res, next) => {
-  try {
-    const getusers = await UserModel.find().select('-password');
-    res.json(getusers);
-  } catch (error) {
-    next(error);
-  }
-});
-
 // fetching specific user
 export const getuser = asyncHandler(async (req, res, next) => {
   const { _id } = req.params;
@@ -225,6 +272,42 @@ export const updateUser = asyncHandler(async (req, res, next) => {
   }
 });
 
+// save user address
+
+export const saveAddress = asyncHandler(async (req, res, next) => {
+  const { _id } = req.user;
+  validateMongoDbId(_id);
+
+  try {
+    const updateuser = await UserModel.findByIdAndUpdate(
+      _id,
+      {
+        address: req.body.username,
+      },
+      {
+        new: true,
+        runValidators: true,
+      }
+    );
+    res.json(updateuser);
+  } catch (error) {
+    next(error);
+  }
+});
+
+// FETCHING all users
+
+export const allUsers = asyncHandler(async (req, res, next) => {
+  try {
+    const getusers = await UserModel.find().select('-password');
+    res.json(getusers);
+  } catch (error) {
+    next(error);
+  }
+});
+
+
+// Block User
 export const blockUser = asyncHandler(async (req, res, next) => {
   const { _id } = req.params;
   validateMongoDbId(_id);
@@ -291,47 +374,42 @@ export const updatePassword = asyncHandler(async (req, res) => {
   }
 });
 
-
-
-
-export const forgotPasswordToken = asyncHandler ( async (req, res, next) => {
-
+export const forgotPasswordToken = asyncHandler(async (req, res, next) => {
   const { email } = req.body;
 
   const user = await UserModel.findOne({ email });
-  
-  if (!user) throw new Error("User not found with this email");
-  
+
+  if (!user) throw new Error('User not found with this email');
+
   try {
     const token = await user.createPasswordResetToken();
     await user.save();
-  
+
     const resetURL = `Hi, Please follow this link to reset Your Password. This link is valid till 10 minutes from now. <a href='http://localhost:5000/api/user/reset-password/${token}'>Click here</a>`;
     const data = {
       to: email,
-      text: "Hey User",
-      subject: "Forgot Password Link",
+      text: 'Hey User',
+      subject: 'Forgot Password Link',
       html: resetURL,
     };
     await sendEmail(data);
-    res.json(token)
+    res.json(token);
   } catch (error) {
-    next(error)
+    next(error);
   }
-})
+});
 
-
-export const resetPassword = asyncHandler (async (req, res) => {
+export const resetPassword = asyncHandler(async (req, res) => {
   const { password } = req.body;
-  const {token} = req.params;
+  const { token } = req.params;
 
-  const hashedToken = crypto.createHash('sha256').update(token).digest("hex");
+  const hashedToken = crypto.createHash('sha256').update(token).digest('hex');
   const user = await UserModel.findOne({
     passwordResetToken: hashedToken,
-    passwordResetExpires: { $gt: Date.now() }
+    passwordResetExpires: { $gt: Date.now() },
   });
 
-  if(!user) throw new Error("Token Expired, Please try again later.");
+  if (!user) throw new Error('Token Expired, Please try again later.');
 
   user.password = password;
   user.passwordResetToken = undefined;
@@ -339,6 +417,180 @@ export const resetPassword = asyncHandler (async (req, res) => {
 
   await user.save();
   res.json(user);
+});
 
+export const getWishList = asyncHandler(async (req, res, next) => {
+  const userId = req.user._id;
+
+  try {
+    const findUser = await UserModel.findById(userId).populate('wishlist');
+
+    res.json(findUser);
+  } catch (error) {
+    next(error);
+  }
+});
+
+
+// Add to Cart Function
+
+export const addToCart = asyncHandler ( async (req, res, next) => {
+  const {_id} = req.user;
+  const {prodId} = req.body;
+  validateMongoDbId(_id)
+
+  try {
+
+    const user = await UserModel.findById(_id);
+
+    // Find the cart for the current user
+    let cart = await CartModel.findOne({ customer: user?._id});
+
+    if(!cart) {
+      cart = new CartModel({
+        customer: user?._id,
+        products: [],
+        cartTotol: 0,
+        totalAfterDiscount: 0,
+      })
+    }
+
+    // Find the product to add to the cart 
+    const product = await ProductModel.findById(prodId);
+
+
+    // Check If the product is Already in the cart 
+
+    const existProdIndex = cart.products.findIndex((p) => p.product?.toString() === prodId.toString());
+
+    if (existProdIndex !== -1) {
+      // the product is already exists in the cart update the quantity
+      if(product?.countInStock && product.countInStock >= 1) {
+
+        cart.products[existProdIndex].quantity += 1;
+      } else {
+        createHttpError('400', "Product is out of stock")
+      }
+    } else {
+      // add the product to the cart
+      const newProduct = {
+        name: product?.name ?? '',
+        quantity: 1,
+        image: product?.images[0] ?? '',
+        price: product?.price ?? 0,
+        color: product?.color,
+        product: product?._id,
+      };
+      cart.products.push(newProduct);
+    }
+
+    // Calculate the cart total
+    cart.cartTotal = cart.products.reduce(
+      (prev, curr) => prev + curr.quantity * curr.price,
+      0
+    );
+
+    await cart.save();
+
+    res.status(200).json({ cart})
+  } catch (error) {
+    next(error)
+  }
+})
+
+
+
+// Delete from Cart Function 
+export const deleteFromCart = asyncHandler ( async (req, res, next) => {
+
+  const {_id} = req.user;
+  const {prodId} = req.body;
+  validateMongoDbId(_id)
+
+  try {
+
+    const user = await UserModel.findById(_id);
+
+    // Find the cart for the current user
+    let cart = await CartModel.findOne({ customer: user?._id});
+
+    if(!cart) {
+      cart = new CartModel({
+        customer: user?._id,
+        products: [],
+        cartTotol: 0,
+        totalAfterDiscount: 0,
+      })
+    }
+
+    // Find the product to delete from the cart 
+    const product = await ProductModel.findById(prodId);
+
+
+    // Check If the product is Already in the cart 
+
+    const existProdIndex = cart.products.findIndex((p) => p.product?.toString() === prodId.toString());
+
+    if (existProdIndex !== -1) {
+      // the product is already exists in the cart update the quantity
+
+
+      if (cart.products[existProdIndex].quantity > 1) {
+        cart.products[existProdIndex].quantity -= 1;
+      } else {
+        // If the quantity is 1, remove the product from the cart
+        cart.products.splice(existProdIndex, 1);
+      }
+    } else {
+      res.json("doesn't exist in the cart")
+    }
+
+    // Calculate the cart total
+    cart.cartTotal = cart.products.reduce(
+      (prev, curr) => prev - curr.quantity * curr.price,
+      0
+    );
+
+    await cart.save();
+
+    res.status(200).json({ cart})
+  } catch (error) {
+    next(error)
+  }
+})
+
+
+export const getUserCart = asyncHandler ( async (req, res, next) => {
+  const {_id} = req.user;
+  validateMongoDbId(_id) 
+
+  try {
+    
+    const cart = await CartModel.findOne({customer: _id}).populate("products.product");
+    // Check if User already has product in cart
+
+    
+    res.json(cart);
+  } catch (error) {
+    next(error)
+  }
+});
+
+
+export const emptyCart = asyncHandler ( async (req, res, next) => {
+
+  const {_id} = req.user;
+  validateMongoDbId(_id) 
+
+  try {
+    const user = await UserModel.findOne({_id})
+    const emptycart = await CartModel.findOneAndRemove({customer: user?._id})
+    // Check if User already has product in cart
+
+    
+    res.json(emptycart);
+  } catch (error) {
+    next(error)
+  }
 
 })
