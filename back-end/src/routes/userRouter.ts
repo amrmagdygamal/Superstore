@@ -10,6 +10,7 @@ userRouter.post('/reset-password/:token', UserControllers.resetPassword);
 userRouter.post('/login', UserControllers.login);
 userRouter.post('/adminlogin', UserControllers.AdminLogin);
 userRouter.put('/add-to-cart', auhtMiddleware, UserControllers.addToCart);
+userRouter.post('/cart/applycoupon', auhtMiddleware, UserControllers.applyCoupon)
 userRouter.post('/cart', auhtMiddleware, UserControllers.getUserCart);
 userRouter.put('/:id', auhtMiddleware, UserControllers.updatePassword);
 userRouter.get('/all-users', auhtMiddleware, isAdmin, UserControllers.allUsers);

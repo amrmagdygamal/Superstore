@@ -12,6 +12,7 @@ import validateEnv from '../Util/validateEnv';
 import { sendEmail } from './emailCtr';
 import CartModel from '../model/CartModel';
 import ProductModel from '../model/ProductModel';
+import couponModel from '../model/couponModel';
 
 // register a user
 export const signup = asyncHandler(
@@ -202,26 +203,30 @@ export const logout = asyncHandler(
       return;
     }
 
-    const user = await UserModel.findOne({ refreshToken });
+try {
+  const user = await UserModel.findOne({ refreshToken });
 
-    if (!user) {
-      res.clearCookie('refreshToken', {
-        httpOnly: true,
-        secure: true,
-      });
-      res.sendStatus(204);
-      return;
-    }
-
-    await user.updateOne({ $unset: { refreshToken: '' } });
-
+  if (!user) {
     res.clearCookie('refreshToken', {
       httpOnly: true,
       secure: true,
     });
     res.sendStatus(204);
+    return;
   }
-);
+
+  await user.updateOne({ $unset: { refreshToken: '' } });
+
+  res.clearCookie('refreshToken', {
+    httpOnly: true,
+    secure: true,
+  });
+  res.sendStatus(204);
+
+} catch (error) {
+  next(error)
+  }
+});
 
 // fetching specific user
 export const getuser = asyncHandler(async (req, res, next) => {
@@ -589,6 +594,32 @@ export const emptyCart = asyncHandler ( async (req, res, next) => {
 
     
     res.json(emptycart);
+  } catch (error) {
+    next(error)
+  }
+
+});
+
+export const applyCoupon = asyncHandler ( async (req, res, next) => {
+  const { _id } = req.user;
+  const { coupon } = req.body;
+  validateMongoDbId(_id);
+
+  try {
+    
+    const validCoupon = await couponModel.findOne({ name: coupon})
+    if(validCoupon === null) {
+      throw new Error("Invalid Coupon");
+    } 
+    const user = await UserModel.findOne({ _id });
+    const cart = await CartModel.findOne({
+      customer: user?._id,
+    }).populate("products.product");
+    const cartTotal = cart?.cartTotal;
+    const discount = cartTotal ? cartTotal * (validCoupon.discount / 100) : 0;
+    const totalAfterDiscount = (cartTotal ? cartTotal - discount : 0).toFixed(2);
+      await CartModel.findOneAndUpdate({ customer: user?._id}, {totalAfterDiscount}, {new: true})
+    res.json(totalAfterDiscount)
   } catch (error) {
     next(error)
   }
