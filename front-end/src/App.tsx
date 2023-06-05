@@ -1,17 +1,12 @@
+
 import { useContext, useEffect } from 'react';
 import { BrowserRouter, Link, Route, Routes } from 'react-router-dom';
 import {
-  Badge,
-  Button,
   Container,
-  Nav,
-  NavDropdown,
-  Navbar,
 } from 'react-bootstrap';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import HomePage from './pages/HomePage';
-import { LinkContainer } from 'react-router-bootstrap';
 import ProductPage from './pages/ProductPage';
 import { Store } from './Store';
 import CartPage from './pages/CartPage';
@@ -23,80 +18,32 @@ import ProtectedRoute from './components/ProtectedRoute';
 import PlaceOrderPage from './pages/PlaceOrderPage';
 import OrderPage from './pages/OrderPage';
 import OrdersHistory from './pages/OrdersHistory';
+import Layout from './components/Layout';
+import About from './pages/About';
+import Contact from './pages/Contact';
 
 function App() {
   const {
-    state: { mode, cart, userInfo },
-    dispatch,
+    state: { mode },
   } = useContext(Store);
 
   useEffect(() => {
     document.body.setAttribute('data-bs-theme', mode);
   }, [mode]);
 
-  const switchModelHandler = () => {
-    dispatch({ type: 'SWITCH_MODE' });
-  };
 
-  const signOutHandler = () => {
-    dispatch({ type: 'USER_SIGNOUT' });
-    localStorage.removeItem('userInfo');
-    localStorage.removeItem('cartItems');
-    localStorage.removeItem('shippingAddress');
-    localStorage.removeItem('paymentMethoud');
-    window.location.href = '/';
-  };
 
   return (
     <BrowserRouter>
       <>
         <ToastContainer position="bottom-center" limit={1} />
-        <header>
-          <Navbar bg="dark" expand="lg">
-            <Container>
-              <LinkContainer to="/">
-                <Navbar.Brand className="logo">Super Store</Navbar.Brand>
-              </LinkContainer>
-            </Container>
-            <Nav>
-              <Button variant={mode} onClick={switchModelHandler}>
-                <i
-                  className={mode === 'light' ? 'fa fa-sun' : 'fa fa-moon'}
-                ></i>
-              </Button>
-              <Link to="/cart" className="nav-link">
-                Cart
-                {cart.cartItems.length > 0 && (
-                  <Badge pill bg="danger">
-                    {cart.cartItems.reduce((a, c) => a + c.quantity, 0)}
-                  </Badge>
-                )}
-              </Link>
-              {userInfo ? (
-                <NavDropdown title={userInfo.username} id="basic-nav-dropdown">
-                  <LinkContainer to="/orderhistory">
-                    <NavDropdown.Item>Order History</NavDropdown.Item>
-                  </LinkContainer>
-                  <Link
-                    className="dropdown-item l--10"
-                    to="#signout"
-                    onClick={signOutHandler}
-                  >
-                    Sign Out
-                  </Link>
-                </NavDropdown>
-              ) : (
-                <Link className="nav-link" to="/login">
-                  Sign In
-                </Link>
-              )}
-            </Nav>
-          </Navbar>
-        </header>
         <main>
-          <Container className="mt-3">
             <Routes>
-              <Route path="/" element={<HomePage />} />
+              <Route path='/' element={<Layout />}>
+                <Route index element={<HomePage />} />
+                <Route path='about' element={<About />} />
+                <Route path='contact' element={<Contact />} />
+              </Route>
               <Route path="product/:slug" element={<ProductPage />} />
               <Route path="cart" element={<CartPage />} />
               <Route path="login" element={<LoginPage />} />
@@ -110,7 +57,6 @@ function App() {
                 <Route path="/orderhistory" element={<OrdersHistory />} />
               </Route>
             </Routes>
-          </Container>
         </main>
         <footer className="text-center">All right reserved.</footer>
       </>

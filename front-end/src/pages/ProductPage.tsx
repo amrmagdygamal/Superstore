@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { Helmet } from 'react-helmet-async';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useGetProductDetailsBySlugQuery } from '../hooks/productHooks';
 import LoadingBox from '../components/LoadingBox';
 import MessageBox from '../components/MessageBox';
 import { AddProductToCart, getError } from '../utils';
@@ -11,18 +10,19 @@ import Rating from '../components/Rating';
 import { useContext } from 'react';
 import { Store } from '../Store';
 import { toast } from 'react-toastify';
+import { useGetProductDetailsBy_idQuery } from '../hooks/productHooks';
 
 
 const ProductPage = () => {
   const params = useParams();
 
-  const { slug } = params;
+  const { _id } = params;
 
   const {
     data: product,
     isLoading,
     error,
-  } = useGetProductDetailsBySlugQuery(slug!);
+  } = useGetProductDetailsBy_idQuery(_id!);
 
   const navigate = useNavigate()
 

@@ -35,14 +35,14 @@ const ProductItem = ({ product }: { product: ProductInfo}) => {
 
   return (
     <Card>
-      <Link to={`/product/${product.slug}`}>
+      <Link to={`/product/${product._id}`}>
         <div className="photo-box">
           <img src={product.image} alt={product.name} />
         </div>
       </Link>
 
       <Card.Body>
-        <Link to={`/product/${product.slug}`}>
+        <Link to={`/product/${product._id}`}>
           <Card.Title>{product.name}</Card.Title>
         </Link>
         <Rating rating={product.rating} numReviews={product.numReviews} />
