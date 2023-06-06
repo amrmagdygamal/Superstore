@@ -10,10 +10,28 @@
   --bottom1-light-color: #3b4149;
   --main-yellow-color: #febd69;
   --second-dark-color: #232f3e;
+  --text-red-color: #bf4800;
+  --button-dark-color: #232f3e;
+  --wrapper-light-color: #f5f5f7;
+  --second-border-color: #ededed;
+  --text-dark-color: #777777;
 }
 
 body {
   font-family: 'Rubik', sans-serif;
+}
+
+.card-wrapper {
+  background-color: white;
+  box-shadow: 0 0 .7rem #0000001a;
+  padding: 1rem;
+}
+
+.section-heading {
+  font-size: 1.7rem;
+  line-height: 2.1rem;
+  font-weight: 500;
+  margin-bottom: 2rem;
 }
 
 a {
@@ -85,26 +103,206 @@ a {
 /* Header end  */
 
 
+
+/* footer part */
+
+
+footer {
+  background-color: var(--second-dark-color);
+  color: white;
+}
+
+
+footer:not(:first-child) {
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+
+.footer-top .input-group-text {
+  background-color: var(--second-dark-color);
+  color: white;
+  padding: 8px 17px;
+}
+
+/* footer end */
+
+/* Home Page */
+.main-banner-content {
+  top:15%;
+  left: 5%;
+}
+
+
+.main-banner-content h4 {
+  font-size: .8rem;
+  font-weight: 400;
+  color: var(--text-red-color);
+  text-transform: uppercase;
+  letter-spacing: .3px;
+  margin: 0 0 12px;
+  line-height: 24px;
+}
+
+.main-banner-content h2 {
+  font-weight: 500;
+  font-size: 3rem;
+  padding: 0;
+  text-transform: none;
+  line-height: 64px;
+}
+
+.main-banner-content p {
+  letter-spacing: .4;
+  line-height: 28px;
+  font-size: 1.1rem;
+  color: var(--main-dark-color)
+}
+
+.small-banner {
+  width: 49%;
+}
+.small-banner-content {
+  top:20%;
+  left: 8%;
+}
+
+
+.small-banner-content h4 {
+  font-size: .8rem;
+  font-weight: 400;
+  color: var(--text-red-color);
+  text-transform: uppercase;
+  letter-spacing: .2px;
+  margin: 0 0 .6rem;
+  line-height: 1.6rem;
+}
+
+.small-banner-content h2 {
+  font-weight: 500;
+  font-size: 1.4rem;
+  padding: 0;
+  text-transform: none;
+  line-height: 2.1rem;
+}
+
+.small-banner-content p {
+  letter-spacing: .4;
+  line-height: 1.6rem;
+  font-size: .8rem;
+  color: var(--main-dark-color)
+}
+
+
+/* Home wrapper 2  */
+
+
+
+/* Home wrapper 2  End*/
+
+.home-wrapper-2 {
+  background-color: var(--wrapper-light-color);
+}
+
+
+/* categories section  */
+
+.categories {
+  background-color:white;
+  box-shadow: 0 0 .7rem #0000001a;
+  padding: 1rem;
+}
+
+.categories > div {
+  width: 25%;
+  padding: .8rem;
+}
+.categories > div > .img {
+  width: 32%;
+}
+
+.categories > div:nth-child(1),
+.categories > div:nth-child(2),
+.categories > div:nth-child(3),
+.categories > div:nth-child(4) {
+  border-bottom: 1px solid var(--second-border-color);
+}
+.categories > div:nth-child(1),
+.categories > div:nth-child(2),
+.categories > div:nth-child(3) {
+  border-right: 1px solid var(--second-border-color);
+}
+.categories > div:nth-child(5),
+.categories > div:nth-child(6),
+.categories > div:nth-child(7) {
+  border-right: 1px solid var(--second-border-color);
+}
+/* Home Page end */
+
+
+
+/* Blogs Part  */
+
+.blog-card {
+  background-color: white;
+  border-radius: .7rem;
+}
+.blog-card img{
+  border-top-left-radius: .7rem;
+  border-top-right-radius: .7rem
+}
+
+.blog-content{
+  padding: 1rem;
+}
+.blog-content p.date{
+  font-size: .9rem;
+  line-height: 1.6rem;
+  text-transform: uppercase;
+  letter-spacing: 0;
+  font-weight: 400;
+  padding: 0;
+  color: var(--text-dark-color);
+}
+.blog-content h5{
+  font-size: 1.1rem;
+  color: var(--main-dark-color);
+}
+.blog-content p.desc{
+  font-size: .9rem;
+  line-height: 1.5rem;
+  color: var(--text-dark-color);
+}
+
+/* Blogs Part The End */
+
+
+/* Product Card  */
+
+
+
+/* Product Card the end */
+
+
 .imgP {
   max-width: 16rem;
   width: 100%;
 }
 
 
-button {
+.button {
   border-radius: 8px;
+  background-color: var(--button-dark-color);
+  color: white;
+  font-size: .9rem;
   border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
-  cursor: pointer;
-  transition: border-color 0.25s;
+  padding: .8rem 2rem;
+  border-radius: 1.4rem;
+
 }
 
-button:hover {
-  border-color: #646cff;
+.button:hover {
+  background-color: var(--main-yellow-color);
+  color: var(--main-dark-color);
 }
 
 button:focus,

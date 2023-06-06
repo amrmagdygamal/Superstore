@@ -58,7 +58,6 @@ function App() {
               </Route>
             </Routes>
         </main>
-        <footer className="text-center">All right reserved.</footer>
       </>
     </BrowserRouter>
   );

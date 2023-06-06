@@ -1,4 +1,4 @@
-import { Col, Row } from 'react-bootstrap';
+import { Col, Container, Row } from 'react-bootstrap';
 import MessageBox from '../components/MessageBox';
 import LoadingBox from '../components/LoadingBox';
 import ProductItem from '../components/ProductItem';
@@ -6,11 +6,11 @@ import { Helmet } from 'react-helmet-async';
 import { useGetProductsQuery } from '../hooks/productHooks';
 import { ApiError } from '../types/ApiErrors';
 import { getError } from '../utils';
-
-
+import { Link } from 'react-router-dom';
+import Marquee from 'react-fast-marquee';
+import BlogCard from '../components/BlogCard';
 
 const HomePage = () => {
-
   const { data: products, isLoading, error } = useGetProductsQuery();
 
   return isLoading ? (
@@ -19,16 +19,284 @@ const HomePage = () => {
     <MessageBox variant="danger">{getError(error as ApiError)}</MessageBox>
   ) : (
     <>
-      <Row>
-        <Helmet>
-          <title>Super Store</title>
-        </Helmet>
-        {products!.map((product) => (
-          <Col key={product.slug} sm={6} md={4} lg={3}>
-            <ProductItem product={product} />
-          </Col>
-        ))}
-      </Row>
+      <section className="home-wrapper-1 py-5">
+        <Container>
+          <Row className="">
+            <Helmet>
+              <title>Super Store</title>
+            </Helmet>
+
+            <Col md={6}>
+              <div className="main-banner position-relative">
+                <img
+                  src="images/main-banner-1.jpg"
+                  alt="main banner"
+                  className="img-fluid rounded-4"
+                />
+                <div className="main-banner-content position-absolute">
+                  <h4>SuperCharged For Pros</h4>
+                  <h2>iPad S13+ Pro</h2>
+                  <p>From $999.00 or $41.62/mo</p>
+                  <p>For 24 mo. Footnote*</p>
+                  <Link className="button" to={''}>
+                    Buy Now
+                  </Link>
+                </div>
+              </div>
+            </Col>
+            <Col md={6}>
+              <div className="d-flex flex-wrap justify-content-between align-items-center gap-2">
+                <div className="small-banner position-relative">
+                  <img
+                    src="images/catbanner-01.jpg"
+                    alt="main banner"
+                    className="img-fluid rounded-4"
+                  />
+                  <div className="small-banner-content position-absolute">
+                    <h4>best sale</h4>
+                    <h2>Laptops Max</h2>
+                    <p>From $1699.00 or</p>
+                    <p> $64.62/mo</p>
+                  </div>
+                </div>
+                <div className="small-banner position-relative">
+                  <img
+                    src="images/catbanner-03.jpg"
+                    alt="main banner"
+                    className="img-fluid rounded-4"
+                  />
+                  <div className="small-banner-content position-absolute">
+                    <h4>New Arrival</h4>
+                    <h2>Buy Ipad Air</h2>
+                    <p>From $599 or</p>
+                    <p> $49.62/mo For 12 mo.</p>
+                  </div>
+                </div>
+                <div className="small-banner position-relative">
+                  <img
+                    src="images/catbanner-02.jpg"
+                    alt="main banner"
+                    className="img-fluid rounded-4"
+                  />
+                  <div className="small-banner-content position-absolute">
+                    <h4>15% OFF</h4>
+                    <h2>Smartwatch 7</h2>
+                    <p>Shop the Latest band</p>
+                    <p> styes and colors</p>
+                  </div>
+                </div>
+                <div className="small-banner position-relative">
+                  <img
+                    src="images/catbanner-04.jpg"
+                    alt="main banner"
+                    className="img-fluid rounded-4"
+                  />
+                  <div className="small-banner-content position-absolute">
+                    <h4>Free Engraving</h4>
+                    <h2>AirPods Max</h2>
+                    <p>High-fidelity playback &</p>
+                    <p> Ultra-low destortion</p>
+                  </div>
+                </div>
+              </div>
+            </Col>
+          </Row>
+        </Container>
+      </section>
+      <section className="home-wrapper-2 py-5">
+        <Container>
+          <Row>
+            <Col md={12}>
+              <div className="services d-flex align-items-center justify-content-between">
+                <div className="d-flex align-items-center gap-3">
+                  <img src="images/service.png" alt="services" />
+                  <div>
+                    <h6>Free Shipping</h6>
+                    <p className="mb-0">From all orders over $5</p>
+                  </div>
+                </div>
+                <div className="d-flex align-items-center gap-3">
+                  <img src="images/service-02.png" alt="services" />
+                  <div>
+                    <h6>Daily Surprise Offers</h6>
+                    <p className="mb-0">Save up to 25% off</p>
+                  </div>
+                </div>
+                <div className="d-flex align-items-center gap-3">
+                  <img src="images/service-03.png" alt="services" />
+                  <div>
+                    <h6>Suppport 24/7</h6>
+                    <p className="mb-0">Shop with an expert</p>
+                  </div>
+                </div>
+                <div className="d-flex align-items-center gap-3">
+                  <img src="images/service-04.png" alt="services" />
+                  <div>
+                    <h6>Affordable Prices</h6>
+                    <p className="mb-0">Get Factory Default Prise</p>
+                  </div>
+                </div>
+                <div className="d-flex align-items-center gap-3">
+                  <img src="images/service-05.png" alt="services" />
+                  <div>
+                    <h6>Secure Payments</h6>
+                    <p className="mb-0">100% Protected Payment</p>
+                  </div>
+                </div>
+              </div>
+            </Col>
+          </Row>
+        </Container>
+      </section>
+      <section className="home-wrapper-2 py-5">
+        <Container>
+          <Row>
+            <Col md={12}>
+              <div className="categories d-flex justify-content-between flex-wrap align-items center">
+                <div className="d-flex justify-content-around align-items-center">
+                  <div>
+                    <h6>Cameras</h6>
+                    <p>10 Items</p>
+                  </div>
+                  <img src="images/camera.jpg" alt="camera" />
+                </div>
+                <div className="d-flex justify-content-around align-items-center">
+                  <div>
+                    <h6>Smart TV</h6>
+                    <p>10 Items</p>
+                  </div>
+                  <img src="images/tv.jpg" alt="camera" />
+                </div>
+                <div className="d-flex justify-content-around align-items-center">
+                  <div>
+                    <h6>Smart Watches</h6>
+                    <p>10 Items</p>
+                  </div>
+                  <img src="images/watch.jpg" className="w-50" alt="camera" />
+                </div>
+                <div className="d-flex justify-content-around align-items-center">
+                  <div>
+                    <h6>Home Appliances</h6>
+                    <p>10 Items</p>
+                  </div>
+                  <img src="images/homeapp.jpg" className="img" alt="camera" />
+                </div>
+                <div className="d-flex justify-content-around align-items-center">
+                  <div>
+                    <h6>Mobiles & Tablets</h6>
+                    <p>5 Items</p>
+                  </div>
+                  <img
+                    src="images/iPhone-15-2-600x600.jpg"
+                    alt="camera"
+                    className="img"
+                  />
+                </div>
+                <div className="d-flex justify-content-around align-items-center">
+                  <div>
+                    <h6>Proffessional Watches</h6>
+                    <p>9 Items</p>
+                  </div>
+                  <img
+                    src="images/Apple_watch.webp"
+                    alt="camera"
+                    className="img"
+                  />
+                </div>
+                <div className="d-flex justify-content-around align-items-center">
+                  <div>
+                    <h6>AirBods</h6>
+                    <p>13 Items</p>
+                  </div>
+                  <img src="images/acc.jpg" alt="camera" />
+                </div>
+                <div className="d-flex justify-content-around align-items-center">
+                  <div>
+                    <h6>Music & Gaming</h6>
+                    <p>10 Items</p>
+                  </div>
+                  <img src="images/1.jpg" className="img" alt="camera" />
+                </div>
+              </div>
+            </Col>
+          </Row>
+        </Container>
+      </section>
+      <section className="marque-wrapper py-5">
+        <Container>
+          <Row>
+            <Col md={12}>
+              <div className="marquee-inner-wrapper card-wrapper">
+                <Marquee className="d-flex">
+                  <div className='mx-4 w-25'>
+                    <img src="/images/brand-01.png" alt="brand" />
+                  </div>
+                  <div className='mx-4 w-25'>
+                    <img src="/images/brand-02.png" alt="brand" />
+                  </div>
+                  <div className='mx-4 w-25'>
+                    <img src="/images/brand-03.png" alt="brand" />
+                  </div>
+                  <div className='mx-4 w-25'>
+                    <img src="/images/brand-04.png" alt="brand" />
+                  </div>
+                  <div className='mx-4 w-25'>
+                    <img src="/images/brand-05.png" alt="brand" />
+                  </div>
+                  <div className='mx-4 w-25'>
+                    <img src="/images/brand-06.png" alt="brand" />
+                  </div>
+                  <div className='mx-4 w-25'>
+                    <img src="/images/brand-07.png" alt="brand" />
+                  </div>
+                  <div className='mx-4 w-25'>
+                    <img src="/images/brand-08.png" alt="brand" />
+                  </div>
+                </Marquee>
+              </div>
+            </Col>
+          </Row>
+        </Container>
+      </section>
+      <section className="blog-wrapper py-5 home-wrapper-">
+        <Container>
+          <Row>
+            <Col md={12} className=''>
+              <h3 className="section_heading">
+                Features Colections
+              </h3>
+            </Col>
+            <BlogCard />
+            <BlogCard />
+            <BlogCard />
+            <BlogCard />
+          </Row>
+        </Container>
+      </section>
+      <section className="blog-wrapper py-5 home-wrapper-">
+        <Container>
+          <Row>
+            <Col md={12} className=''>
+              <h3 className="section_heading">
+                Our Latest Blogs
+              </h3>
+            </Col>
+            <BlogCard />
+            <BlogCard />
+            <BlogCard />
+            <BlogCard />
+          </Row>
+        </Container>
+      </section>
+      <Container>
+        <Row>
+          {products!.map((product) => (
+            <Col key={product.slug} sm={6} md={4} lg={3}>
+              <ProductItem product={product} />
+            </Col>
+          ))}
+        </Row>
+      </Container>
     </>
   );
 };
