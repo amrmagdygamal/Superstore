@@ -1,9 +1,6 @@
 
 import { useContext, useEffect } from 'react';
 import { BrowserRouter, Link, Route, Routes } from 'react-router-dom';
-import {
-  Container,
-} from 'react-bootstrap';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import HomePage from './pages/HomePage';
@@ -22,6 +19,7 @@ import Layout from './components/Layout';
 import About from './pages/About';
 import Contact from './pages/Contact';
 import OurStore from './pages/OurStore';
+import Blog from './pages/Blog';
 
 function App() {
   const {
@@ -45,6 +43,7 @@ function App() {
                 <Route path='about' element={<About />} />
                 <Route path='contact' element={<Contact />} />
                 <Route path='store' element={<OurStore />} />
+                <Route path='blogs' element={<Blog />} />
               </Route>
               <Route path="product/:slug" element={<ProductPage />} />
               <Route path="cart" element={<CartPage />} />

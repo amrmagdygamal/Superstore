@@ -349,10 +349,20 @@ const HomePage = () => {
             <Col md={12} className="">
               <h3 className="section_heading">Our Latest Blogs</h3>
             </Col>
+          </Row>
+          <Row>
+            <div className="col-3">
             <BlogCard />
+            </div>
+            <div className="col-3">
             <BlogCard />
+            </div>
+            <div className="col-3">
             <BlogCard />
+            </div>
+            <div className="col-3">
             <BlogCard />
+            </div>
           </Row>
         </Container>
       </section>
