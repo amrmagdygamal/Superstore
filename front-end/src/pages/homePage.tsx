@@ -222,34 +222,46 @@ const HomePage = () => {
           </Row>
         </Container>
       </section>
-      <section className="marque-wrapper py-5">
+      <section className="features-wrapper py-5 home-wrapper-2">
+        <Container>
+          <Row>
+            <Col md={12} className="">
+              <h3 className="section_heading">Features Colections</h3>
+            </Col>
+            {products!.map((product) => (
+              <ProductItem product={product} />
+            ))}
+          </Row>
+        </Container>
+      </section>
+      <section className="marque-wrapper home-wrapper py-5">
         <Container>
           <Row>
             <Col md={12}>
               <div className="marquee-inner-wrapper card-wrapper">
                 <Marquee className="d-flex">
-                  <div className='mx-4 w-25'>
+                  <div className="mx-4 w-25">
                     <img src="/images/brand-01.png" alt="brand" />
                   </div>
-                  <div className='mx-4 w-25'>
+                  <div className="mx-4 w-25">
                     <img src="/images/brand-02.png" alt="brand" />
                   </div>
-                  <div className='mx-4 w-25'>
+                  <div className="mx-4 w-25">
                     <img src="/images/brand-03.png" alt="brand" />
                   </div>
-                  <div className='mx-4 w-25'>
+                  <div className="mx-4 w-25">
                     <img src="/images/brand-04.png" alt="brand" />
                   </div>
-                  <div className='mx-4 w-25'>
+                  <div className="mx-4 w-25">
                     <img src="/images/brand-05.png" alt="brand" />
                   </div>
-                  <div className='mx-4 w-25'>
+                  <div className="mx-4 w-25">
                     <img src="/images/brand-06.png" alt="brand" />
                   </div>
-                  <div className='mx-4 w-25'>
+                  <div className="mx-4 w-25">
                     <img src="/images/brand-07.png" alt="brand" />
                   </div>
-                  <div className='mx-4 w-25'>
+                  <div className="mx-4 w-25">
                     <img src="/images/brand-08.png" alt="brand" />
                   </div>
                 </Marquee>
@@ -258,28 +270,12 @@ const HomePage = () => {
           </Row>
         </Container>
       </section>
+
       <section className="blog-wrapper py-5 home-wrapper-">
         <Container>
           <Row>
-            <Col md={12} className=''>
-              <h3 className="section_heading">
-                Features Colections
-              </h3>
-            </Col>
-            <BlogCard />
-            <BlogCard />
-            <BlogCard />
-            <BlogCard />
-          </Row>
-        </Container>
-      </section>
-      <section className="blog-wrapper py-5 home-wrapper-">
-        <Container>
-          <Row>
-            <Col md={12} className=''>
-              <h3 className="section_heading">
-                Our Latest Blogs
-              </h3>
+            <Col md={12} className="">
+              <h3 className="section_heading">Our Latest Blogs</h3>
             </Col>
             <BlogCard />
             <BlogCard />
@@ -289,13 +285,7 @@ const HomePage = () => {
         </Container>
       </section>
       <Container>
-        <Row>
-          {products!.map((product) => (
-            <Col key={product.slug} sm={6} md={4} lg={3}>
-              <ProductItem product={product} />
-            </Col>
-          ))}
-        </Row>
+        <Row></Row>
       </Container>
     </>
   );
