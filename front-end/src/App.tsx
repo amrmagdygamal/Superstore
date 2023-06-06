@@ -21,6 +21,7 @@ import OrdersHistory from './pages/OrdersHistory';
 import Layout from './components/Layout';
 import About from './pages/About';
 import Contact from './pages/Contact';
+import OurStore from './pages/OurStore';
 
 function App() {
   const {
@@ -43,6 +44,7 @@ function App() {
                 <Route index element={<HomePage />} />
                 <Route path='about' element={<About />} />
                 <Route path='contact' element={<Contact />} />
+                <Route path='store' element={<OurStore />} />
               </Route>
               <Route path="product/:slug" element={<ProductPage />} />
               <Route path="cart" element={<CartPage />} />

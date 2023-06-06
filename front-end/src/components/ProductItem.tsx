@@ -1,13 +1,21 @@
-import { Button, Card, Col } from 'react-bootstrap';
+import { Button, Card } from 'react-bootstrap';
 import { ProductInfo } from '../types/ProductInfo';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { useContext } from 'react';
 import { Store } from '../Store';
 import { AddProductToCart } from '../utils';
 import { toast } from 'react-toastify';
 import ReactStars from 'react-rating-stars-component';
 
-const ProductItem = ({ product }: { product: ProductInfo }) => {
+
+interface ProductItemProps {
+  product: ProductInfo;
+  grid: number;
+}
+
+
+const ProductItem = ({ product, grid }: ProductItemProps)=> {
+  const location = useLocation();
   const { state, dispatch } = useContext(Store);
 
   const {
@@ -30,7 +38,7 @@ const ProductItem = ({ product }: { product: ProductInfo }) => {
   };
 
   return (
-    <Col md={3}>
+    <div className={`${location.pathname == "/store" ? `gr-${grid}` : "col-3"}`}>
       <Card className="product-card position-relative">
         <div className="wishlist-icon position-absolute">
           <Link to="">
@@ -38,8 +46,9 @@ const ProductItem = ({ product }: { product: ProductInfo }) => {
           </Link>
         </div>
         <Link to={`/product/${product._id}`}>
-          <div className="photo-box">
-            <img src={product.image} alt={product.name} />
+          <div className="product-image">
+            <img src='images/watch.jpg' alt={product.name} />
+            <img src='images/watch-1.avif' alt={product.name} />
           </div>
         </Link>
 
@@ -79,7 +88,7 @@ const ProductItem = ({ product }: { product: ProductInfo }) => {
           </div>
         </div>
       </Card>
-    </Col>
+    </div>
   );
 };
 
