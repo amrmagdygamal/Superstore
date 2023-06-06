@@ -1,7 +1,6 @@
 import { Button, Card, Col } from 'react-bootstrap';
 import { ProductInfo } from '../types/ProductInfo';
 import { Link } from 'react-router-dom';
-import Rating from './Rating';
 import { useContext } from 'react';
 import { Store } from '../Store';
 import { AddProductToCart } from '../utils';

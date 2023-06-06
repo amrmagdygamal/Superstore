@@ -9,6 +9,7 @@ import { getError } from '../utils';
 import { Link } from 'react-router-dom';
 import Marquee from 'react-fast-marquee';
 import BlogCard from '../components/BlogCard';
+import SpecialProduct from '../components/SpecialProduct';
 
 const HomePage = () => {
   const { data: products, isLoading, error } = useGetProductsQuery();
@@ -234,6 +235,78 @@ const HomePage = () => {
           </Row>
         </Container>
       </section>
+      <section className="famous-wrapper py-5 home-wrapper-2">
+        <Container>
+          <Row>
+            <Col md={3}>
+              <div className="famous-card position-relative">
+                <img src="images/famous-1.webp" className="img-fluid" alt="famous" />
+                <div className="famous-content position-absolute">
+                <h5>Big Screen</h5>
+                <h6>Smart Watch series 7</h6>
+                <p>From $399 or 16.62/mo. for 24 mo.*</p>
+                </div>
+              </div>
+            </Col>
+            <Col md={3}>
+              <div className="famous-card position-relative">
+                <img src="images/famous-2.webp" className="img-fluid" alt="famous" />
+                <div className="famous-content position-absolute">
+                <h5 className='text-dark'>Studio Display</h5>
+                <h6 className='text-dark'>600 nits of brightness</h6>
+                <p className='text-dark'>27-inc 5k retina display</p>
+                </div>
+              </div>
+            </Col>
+            <Col md={3}>
+              <div className="famous-card position-relative">
+                <img src="images/famous-3.webp" className="img-fluid" alt="famous" />
+                <div className="famous-content position-absolute">
+                <h5 className='text-dark'>Studio Display</h5>
+                <h6 className='text-dark'>600 nits of brightness</h6>
+                <p className='text-dark'>27-inc 5k retina display</p>
+                </div>
+              </div>
+            </Col>
+            <Col md={3}>
+              <div className="famous-card position-relative">
+                <img src="images/famous-4.webp" className="img-fluid" alt="famous" />
+                <div className="famous-content position-absolute">
+                <h5 className='text-dark'>Studio Display</h5>
+                <h6 className='text-dark'>600 nits of brightness</h6>
+                <p className='text-dark'>27-inc 5k retina display</p>
+                </div>
+              </div>
+            </Col>
+          </Row>
+        </Container>
+      </section>
+      <section className="special-wrapper py-5 home-wrapper-2">
+        <Container>
+          <Row>
+            <Col md={12}>
+              <h3 className="section-heading">Special Products</h3>
+            </Col>
+          </Row>
+          <Row>
+            <SpecialProduct />
+            <SpecialProduct />
+            <SpecialProduct />
+          </Row>
+        </Container>
+      </section>
+      <section className="features-wrapper py-5 home-wrapper-2">
+        <Container>
+          <Row>
+            <Col md={12} className="">
+              <h3 className="section_heading">Our Popular Products</h3>
+            </Col>
+            {products!.map((product) => (
+              <ProductItem product={product} />
+            ))}
+          </Row>
+        </Container>
+      </section>
       <section className="marque-wrapper home-wrapper py-5">
         <Container>
           <Row>
@@ -270,7 +343,6 @@ const HomePage = () => {
           </Row>
         </Container>
       </section>
-
       <section className="blog-wrapper py-5 home-wrapper-">
         <Container>
           <Row>
