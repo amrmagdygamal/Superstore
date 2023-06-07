@@ -24,6 +24,7 @@ import CompareProduct from './pages/CompareProduct';
 import WishList from './pages/WishList';
 import ForgotPassword from './pages/ForgotPassword';
 import ResetPassword from './pages/ResetPassword';
+import BlogPage from './pages/BlogPage';
 
 function App() {
   const {
@@ -55,6 +56,7 @@ function App() {
               <Route path="forgot-password" element={<ForgotPassword />} />
               <Route path="reset-password" element={<ResetPassword />} />
               <Route path="product/:slug" element={<ProductPage />} />
+              <Route path="blog/:id" element={<BlogPage />} />
               <Route path="cart" element={<CartPage />} />
               <Route path='' element={<ProtectedRoute />}>
 

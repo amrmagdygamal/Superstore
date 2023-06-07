@@ -288,6 +288,24 @@ footer:not(:first-child) {
   color: var(--text-dark-color);
 }
 
+.blog-page a{
+  font-size: .94rem;
+  color: var(--text-dark-color);
+  margin-bottom: 2rem;
+}
+
+.blog-page h3 {
+  font-size: 1.43rem;
+  color: var(--title-black-color);
+  font-weight: 600;
+}
+
+.blog-page p {
+  color: var(--text-dark-color);
+  font-size: .9rem;
+}
+
+
 /* Blogs Part The End */
 
 
