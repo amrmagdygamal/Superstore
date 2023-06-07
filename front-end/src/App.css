@@ -676,6 +676,18 @@ footer:not(:first-child) {
 }
 /* Login Card The :End  */
 
+/* Policy Privacy  */
+.policy-item {
+  background-color: white;
+  padding: 2rem;
+}
+
+
+
+/* Policy Privacy The End  */
+
+
+
 
 
 

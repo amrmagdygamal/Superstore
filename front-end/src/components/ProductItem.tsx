@@ -5,7 +5,7 @@ import { useContext } from 'react';
 import { Store } from '../Store';
 import { AddProductToCart } from '../utils';
 import { toast } from 'react-toastify';
-import ReactStars from 'react-rating-stars-component';
+import Rating from './Rating';
 
 
 interface ProductItemProps {
@@ -57,13 +57,7 @@ const ProductItem = ({ product, grid }: ProductItemProps)=> {
             <h6 className="brand">Havels</h6>
             <Card.Title>{product.name}</Card.Title>
           </Link>
-          <ReactStars
-            count={5}
-            size={24}
-            value={3}
-            edit={false}
-            activeColor="#ffd700"
-          />
+          <Rating rating={product.rating} numReviews={product.numReviews} />
           <Card.Text>${product.price}</Card.Text>
 
           {product.countInStock === 0 ? (

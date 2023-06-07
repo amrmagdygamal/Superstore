@@ -25,6 +25,10 @@ import WishList from './pages/WishList';
 import ForgotPassword from './pages/ForgotPassword';
 import ResetPassword from './pages/ResetPassword';
 import BlogPage from './pages/BlogPage';
+import PrivacyPolicy from './pages/PrivacyPolicy';
+import TermsAndConditions from './pages/TermsAndConditions';
+import RefundPolicy from './pages/RefundPolicy';
+import ShippingPolicy from './pages/ShippingPolicy';
 
 function App() {
   const {
@@ -57,6 +61,11 @@ function App() {
               <Route path="reset-password" element={<ResetPassword />} />
               <Route path="product/:slug" element={<ProductPage />} />
               <Route path="blog/:id" element={<BlogPage />} />
+              <Route path="privacy-policy" element={<PrivacyPolicy />} />
+              <Route path="refund-policy" element={<RefundPolicy />} />
+              <Route path="term-conditions" element={<TermsAndConditions />} />
+              <Route path="shipping-policy" element={<ShippingPolicy />} />
+
               <Route path="cart" element={<CartPage />} />
               <Route path='' element={<ProtectedRoute />}>
 
