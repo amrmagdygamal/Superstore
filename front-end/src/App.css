@@ -516,7 +516,48 @@ footer:not(:first-child) {
 .gr-3 {
   width: 25%
 }
+
+
 /* Our Store End  */
+
+
+/* Contact Page  */
+
+.contact-inner {
+  padding: 1.3rem;
+  background-color: white;
+  border-radius: 1rem;
+  gap: 1rem;
+}
+
+.contact-inner > div {
+  width: 48%;
+}
+
+.contact-title {
+  font-size: 1.8rem;
+  font-weight: 500;
+  text-align: left;
+  line-height: 2.2rem;
+}
+
+.contact-inner form .form-control{
+  background-color: var(--wrapper-light-color);
+  border-radius: .69rem;
+  border-color: transparent;
+  padding: .7rem;
+}
+
+.contact-inner address, 
+.contact-inner a {
+  color: var(--text-dark-color);
+}
+
+/* Contact Page the End */
+
+
+
+
 .imgP {
   max-width: 16rem;
   width: 100%;
