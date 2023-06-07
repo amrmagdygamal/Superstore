@@ -572,7 +572,8 @@ footer:not(:first-child) {
 }
 
 
-.compare-product-card .cross {
+.compare-product-card .cross,
+.wishlist-card .cross {
   top: .94rem;
   right: .94rem;
   width: 1.53rem;
@@ -581,7 +582,8 @@ footer:not(:first-child) {
 }
 
 
-.compare-product-details h5.title{
+.compare-product-details h5.title
+.wishlist-card h5.title{
   font-size: .94rem;
   font-weight: 500;
   line-height: 1.37rem;
@@ -589,7 +591,8 @@ footer:not(:first-child) {
 }
 
 
-.compare-product-details h6.price {
+.compare-product-details h6.price 
+.wishlist-card h6.price {
   font-size: .94rem;
   font-weight: 400;
   line-height: 1.35;
