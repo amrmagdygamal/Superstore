@@ -5,6 +5,7 @@ import Meta from '../components/Meta';
 import { Badge, Col, Container, Row } from 'react-bootstrap';
 import ProductItem from '../components/ProductItem';
 import { useGetProductsQuery } from '../hooks/productHooks';
+import { Color } from '../components/Color';
 
 const OurStore = () => {
   const [grid, setGrid] = useState(4);
@@ -93,22 +94,8 @@ const OurStore = () => {
                   </div>
                   <h5 className="sub-title">Colors</h5>
                   <div>
-                    <div className="d-flex flex-wrap">
-                      <ul className="colors">
-                        <li></li>
-                        <li></li>
-                        <li></li>
-                        <li></li>
-                        <li></li>
-                        <li></li>
-                        <li></li>
-                        <li></li>
-                        <li></li>
-                        <li></li>
-                        <li></li>
-                        <li></li>
-                        <li></li>
-                      </ul>
+                    <div>
+                      <Color />
                     </div>
                   </div>
                   <h5 className="sub-title">Size</h5>

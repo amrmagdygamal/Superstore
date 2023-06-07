@@ -458,6 +458,13 @@ footer:not(:first-child) {
   gap: .65rem;
 }
 
+.colors li {
+  width: 20px;
+  height: 20px;
+  background-color: red;
+  border-radius: 50%;
+}
+
 
 .random-products:first-child {
   border-bottom: 1px solid var(--second-border-color);
@@ -547,7 +554,6 @@ footer:not(:first-child) {
   border-color: transparent;
   padding: .7rem;
 }
-
 .contact-inner address, 
 .contact-inner a {
   color: var(--text-dark-color);
@@ -555,6 +561,50 @@ footer:not(:first-child) {
 
 /* Contact Page the End */
 
+
+/* Compare Product Page */
+
+
+.compare-product-card {
+  padding: 1.3rem .94rem;
+  background-color: white;
+  border-radius: .68rem;
+}
+
+
+.compare-product-card .cross {
+  top: .94rem;
+  right: .94rem;
+  width: 1.53rem;
+  cursor: pointer;
+  padding: .15rem;
+}
+
+
+.compare-product-details h5.title{
+  font-size: .94rem;
+  font-weight: 500;
+  line-height: 1.37rem;
+  color: var(--title-black-color);
+}
+
+
+.compare-product-details h6.price {
+  font-size: .94rem;
+  font-weight: 400;
+  line-height: 1.35;
+}
+
+
+.compare-product-card .product-detail {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: .69rem 0rem;
+  border-top: 1px solid rgba(1, 1, 1, 0.1);
+}
+
+/* Compare Product Page The End */
 
 
 

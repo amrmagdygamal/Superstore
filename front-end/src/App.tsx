@@ -20,6 +20,7 @@ import About from './pages/About';
 import Contact from './pages/Contact';
 import OurStore from './pages/OurStore';
 import Blog from './pages/Blog';
+import CompareProduct from './pages/CompareProduct';
 
 function App() {
   const {
@@ -44,6 +45,7 @@ function App() {
                 <Route path='contact' element={<Contact />} />
                 <Route path='store' element={<OurStore />} />
                 <Route path='blogs' element={<Blog />} />
+                <Route path='compare' element={<CompareProduct />} />
               </Route>
               <Route path="product/:slug" element={<ProductPage />} />
               <Route path="cart" element={<CartPage />} />
