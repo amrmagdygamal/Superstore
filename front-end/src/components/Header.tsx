@@ -125,7 +125,7 @@ const Header = () => {
                       <NavDropdown.Item>Order History</NavDropdown.Item>
                     </LinkContainer>
                     <Link
-                      className="dropdown-item l--10"
+                      className="dropdown-item"
                       to="#signout"
                       onClick={signOutHandler}
                     >

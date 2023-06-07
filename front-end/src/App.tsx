@@ -22,6 +22,8 @@ import OurStore from './pages/OurStore';
 import Blog from './pages/Blog';
 import CompareProduct from './pages/CompareProduct';
 import WishList from './pages/WishList';
+import ForgotPassword from './pages/ForgotPassword';
+import ResetPassword from './pages/ResetPassword';
 
 function App() {
   const {
@@ -48,11 +50,12 @@ function App() {
                 <Route path='blogs' element={<Blog />} />
                 <Route path='compare' element={<CompareProduct />} />
                 <Route path='wishlist' element={<WishList />} />
-              </Route>
-              <Route path="product/:slug" element={<ProductPage />} />
-              <Route path="cart" element={<CartPage />} />
               <Route path="login" element={<LoginPage />} />
               <Route path="signup" element={<SignUpPage />} />
+              <Route path="forgot-password" element={<ForgotPassword />} />
+              <Route path="reset-password" element={<ResetPassword />} />
+              <Route path="product/:slug" element={<ProductPage />} />
+              <Route path="cart" element={<CartPage />} />
               <Route path='' element={<ProtectedRoute />}>
 
                 <Route path="shipping" element={<ShippingPage />} />
@@ -60,6 +63,7 @@ function App() {
                 <Route path="placeorder" element={<PlaceOrderPage />} />
                 <Route path="/order/:id" element={<OrderPage />} />
                 <Route path="/orderhistory" element={<OrdersHistory />} />
+              </Route>
               </Route>
             </Routes>
         </main>

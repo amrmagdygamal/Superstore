@@ -29,6 +29,8 @@ body {
   padding: 1rem;
 }
 
+
+
 .section-heading {
   font-size: 1.7rem;
   line-height: 2.1rem;
@@ -608,6 +610,55 @@ footer:not(:first-child) {
 }
 
 /* Compare Product Page The End */
+
+/* Login Card The :start  */
+
+.auth-card {
+  padding: 1.29rem;
+  background-color: white;
+  width: 23rem;
+  margin: 0rem auto;
+  border-radius: 0.68rem;
+  box-shadow: 0px 0px 7px 1px rgb(39 39 39 / 20%);
+}
+
+.auth-card h3 {
+  font-size: 1.25rem;
+  font-weight: 500;
+  color: var(--text-dark-color);
+}
+
+.auth-card p {
+  font-size: .75rem;
+  color: var(--text-dark-color);
+}
+
+.auth-card .form-input {
+  height: 3.28rem;
+  color: var(--text-dark-color);
+  border-color: transparent;
+  border-radius: .68rem;
+  font-size: .9rem;
+  background-color: var(--wrapper-light-color);
+}
+
+.auth-card a {
+  font-size: .9rem;
+  font-weight: 400;
+  color: var(--title-black-color);
+}
+
+.auth-card .signup {
+  background-color: var(--main-yellow-color);
+  color: var(--main-dark-color);
+}
+.auth-card .signup:hover {
+  color: white;
+  background-color: var(--main-dark-color);
+}
+/* Login Card The :End  */
+
+
 
 
 

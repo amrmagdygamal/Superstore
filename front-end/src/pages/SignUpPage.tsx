@@ -1,24 +1,22 @@
-import { useContext, useEffect, useState } from "react";
-import { Button, Container, Form } from "react-bootstrap";
-import { Link, useLocation, useNavigate } from "react-router-dom"
-import { userSignUpMutation } from "../hooks/userHooks";
-import { toast } from "react-toastify";
-import { getError } from "../utils";
-import { ApiError } from "../types/ApiErrors";
-import { Helmet } from "react-helmet-async";
-import { Store } from "../Store";
-
+import { useContext, useEffect, useState } from 'react';
+import { Button, Container, Form } from 'react-bootstrap';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { userSignUpMutation } from '../hooks/userHooks';
+import { toast } from 'react-toastify';
+import { getError } from '../utils';
+import { ApiError } from '../types/ApiErrors';
+import { Store } from '../Store';
+import Meta from '../components/Meta';
+import BreadCrumb from '../components/BreadCrumb';
 
 const SignUpPage = () => {
-
-
   const navigate = useNavigate();
   const { search } = useLocation();
-  const redirectInUrl = new URLSearchParams(search).get('redirect')
+  const redirectInUrl = new URLSearchParams(search).get('redirect');
   const redirect = redirectInUrl ? redirectInUrl : '/';
 
   const [username, setUserName] = useState('');
-  const [email, setEmail] = useState('')
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
 
@@ -27,18 +25,18 @@ const SignUpPage = () => {
 
   useEffect(() => {
     if (userInfo) {
-      navigate(redirect)
+      navigate(redirect);
     }
-  }, [navigate, redirect, userInfo])
+  }, [navigate, redirect, userInfo]);
 
   const { mutateAsync: signup, isLoading } = userSignUpMutation();
 
   const submitHandler = async (e: React.SyntheticEvent) => {
     e.preventDefault();
 
-    if(password !== confirmPassword) {
-      toast.error('Password do not match')
-      return
+    if (password !== confirmPassword) {
+      toast.error('Password do not match');
+      return;
     }
 
     try {
@@ -46,67 +44,86 @@ const SignUpPage = () => {
         username,
         email,
         password,
-      })
+      });
 
-      dispatch({ type: 'USER_SIGNIN', payload: data}) 
-      localStorage.setItem('userInfo', JSON.stringify(data))
-      navigate(redirect)
+      dispatch({ type: 'USER_SIGNIN', payload: data });
+      localStorage.setItem('userInfo', JSON.stringify(data));
+      navigate(redirect);
     } catch (error) {
-      toast.error(getError(error as ApiError))
+      toast.error(getError(error as ApiError));
     }
-  }
+  };
 
   return (
-    <Container className="small-container">
-      <Helmet>
-        <title>Sign Up</title>
-      </Helmet>
-      <h1 className="my-3">Sign Up</h1>
-      <Form onSubmit={submitHandler}>
-        <Form.Group className='mb-3' controlId="username">
-          <Form.Label>UserName</Form.Label>
-          <Form.Control onChange={(e) => setUserName(e.target.value)} required />
-        </Form.Group>
+    <>
+      <Meta title="Sign Up Page" />
+      <BreadCrumb title="Sign Up Page" />
+      <div className="auth-wrapper py-5 home-wrapper-2">
+        <div className="container-xxl">
+          <div className="row">
+            <div className="col-12">
+              <div className="auth-card">
+                <h3 className="text-center mb-3">Create Account</h3>
+                <Form onSubmit={submitHandler}>
+                  <Form.Group className="mb-3" controlId="username">
+                    <Form.Control
+                      className="form-input h-50 py-3"
+                      type="text"
+                      placeholder="UserName"
+                      onChange={(e) => setUserName(e.target.value)}
+                      required
+                    />
+                  </Form.Group>
 
-        <Form.Group className="mb-3" controlId="email">
-          <Form.Label>Email</Form.Label>
-          <Form.Control
-            type='email'
-            required
-            onChange={(e) => setEmail(e.target.value)}
-          />
-        </Form.Group>
+                  <Form.Group className="mb-3" controlId="email">
+                    <Form.Control
+                      className="form-input h-50 py-3"
+                      placeholder="Email"
+                      type="email"
+                      required
+                      onChange={(e) => setEmail(e.target.value)}
+                    />
+                  </Form.Group>
 
-        <Form.Group className="mb-3" controlId="password">
-          <Form.Label>Password</Form.Label>
-          <Form.Control
-            type='password'
-            required
-            onChange={(e) => setPassword(e.target.value)}
-          />
-        </Form.Group>
+                  <Form.Group className="mb-3" controlId="password">
+                    <Form.Control
+                      className="form-input h-50 py-3"
+                      placeholder="Password"
+                      type="password"
+                      required
+                      onChange={(e) => setPassword(e.target.value)}
+                    />
+                  </Form.Group>
 
-        <Form.Group className="mb-3" controlId="confirmPassword">
-          <Form.Label>Confirm Password</Form.Label>
-          <Form.Control
-            type='password'
-            required
-            onChange={(e) => setConfirmPassword(e.target.value)}
-          />
-        </Form.Group>
+                  <Form.Group className="mb-3" controlId="confirmPassword">
+                    <Form.Control
+                      className="form-input h-50 py-3"
+                      placeholder="Confirm Password"
+                      type="password"
+                      required
+                      onChange={(e) => setConfirmPassword(e.target.value)}
+                    />
+                  </Form.Group>
 
-        <div className="mb-3">
-          <Button
-            type="submit">Sign Up</Button>
+                  <div className="mb-3 d-flex justify-content-center gap-3 align-items-center">
+                    <button className="button" type="submit">
+                      Sign Up
+                    </button>
+                    <Link
+                      className="button signup"
+                      to={`/login?redirect=${redirect}`}
+                    >
+                      Sign-In
+                    </Link>
+                  </div>
+                </Form>
+              </div>
+            </div>
+          </div>
         </div>
+      </div>
+    </>
+  );
+};
 
-        <div className="mb-3">
-          Already have an account?{" "}
-          <Link to={`/login?redirect=${redirect}`}>Sign-In</Link>
-        </div>
-      </Form>
-    </Container>
-  )
-}
-
-export default SignUpPage
+export default SignUpPage;

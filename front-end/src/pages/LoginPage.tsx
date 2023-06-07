@@ -5,9 +5,10 @@ import { userSigninMutation } from '../hooks/userHooks';
 import { toast } from 'react-toastify';
 import { getError } from '../utils';
 import { ApiError } from '../types/ApiErrors';
-import { Helmet } from 'react-helmet-async';
-import { Button, Container, Form } from 'react-bootstrap';
+import { Form } from 'react-bootstrap';
 import LoadingBox from '../components/LoadingBox';
+import Meta from '../components/Meta';
+import BreadCrumb from '../components/BreadCrumb';
 
 const LoginPage = () => {
   const navigate = useNavigate();
@@ -24,65 +25,79 @@ const LoginPage = () => {
   const { mutateAsync: login, isLoading } = userSigninMutation();
 
   const submitHandler = async (e: React.SyntheticEvent) => {
-    e.preventDefault()
-    
+    e.preventDefault();
 
     try {
       const data = await login({
         email,
         password,
-        
-      })
-      dispatch({ type: 'USER_SIGNIN', payload: data})
-      localStorage.setItem('userInfo', JSON.stringify(data))
-      navigate(redirect)
-
+      });
+      dispatch({ type: 'USER_SIGNIN', payload: data });
+      localStorage.setItem('userInfo', JSON.stringify(data));
+      navigate(redirect);
     } catch (error) {
-      toast.error(getError(error as ApiError))
+      toast.error(getError(error as ApiError));
     }
-  }
+  };
 
   useEffect(() => {
-    if (userInfo)
-    navigate(redirect)
-  }, [navigate, redirect, userInfo])
+    if (userInfo) navigate(redirect);
+  }, [navigate, redirect, userInfo]);
 
   return (
-    <Container className="small-container">
-      <Helmet>
-        <title>
-          Sign In
-        </title>
-      </Helmet>
-      <h1 className='my-3'>Sign In</h1>
-      <Form onSubmit={submitHandler}>
-        <Form.Group className='mb-3' controlId="email">
-          <Form.Label>Email</Form.Label>
-          <Form.Control
-            type='email'
-            required
-            onChange={(e) => setEmail(e.target.value)}
-          />
-        </Form.Group>
-        <Form.Group className='mb-3' controlId='password'>
-          <Form.Control
-            type='password'
-            required
-            onChange={(e) => setPassword(e.target.value)}
-          />
-        </Form.Group>
-        <div className='mb-3'>
-          <Button disabled={isLoading} type="submit">
-            Login
-          </Button>
-          {isLoading && <LoadingBox />}
+    <>
+      <Meta title="Login Page" />
+      <BreadCrumb title="Login Page" />
+      <div className="auth-wrapper py-5 home-wrapper-2">
+        <div className="container-xxl">
+          <div className="row">
+            <div className="col-12">
+              <div className="auth-card">
+                <h3 className="text-center mb-3">Login</h3>
+                <Form onSubmit={submitHandler}>
+                  <Form.Group className="mb-3" controlId="email">
+                    <Form.Control
+                      type="email"
+                      placeholder="Email"
+                      className="form-input"
+                      required
+                      onChange={(e) => setEmail(e.target.value)}
+                    />
+                  </Form.Group>
+                  <Form.Group className="mb-3" controlId="password">
+                    <Form.Control
+                      type="password"
+                      placeholder="Password"
+                      className="form-input"
+                      required
+                      onChange={(e) => setPassword(e.target.value)}
+                    />
+                  </Form.Group>
+                  <Link to="/forgot-password">Forgot Passowrd</Link>
+                  <div className="my-3 d-flex gap-4 justify-content-center">
+                    <button
+                      className="button"
+                      disabled={isLoading}
+                      type="submit"
+                    >
+                      Login
+                    </button>
+
+                    <Link
+                      className="button signup"
+                      to={`/signup?redirect=${redirect}`}
+                    >
+                      SignUp
+                    </Link>
+                    {isLoading && <LoadingBox />}
+                  </div>
+                </Form>
+              </div>
+            </div>
+          </div>
         </div>
-        <div className='mb-3'>
-          New Customer? {'  '}
-          <Link to={`/signup?redirect=${redirect}`}>Create Your account</Link>
-        </div>
-      </Form>
-    </Container>
+      </div>
+    </>
   );
 };
 
