@@ -7,12 +7,20 @@ import { useGetProductsQuery } from '../hooks/productHooks';
 import { Color } from '../components/Color';
 import Rating from '../components/Rating';
 import Container from '../components/Container';
+import LoadingBox from '../components/LoadingBox';
+import { getError } from '../utils';
+import { ApiError } from '../types/ApiErrors';
+import MessageBox from '../components/MessageBox';
 
 const OurStore = () => {
   const [grid, setGrid] = useState(4);
-  const { data: products } = useGetProductsQuery();
+  const { data: products, isLoading, error } = useGetProductsQuery();
 
-  return (
+  return isLoading ? (
+    <LoadingBox />
+  ) : error ? (
+    <MessageBox variant="danger">{getError(error as ApiError)}</MessageBox>
+  ) : (
     <>
       <Meta title="Our Store" />
       <BreadCrumb title="Our Store" />

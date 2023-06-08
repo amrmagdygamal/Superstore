@@ -1,4 +1,3 @@
-
 import { useContext, useEffect } from 'react';
 import { BrowserRouter, Link, Route, Routes } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
@@ -39,44 +38,41 @@ function App() {
     document.body.setAttribute('data-bs-theme', mode);
   }, [mode]);
 
-
-
   return (
     <BrowserRouter>
       <>
         <ToastContainer position="bottom-center" limit={1} />
         <main>
-            <Routes>
-              <Route path='/' element={<Layout />}>
-                <Route index element={<HomePage />} />
-                <Route path='about' element={<About />} />
-                <Route path='contact' element={<Contact />} />
-                <Route path='store' element={<OurStore />} />
-                <Route path='blogs' element={<Blog />} />
-                <Route path='compare' element={<CompareProduct />} />
-                <Route path='wishlist' element={<WishList />} />
+          <Routes>
+            <Route path="/" element={<Layout />}>
+              <Route index element={<HomePage />} />
+              <Route path="about" element={<About />} />
+              <Route path="contact" element={<Contact />} />
+              <Route path="blogs" element={<Blog />} />
+              <Route path="compare" element={<CompareProduct />} />
+              <Route path="wishlist" element={<WishList />} />
               <Route path="login" element={<LoginPage />} />
               <Route path="signup" element={<SignUpPage />} />
               <Route path="forgot-password" element={<ForgotPassword />} />
               <Route path="reset-password" element={<ResetPassword />} />
               <Route path="product/:id" element={<ProductPage />} />
               <Route path="blog/:id" element={<BlogPage />} />
+              <Route path="store" element={<OurStore />} />
               <Route path="privacy-policy" element={<PrivacyPolicy />} />
               <Route path="refund-policy" element={<RefundPolicy />} />
               <Route path="term-conditions" element={<TermsAndConditions />} />
               <Route path="shipping-policy" element={<ShippingPolicy />} />
 
               <Route path="cart" element={<CartPage />} />
-              <Route path='' element={<ProtectedRoute />}>
-
+              <Route path="" element={<ProtectedRoute />}>
                 <Route path="checkout" element={<Checkout />} />
                 <Route path="payment" element={<PaymentPage />} />
                 <Route path="placeorder" element={<PlaceOrderPage />} />
                 <Route path="/order/:id" element={<OrderPage />} />
                 <Route path="/orderhistory" element={<OrdersHistory />} />
               </Route>
-              </Route>
-            </Routes>
+            </Route>
+          </Routes>
         </main>
       </>
     </BrowserRouter>
