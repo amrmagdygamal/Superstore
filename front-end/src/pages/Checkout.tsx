@@ -2,11 +2,9 @@ import React from 'react';
 import { useContext, useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Store } from '../Store';
-import { Helmet } from 'react-helmet-async';
 import CheckOutSteps from '../components/CheckOutSteps';
-import { Button, Form, Nav } from 'react-bootstrap';
+import { Nav } from 'react-bootstrap';
 import Meta from '../components/Meta';
-import BreadCrumb from '../components/BreadCrumb';
 import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io';
 
 const Checkout = () => {

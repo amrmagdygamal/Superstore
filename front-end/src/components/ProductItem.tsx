@@ -39,7 +39,7 @@ const ProductItem = ({ product, grid }: ProductItemProps)=> {
 
   return (
     <div className={`${location.pathname == "/store" ? `gr-${grid}` : "col-3"}`}>
-      <Card className="product-card position-relative">
+      <Card className="product-card mb-4 position-relative">
         <div className="wishlist-icon position-absolute">
           <Link to="">
               <img src="/images/wish.svg" alt="wishlist" />
