@@ -8,6 +8,7 @@ import { ApiError } from '../types/ApiErrors';
 import { Store } from '../Store';
 import Meta from '../components/Meta';
 import BreadCrumb from '../components/BreadCrumb';
+import Container from '../components/Container';
 
 const SignUpPage = () => {
   const navigate = useNavigate();
@@ -58,70 +59,66 @@ const SignUpPage = () => {
     <>
       <Meta title="Sign Up Page" />
       <BreadCrumb title="Sign Up Page" />
-      <div className="auth-wrapper py-5 home-wrapper-2">
-        <div className="container-xxl">
-          <div className="row">
-            <div className="col-12">
-              <div className="auth-card">
-                <h3 className="text-center mb-3">Create Account</h3>
-                <Form onSubmit={submitHandler}>
-                  <Form.Group className="mb-3" controlId="username">
-                    <Form.Control
-                      className="form-input h-50 py-3"
-                      type="text"
-                      placeholder="UserName"
-                      onChange={(e) => setUserName(e.target.value)}
-                      required
-                    />
-                  </Form.Group>
+      <Container class1="auth-wrapper py-5 home-wrapper-2">
+        <div className="col-12">
+          <div className="auth-card">
+            <h3 className="text-center mb-3">Create Account</h3>
+            <Form onSubmit={submitHandler}>
+              <Form.Group className="mb-3" controlId="username">
+                <Form.Control
+                  className="form-input h-50 py-3"
+                  type="text"
+                  placeholder="UserName"
+                  onChange={(e) => setUserName(e.target.value)}
+                  required
+                />
+              </Form.Group>
 
-                  <Form.Group className="mb-3" controlId="email">
-                    <Form.Control
-                      className="form-input h-50 py-3"
-                      placeholder="Email"
-                      type="email"
-                      required
-                      onChange={(e) => setEmail(e.target.value)}
-                    />
-                  </Form.Group>
+              <Form.Group className="mb-3" controlId="email">
+                <Form.Control
+                  className="form-input h-50 py-3"
+                  placeholder="Email"
+                  type="email"
+                  required
+                  onChange={(e) => setEmail(e.target.value)}
+                />
+              </Form.Group>
 
-                  <Form.Group className="mb-3" controlId="password">
-                    <Form.Control
-                      className="form-input h-50 py-3"
-                      placeholder="Password"
-                      type="password"
-                      required
-                      onChange={(e) => setPassword(e.target.value)}
-                    />
-                  </Form.Group>
+              <Form.Group className="mb-3" controlId="password">
+                <Form.Control
+                  className="form-input h-50 py-3"
+                  placeholder="Password"
+                  type="password"
+                  required
+                  onChange={(e) => setPassword(e.target.value)}
+                />
+              </Form.Group>
 
-                  <Form.Group className="mb-3" controlId="confirmPassword">
-                    <Form.Control
-                      className="form-input h-50 py-3"
-                      placeholder="Confirm Password"
-                      type="password"
-                      required
-                      onChange={(e) => setConfirmPassword(e.target.value)}
-                    />
-                  </Form.Group>
+              <Form.Group className="mb-3" controlId="confirmPassword">
+                <Form.Control
+                  className="form-input h-50 py-3"
+                  placeholder="Confirm Password"
+                  type="password"
+                  required
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                />
+              </Form.Group>
 
-                  <div className="mb-3 d-flex justify-content-center gap-3 align-items-center">
-                    <button className="button" type="submit">
-                      Sign Up
-                    </button>
-                    <Link
-                      className="button signup"
-                      to={`/login?redirect=${redirect}`}
-                    >
-                      Sign-In
-                    </Link>
-                  </div>
-                </Form>
+              <div className="mb-3 d-flex justify-content-center gap-3 align-items-center">
+                <button className="button" type="submit">
+                  Sign Up
+                </button>
+                <Link
+                  className="button signup"
+                  to={`/login?redirect=${redirect}`}
+                >
+                  Sign-In
+                </Link>
               </div>
-            </div>
+            </Form>
           </div>
         </div>
-      </div>
+      </Container>
     </>
   );
 };
