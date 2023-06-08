@@ -123,7 +123,7 @@ const Checkout = () => {
                   type="text"
                   placeholder="First Name"
                   className="form-control"
-                  name=""
+                  name="first-name"
                   id=""
                 />
               </div>
@@ -132,7 +132,7 @@ const Checkout = () => {
                   type="text"
                   placeholder="Last Name"
                   className="form-control"
-                  name=""
+                  name="last-name"
                   id=""
                 />
               </div>
@@ -141,7 +141,7 @@ const Checkout = () => {
                   type="text"
                   className="form-control"
                   placeholder="Address"
-                  name=""
+                  name="address"
                   id=""
                 />
               </div>
@@ -150,21 +150,21 @@ const Checkout = () => {
                   type="text"
                   className="form-control"
                   placeholder="Apartment, Suuite, etc"
-                  name=""
+                  name="address"
                   id=""
                 />
               </div>
               <div className="flex-grow-1">
                 <input
                   type="text"
-                  name=""
+                  name="city"
                   placeholder="City "
                   id=""
                   className="form-control"
                 />
               </div>
               <div className="flex-grow-1">
-                <select name="" className="form-control form-select" id="">
+                <select name="state" className="form-control form-select" id="">
                   <option value="" selected disabled>
                     Select State
                   </option>
@@ -173,7 +173,7 @@ const Checkout = () => {
               <div className="flex-grow-1">
                 <input
                   type="text"
-                  name=""
+                  name="zipcode"
                   id=""
                   placeholder="Zipcode"
                   className="form-control"

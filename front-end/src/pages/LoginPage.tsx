@@ -57,6 +57,7 @@ const LoginPage = () => {
               <Form.Group className="mb-3" controlId="email">
                 <Form.Control
                   type="email"
+                  name='email'
                   placeholder="Email"
                   className="form-input"
                   required
@@ -66,6 +67,7 @@ const LoginPage = () => {
               <Form.Group className="mb-3" controlId="password">
                 <Form.Control
                   type="password"
+                  name='password'
                   placeholder="Password"
                   className="form-input"
                   required

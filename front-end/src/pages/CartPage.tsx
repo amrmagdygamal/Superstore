@@ -2,14 +2,12 @@ import { useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Store } from '../Store';
 import { toast } from 'react-toastify';
-import { Helmet } from 'react-helmet-async';
-import { Button, Card, Col, ListGroup, Row } from 'react-bootstrap';
-import MessageBox from '../components/MessageBox';
 import { CartItem } from '../types/Cart';
 import Meta from '../components/Meta';
 import BreadCrumb from '../components/BreadCrumb';
 import { AiFillDelete } from 'react-icons/ai';
 import Container from '../components/Container';
+import MessageBox from '../components/MessageBox';
 
 const CartPage = () => {
   const navigate = useNavigate();
@@ -81,7 +79,7 @@ const CartPage = () => {
                   <div>
                     <input
                       type="number"
-                      name=""
+                      name="number"
                       min={1}
                       max={9}
                       className="form-control"

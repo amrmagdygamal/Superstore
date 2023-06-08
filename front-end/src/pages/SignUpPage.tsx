@@ -66,6 +66,7 @@ const SignUpPage = () => {
             <Form onSubmit={submitHandler}>
               <Form.Group className="mb-3" controlId="username">
                 <Form.Control
+                  name='name'
                   className="form-input h-50 py-3"
                   type="text"
                   placeholder="UserName"
@@ -79,6 +80,7 @@ const SignUpPage = () => {
                   className="form-input h-50 py-3"
                   placeholder="Email"
                   type="email"
+                  name='email'
                   required
                   onChange={(e) => setEmail(e.target.value)}
                 />
@@ -89,6 +91,7 @@ const SignUpPage = () => {
                   className="form-input h-50 py-3"
                   placeholder="Password"
                   type="password"
+                  name='password'
                   required
                   onChange={(e) => setPassword(e.target.value)}
                 />
@@ -99,6 +102,7 @@ const SignUpPage = () => {
                   className="form-input h-50 py-3"
                   placeholder="Confirm Password"
                   type="password"
+                  name='password'
                   required
                   onChange={(e) => setConfirmPassword(e.target.value)}
                 />

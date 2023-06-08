@@ -1,4 +1,4 @@
-import  { useState } from 'react';
+import { useState } from 'react';
 import Meta from '../components/Meta';
 import BreadCrumb from '../components/BreadCrumb';
 import LoadingBox from '../components/LoadingBox';
@@ -19,6 +19,7 @@ const ResetPassword = () => {
               <Form.Group className="mb-3">
                 <Form.Control
                   type="password"
+                  name='password'
                   placeholder="Password"
                   className="form-input"
                   required
@@ -30,6 +31,7 @@ const ResetPassword = () => {
               <Form.Group className="mb-3">
                 <Form.Control
                   type="password"
+                  name='password'
                   placeholder="Confirm Password"
                   className="form-input"
                   required

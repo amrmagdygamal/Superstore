@@ -23,6 +23,7 @@ const ForgotPassword = () => {
               <Form.Group className="mb-3" controlId="email">
                 <Form.Control
                   type="email"
+                  name="email"
                   placeholder="Email"
                   className="form-input"
                   required

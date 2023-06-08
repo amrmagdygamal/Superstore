@@ -207,22 +207,22 @@ const OurStore = () => {
               <div className="d-flex align-items-center gap-2">
                 <p className="mb-0">Sort By:</p>
                 <select name="" id="" className="form-control form-select">
-                  <option value="best-selling" selected>
+                  <option value="best-selling">
                     Best Selling
                   </option>
-                  <option value="best-selling" selected>
+                  <option value="best-selling">
                     Alphabetically, A-Z
                   </option>
-                  <option value="title-ascending" selected>
+                  <option value="title-ascending">
                     Alphabetically, Z-A
                   </option>
-                  <option value="best-selling" selected>
+                  <option value="best-selling">
                     Best Selling
                   </option>
-                  <option value="best-selling" selected>
+                  <option value="best-selling">
                     Best Selling
                   </option>
-                  <option value="best-selling" selected>
+                  <option value="best-selling">
                     Best Selling
                   </option>
                 </select>
