@@ -9,6 +9,7 @@ import { Form } from 'react-bootstrap';
 import LoadingBox from '../components/LoadingBox';
 import Meta from '../components/Meta';
 import BreadCrumb from '../components/BreadCrumb';
+import Container from '../components/Container';
 
 const LoginPage = () => {
   const navigate = useNavigate();
@@ -48,55 +49,47 @@ const LoginPage = () => {
     <>
       <Meta title="Login Page" />
       <BreadCrumb title="Login Page" />
-      <div className="auth-wrapper py-5 home-wrapper-2">
-        <div className="container-xxl">
-          <div className="row">
-            <div className="col-12">
-              <div className="auth-card">
-                <h3 className="text-center mb-3">Login</h3>
-                <Form onSubmit={submitHandler}>
-                  <Form.Group className="mb-3" controlId="email">
-                    <Form.Control
-                      type="email"
-                      placeholder="Email"
-                      className="form-input"
-                      required
-                      onChange={(e) => setEmail(e.target.value)}
-                    />
-                  </Form.Group>
-                  <Form.Group className="mb-3" controlId="password">
-                    <Form.Control
-                      type="password"
-                      placeholder="Password"
-                      className="form-input"
-                      required
-                      onChange={(e) => setPassword(e.target.value)}
-                    />
-                  </Form.Group>
-                  <Link to="/forgot-password">Forgot Passowrd</Link>
-                  <div className="my-3 d-flex gap-4 justify-content-center">
-                    <button
-                      className="button"
-                      disabled={isLoading}
-                      type="submit"
-                    >
-                      Login
-                    </button>
+      <Container class1="auth-wrapper py-5 home-wrapper-2">
+        <div className="col-12">
+          <div className="auth-card">
+            <h3 className="text-center mb-3">Login</h3>
+            <Form onSubmit={submitHandler}>
+              <Form.Group className="mb-3" controlId="email">
+                <Form.Control
+                  type="email"
+                  placeholder="Email"
+                  className="form-input"
+                  required
+                  onChange={(e) => setEmail(e.target.value)}
+                />
+              </Form.Group>
+              <Form.Group className="mb-3" controlId="password">
+                <Form.Control
+                  type="password"
+                  placeholder="Password"
+                  className="form-input"
+                  required
+                  onChange={(e) => setPassword(e.target.value)}
+                />
+              </Form.Group>
+              <Link to="/forgot-password">Forgot Passowrd</Link>
+              <div className="my-3 d-flex gap-4 justify-content-center">
+                <button className="button" disabled={isLoading} type="submit">
+                  Login
+                </button>
 
-                    <Link
-                      className="button signup"
-                      to={`/signup?redirect=${redirect}`}
-                    >
-                      SignUp
-                    </Link>
-                    {isLoading && <LoadingBox />}
-                  </div>
-                </Form>
+                <Link
+                  className="button signup"
+                  to={`/signup?redirect=${redirect}`}
+                >
+                  SignUp
+                </Link>
+                {isLoading && <LoadingBox />}
               </div>
-            </div>
+            </Form>
           </div>
         </div>
-      </div>
+      </Container>
     </>
   );
 };
