@@ -325,13 +325,23 @@ footer:not(:first-child) {
   font-weight: 600;
 }
 
-.blog-page p {
+.blog-page p,
+.cart-data p {
   color: var(--text-dark-color);
   font-size: .9rem;
 }
 
 
+.cart-data .price {
+  font-size: .9rem;
+  color: var(--title-black-color);
+}
+
 /* Blogs Part The End */
+
+
+
+
 
 
 /* Product Card  */
@@ -846,7 +856,49 @@ footer:not(:first-child) {
 /* Main Product Page  The End*/
 
 
+/* Cart Page Start  */
 
+.cart-head, .cart-data {
+  border-bottom: 1px solid #eaeaea;
+}
+.cart-head h4,
+.cart-subtotal h4 {
+  font-size: .87rem;
+  color: var(--text-dark-color);
+}
+
+
+.w-40 {
+  width: 40%;
+}
+.w-10 {
+  width: 10%;
+}
+.w-15 {
+  width: 15%;
+}
+.w-15 {
+  width: 15%;
+}
+
+/* Cart Page End */
+
+
+/* Shipping Page Start  */
+
+.total {
+  font-size: .9rem;
+  color: var(--title-black-color);
+}
+
+.total-price {
+  font-size: 1rem;
+  color: var(--text-dark-color);
+}
+
+
+
+/* Shipping Page End  */
 
 
 
@@ -902,6 +954,10 @@ button:focus-visible {
   color: gold;
 }
 
+p {
+  font-size: .9rem;
+  color: var(--text-dark-color);
+}
 
 .checkout-steps>div {
   border-bottom: .2rem solid #a0a0a0;
@@ -909,8 +965,8 @@ button:focus-visible {
 }
 
 .checkout-steps>div.active {
-  border-bottom: .2rem solid #f08000;
-  color: #f08000;
+  border-bottom: .2rem solid var(--main-yellow-color);
+  color: var(--main-yellow-color);
 }
 
 img.thumbnail {

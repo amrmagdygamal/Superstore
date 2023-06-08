@@ -9,7 +9,6 @@ import { Store } from './Store';
 import CartPage from './pages/CartPage';
 import LoginPage from './pages/LoginPage';
 import SignUpPage from './pages/SignUpPage';
-import ShippingPage from './pages/ShippingPage';
 import PaymentPage from './pages/PaymentPage';
 import ProtectedRoute from './components/ProtectedRoute';
 import PlaceOrderPage from './pages/PlaceOrderPage';
@@ -29,6 +28,7 @@ import PrivacyPolicy from './pages/PrivacyPolicy';
 import TermsAndConditions from './pages/TermsAndConditions';
 import RefundPolicy from './pages/RefundPolicy';
 import ShippingPolicy from './pages/ShippingPolicy';
+import Checkout from './pages/Checkout';
 
 function App() {
   const {
@@ -69,7 +69,7 @@ function App() {
               <Route path="cart" element={<CartPage />} />
               <Route path='' element={<ProtectedRoute />}>
 
-                <Route path="shipping" element={<ShippingPage />} />
+                <Route path="checkout" element={<Checkout />} />
                 <Route path="payment" element={<PaymentPage />} />
                 <Route path="placeorder" element={<PlaceOrderPage />} />
                 <Route path="/order/:id" element={<OrderPage />} />

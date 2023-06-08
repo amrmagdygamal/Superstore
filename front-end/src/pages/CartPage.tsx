@@ -6,6 +6,9 @@ import { Helmet } from 'react-helmet-async';
 import { Button, Card, Col, ListGroup, Row } from 'react-bootstrap';
 import MessageBox from '../components/MessageBox';
 import { CartItem } from '../types/Cart';
+import Meta from '../components/Meta';
+import BreadCrumb from '../components/BreadCrumb';
+import { AiFillDelete } from 'react-icons/ai';
 
 const CartPage = () => {
   const navigate = useNavigate();
@@ -34,105 +37,91 @@ const CartPage = () => {
   };
 
   const removeitemHandler = (item: CartItem) => {
-    dispatch({ type: 'CART_REMOVE_ITEM', payload: item})
-  }
+    dispatch({ type: 'CART_REMOVE_ITEM', payload: item });
+  };
 
   return (
     <>
-      <Helmet>
-        <title>Shopping Cart</title>
-      </Helmet>
-      <h1>Shopping Cart</h1>
-      <Row>
-        <Col md={8}>
-          {cartItems.length === 0 ? (
-            <MessageBox>
-              Cart is empty. <Link to="/">Go Shopping</Link>
-            </MessageBox>
-          ) : (
-            <ListGroup>
-              {cartItems.map((item: CartItem) => (
-                <ListGroup.Item key={item._id}>
-                  <Row className="align-items-center">
-                    <Col md={4}>
-                      <img
-                        src={item.image}
-                        alt={item.name}
-                        className="img-fluid rounded thumbnail"
-                      ></img>
-                      <Link to={`/product/${item.slug}`}>{item.name}</Link>
-                    </Col>
-                    <Col md={3}>
-                      <Button
-                        variant={mode}
-                        onClick={() =>
-                          updateCartHandler(item, item.quantity - 1)
-                        }
-                        disabled={item.quantity === 1}
-                      >
-                        <i className="fas fa-minus-circle"></i>
-                      </Button>
-                      {'  '}
-                      <span>{item.quantity}</span>
-                      {'  '}
-                      <Button
-                        variant={mode}
-                        onClick={() =>
-                          updateCartHandler(item, item.quantity + 1)
-                        }
-                        disabled={item.quantity === item.countInStock}
-                      >
-                        <i className="fas fa-plus-circle"></i>
-                      </Button>
-                    </Col>
-
-                    <Col md={3}>
-                      <span>{item.price}</span>
-                    </Col>
-                    <Col md={2}>
-                      <Button 
-                        onClick={() => removeitemHandler(item)}
-                        variant={mode}
-                      >
-                        <i className="fas fa-trash"></i>
-                      </Button>
-                      <span>{item.price}</span>
-                    </Col>
-                  </Row>
-                </ListGroup.Item>
-              ))}
-            </ListGroup>
-          )}
-        </Col>
-        <Col md={4}>
-          <Card>
-            <Card.Body>
-              <ListGroup variant="flush">
-                <ListGroup.Item>
-                  <h3>
-                    Subtotal ({cartItems.reduce((a, c) => a + c.quantity, 0)}{' '}
-                    {'  '}
-                    items) : $
-                    {cartItems.reduce((a, c) => a + c.price * c.quantity, 0)}
-                  </h3>
-                </ListGroup.Item>
-                <ListGroup.Item>
-                  <div className="d-grid">
-                    <Button
-                      type="button"
-                      variant="primary"
-                      onClick={checkoutHandler}
-                      disabled={cartItems.length === 0}
-                    >
-                      Proceed to Checkout
-                    </Button>
+      <Meta title="Cart" />
+      <BreadCrumb title="Cart" />
+      <section className="cart home-wrapper-2 py-5">
+        <div className="container-xxl">
+          <div className="row">
+            <Col md={12}>
+              {cartItems.length === 0 ? (
+                <MessageBox>
+                  Cart is empty. <Link to="/">Go Shopping</Link>
+                </MessageBox>
+              ) : (
+                <>
+                  <div className="cart-head d-flex  py-3 justify-content-between align-content-center">
+                    <h4 className="w-40">Product</h4>
+                    <h4 className="w-10">Price</h4>
+                    <h4 className="w-15">Quantity</h4>
+                    <h4 className="w-15">Total</h4>
                   </div>
-                </ListGroup.Item>
-              </ListGroup>
-            </Card.Body>
-          </Card>
-        </Col>
-      </Row>
+                  <div className="cart-data py-3 mb-2 d-flex  py-3 justify-content-between align-items-center">
+                    <div className="w-40 align-items-center d-flex gap-3">
+                      <div className="w-25">
+                        <img
+                          src="/images/Apple_watch.webp"
+                          className="img-fluid"
+                          alt="product image"
+                        />
+                      </div>
+                      <div className="w-75">
+                        <p>GDffdhg</p>
+                        <p>Size: hgf</p>
+                        <p>Color: gfd</p>
+                      </div>
+                    </div>
+                    <div className="w-10">
+                      <h5 className="price">$100</h5>
+                    </div>
+                    <div className="w-15 d-flex gap-3 align-items-center">
+                      <div>
+                        <input
+                          type="number"
+                          name=""
+                          min={1}
+                          max={9}
+                          className="form-control"
+                          id=""
+                        />
+                      </div>
+                      <div>
+                        <AiFillDelete className="text-danger" />
+                      </div>
+                    </div>
+                    <div className="w-15">
+                      <h5 className="price">$100</h5>
+                    </div>
+                  </div>
+                </>
+              )}
+            </Col>
+            <div className="col-12 py-2">
+              <Link to="/cart" className="button mt-3">
+                Continue Shipping
+              </Link>
+            </div>
+            <div className="col-12 cart-subtotal d-flex justify-content-between my-3 py-2">
+              <Link to="/order">Order special instructions</Link>
+              <div className="d-flex flex-column  align-items-end">
+                <h4>
+                  Subtotal <h4 className="ms-1 d-inline fs-6">$100.00</h4>
+                </h4>
+                <h4 className="my-3">
+                  Taxes and shipping calculated at checkout
+                </h4>
+                <Link to="/checkout" className="my-3 button">
+                  Check Out
+                </Link>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
     </>
   );
 };
