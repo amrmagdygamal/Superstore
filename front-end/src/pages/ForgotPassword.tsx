@@ -26,9 +26,7 @@ const ForgotPassword = () => {
                   placeholder="Email"
                   className="form-input"
                   required
-                  onChange={(e) => {
-                    e;
-                  }}
+                  
                 />
               </Form.Group>
               <div className="flex-column d-flex align-items-center gap-3">
