@@ -6,7 +6,7 @@ const Rating = (props: {
   numReviews?: number
   caption?: string
 }) => {
-  const { rating, numReviews, caption } = props
+  const { rating, caption } = props
 
   return (
     <div className="rating">
@@ -66,9 +66,7 @@ const Rating = (props: {
       </span>
       {caption ? (
         <span>{caption}</span>
-      ) : numReviews != 0 ? (
-        <span>{' ' + numReviews + " reviews"}</span>
-      ) : (
+      ) :(
         ''
       
       )}

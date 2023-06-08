@@ -10,7 +10,7 @@ import Rating from './Rating';
 
 interface ProductItemProps {
   product: ProductInfo;
-  grid: number;
+  grid?: number;
 }
 
 
@@ -42,13 +42,13 @@ const ProductItem = ({ product, grid }: ProductItemProps)=> {
       <Card className="product-card position-relative">
         <div className="wishlist-icon position-absolute">
           <Link to="">
-              <img src="images/wish.svg" alt="wishlist" />
+              <img src="/images/wish.svg" alt="wishlist" />
           </Link>
         </div>
-        <Link to={`/product/${product._id}`}>
+        <Link to={`/product/:id`}>
           <div className="product-image">
-            <img src='images/watch.jpg' alt={product.name} />
-            <img src='images/watch-1.avif' alt={product.name} />
+            <img src='/images/watch.jpg' alt={product.name} />
+            <img src='/images/watch-1.avif' alt={product.name} />
           </div>
         </Link>
 
@@ -57,7 +57,7 @@ const ProductItem = ({ product, grid }: ProductItemProps)=> {
             <h6 className="brand">Havels</h6>
             <Card.Title>{product.name}</Card.Title>
           </Link>
-          <Rating rating={product.rating} numReviews={product.numReviews} />
+          <Rating rating={product.rating} />
           <Card.Text>${product.price}</Card.Text>
 
           {product.countInStock === 0 ? (
@@ -71,13 +71,13 @@ const ProductItem = ({ product, grid }: ProductItemProps)=> {
         <div className="action-bar position-absolute">
           <div className="d-flex gap-2 flex-column">
             <Link to="">
-              <img src="images/prodcompare.svg" alt="compare" />
+              <img src="/images/prodcompare.svg" alt="compare" />
             </Link>
             <Link to="">
-              <img src="images/view.svg" alt="view" />
+              <img src="/images/view.svg" alt="view" />
             </Link>
             <Link to="">
-              <img src="images/add-cart.svg" alt="addcart" />
+              <img src="/images/add-cart.svg" alt="addcart" />
             </Link>
           </div>
         </div>

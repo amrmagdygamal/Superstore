@@ -240,7 +240,7 @@ const HomePage = () => {
           <Row>
             <Col md={3}>
               <div className="famous-card position-relative">
-                <img src="images/famous-1.webp" className="img-fluid" alt="famous" />
+                <img src="images/famous-1.webp" className="img-fluid box-shadow " alt="famous" />
                 <div className="famous-content position-absolute">
                 <h5>Big Screen</h5>
                 <h6>Smart Watch series 7</h6>
@@ -250,7 +250,7 @@ const HomePage = () => {
             </Col>
             <Col md={3}>
               <div className="famous-card position-relative">
-                <img src="images/famous-2.webp" className="img-fluid" alt="famous" />
+                <img src="images/famous-2.webp" className="img-fluid box-shadow " alt="famous" />
                 <div className="famous-content position-absolute">
                 <h5 className='text-dark'>Studio Display</h5>
                 <h6 className='text-dark'>600 nits of brightness</h6>
@@ -260,7 +260,7 @@ const HomePage = () => {
             </Col>
             <Col md={3}>
               <div className="famous-card position-relative">
-                <img src="images/famous-3.webp" className="img-fluid" alt="famous" />
+                <img src="images/famous-3.webp" className="img-fluid box-shadow " alt="famous" />
                 <div className="famous-content position-absolute">
                 <h5 className='text-dark'>Studio Display</h5>
                 <h6 className='text-dark'>600 nits of brightness</h6>
@@ -270,7 +270,7 @@ const HomePage = () => {
             </Col>
             <Col md={3}>
               <div className="famous-card position-relative">
-                <img src="images/famous-4.webp" className="img-fluid" alt="famous" />
+                <img src="images/famous-4.webp" className="img-fluid box-shadow " alt="famous" />
                 <div className="famous-content position-absolute">
                 <h5 className='text-dark'>Studio Display</h5>
                 <h6 className='text-dark'>600 nits of brightness</h6>
@@ -295,7 +295,7 @@ const HomePage = () => {
           </Row>
         </Container>
       </section>
-      <section className="features-wrapper py-5 home-wrapper-2">
+      <section className="popular-wrapper py-5 home-wrapper-2">
         <Container>
           <Row>
             <Col md={12} className="">

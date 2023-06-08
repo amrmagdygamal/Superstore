@@ -9,11 +9,11 @@ const Blog = () => {
     <>
       <Meta title="Blogs" />
       <BreadCrumb title="Blogs" />
-      <div className="blog-wrapper home-wrapper-2 py-5">
+      <div className="blog-wrapper box-shadow home-wrapper-2 py-5">
         <Container>
           <Row>
             <Col md={3}>
-              <div className="filter-card mb-3">
+              <div className="filter-card box-shadow mb-3">
                 <h3 className="filter-title">Find By Categories</h3>
                 <div>
                   <ul className="ps-0">

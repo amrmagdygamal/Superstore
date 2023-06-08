@@ -1,11 +1,11 @@
 import { useState } from 'react';
 import BreadCrumb from '../components/BreadCrumb';
-import ReactStars from 'react-rating-stars-component';
 import Meta from '../components/Meta';
 import { Badge, Col, Container, Row } from 'react-bootstrap';
 import ProductItem from '../components/ProductItem';
 import { useGetProductsQuery } from '../hooks/productHooks';
 import { Color } from '../components/Color';
+import Rating from '../components/Rating';
 
 const OurStore = () => {
   const [grid, setGrid] = useState(4);
@@ -19,7 +19,7 @@ const OurStore = () => {
         <Container>
           <Row>
             <Col md={3}>
-              <div className="filter-card mb-3">
+              <div className="filter-card box-shadow mb-3">
                 <h3 className="filter-title">Shop By Categories</h3>
                 <div>
                   <ul className="ps-0">
@@ -30,7 +30,7 @@ const OurStore = () => {
                   </ul>
                 </div>
               </div>
-              <div className="filter-card mb-3">
+              <div className="filter-card box-shadow mb-3">
                 <h3 className="filter-title">Filter By</h3>
                 <div>
                   <h5 className="sub-title">Availablity</h5>
@@ -147,7 +147,7 @@ const OurStore = () => {
                   </div>
                 </div>
               </div>
-              <div className="filter-card mb-3">
+              <div className="filter-card box-shadow box-shadow mb-3">
                 <h3 className="filter-title">Product Tages</h3>
                 <div>
                   <div className="product-tags d-flex flex-wrap align-items-center gap-2">
@@ -170,7 +170,7 @@ const OurStore = () => {
                   </div>
                 </div>
               </div>
-              <div className="filter-card mb-3">
+              <div className="filter-card box-shadow mb-3">
                 <h3 className="filter-title">Random Product</h3>
                 <div>
                   <div className="random-products mb-3 d-flex">
@@ -185,13 +185,7 @@ const OurStore = () => {
                       <h5>
                         Kids headphones bulk 10 pack multi colored for students
                       </h5>
-                      <ReactStars
-                        count={5}
-                        size={24}
-                        value={4}
-                        edit={false}
-                        activeColor="#ffd700"
-                      />
+                      <Rating rating={5} numReviews={30} />
                       <b>$ 300</b>
                     </div>
                   </div>
@@ -207,13 +201,7 @@ const OurStore = () => {
                       <h5>
                         Kids headphones bulk 10 pack multi colored for students
                       </h5>
-                      <ReactStars
-                        count={5}
-                        size={24}
-                        value={4}
-                        edit={false}
-                        activeColor="#ffd700"
-                      />
+                      <Rating rating={5} numReviews={30} />
                       <b>$ 300</b>
                     </div>
                   </div>
@@ -221,7 +209,7 @@ const OurStore = () => {
               </div>
             </Col>
             <Col md={9}>
-              <div className="filter-sort-grid mb-4">
+              <div className="filter-sort-grid box-shadow mb-4">
                 <div className="d-flex align-items-center justify-content-between">
                   <div className="d-flex align-items-center gap-2">
                     <p className="mb-0">Sort By:</p>

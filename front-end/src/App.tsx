@@ -59,7 +59,7 @@ function App() {
               <Route path="signup" element={<SignUpPage />} />
               <Route path="forgot-password" element={<ForgotPassword />} />
               <Route path="reset-password" element={<ResetPassword />} />
-              <Route path="product/:slug" element={<ProductPage />} />
+              <Route path="product/:id" element={<ProductPage />} />
               <Route path="blog/:id" element={<BlogPage />} />
               <Route path="privacy-policy" element={<PrivacyPolicy />} />
               <Route path="refund-policy" element={<RefundPolicy />} />

@@ -26,7 +26,7 @@ const Contact = () => {
               ></iframe>
             </Col>
             <Col md={12} className="mt-5">
-              <div className="contact-inner d-flex justify-content-between">
+              <div className="contact-inner box-shadow d-flex justify-content-between">
                 <div>
                   <h3 className="contact-title mb-4">Contact</h3>
                   <form action="" className="d-flex flex-column gap-3">
