@@ -120,13 +120,13 @@ a {
 /* footer part */
 
 
-footer {
+.footer {
   background-color: var(--second-dark-color);
   color: white;
 }
 
 
-footer:not(:first-child) {
+.footer:not(:first-child) {
   border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
 
