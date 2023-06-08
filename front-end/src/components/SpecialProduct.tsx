@@ -4,7 +4,7 @@ import ReachStars from 'react-rating-stars-component';
 
 const SpecialProduct = () => {
   return (
-    <Col md={6} className="mb-4">
+    <div className="col-6 mb-4">
       <Card className="special-product-card">
         <div className="d-flex justify-content-between">
           <Link to="">
@@ -60,7 +60,7 @@ const SpecialProduct = () => {
           </Card.Body>
         </div>
       </Card>
-    </Col>
+    </div>
   );
 };
 
