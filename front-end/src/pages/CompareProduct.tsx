@@ -1,98 +1,101 @@
-import React from 'react';
 import Meta from '../components/Meta';
 import BreadCrumb from '../components/BreadCrumb';
-import { Container } from 'react-bootstrap';
 import { Color } from '../components/Color';
+import Container from '../components/Container';
 
 const CompareProduct = () => {
   return (
     <>
       <Meta title="Compare Products" />
       <BreadCrumb title="Compare Products" />
-      <div className="compare home-wrapper-2 py-5">
-        <Container>
-          <div className="row">
-            <div className="col-3">
-              <div className="compare-product-card position-relative">
-                <img src="images/cross.svg" className='cross position-absolute img-fluid' alt="cross" />
-                <div className="product-card-image">
-                  <img src="images/watch.jpg" alt="watch" />
-                </div>
-                <div className="compare-product-details">
-                  <h5 className="title">
-                    Honor T1 7 .0 1 GB RAM 8 GB ROM 7 Inch With Wi-Fi+3G Tablet
-                  </h5>
-                  <h6 className="price mt-3">$ 100</h6>
-                  <div>
-                    <div className="product-detail">
-                      <h5>Brand:</h5>
-                      <p>Hevels</p>
-                    </div>
-                    <div className="product-detail">
-                      <h5>Type:</h5>
-                      <p>Watch</p>
-                    </div>
-                    <div className="product-detail">
-                      <h5>Availability:</h5>
-                      <p>In Stock</p>
-                    </div>
-                    <div className="product-detail">
-                      <h5>Color:</h5>
-                      <Color />
-                    </div>
-                    <div className="product-detail">
-                      <h5>Size:</h5>
-                      <div className="d-flex gap-1">
-                        <p>S</p>
-                        <p>M</p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
+      <Container className="compare home-wrapper-2 py-5">
+        <div className="col-3">
+          <div className="compare-product-card position-relative">
+            <img
+              src="images/cross.svg"
+              className="cross position-absolute img-fluid"
+              alt="cross"
+            />
+            <div className="product-card-image">
+              <img src="images/watch.jpg" alt="watch" />
             </div>
-            <div className="col-3">
-              <div className="compare-product-card position-relative">
-                <img src="images/cross.svg" className='cross position-absolute img-fluid' alt="cross" />
-                <div className="product-card-image">
-                  <img src="images/watch.jpg" alt="watch" />
+            <div className="compare-product-details">
+              <h5 className="title">
+                Honor T1 7 .0 1 GB RAM 8 GB ROM 7 Inch With Wi-Fi+3G Tablet
+              </h5>
+              <h6 className="price mt-3">$ 100</h6>
+              <div>
+                <div className="product-detail">
+                  <h5>Brand:</h5>
+                  <p>Hevels</p>
                 </div>
-                <div className="compare-product-details">
-                  <h5 className="title">
-                    Honor T1 7 .0 1 GB RAM 8 GB ROM 7 Inch With Wi-Fi+3G Tablet
-                  </h5>
-                  <h6 className="price mt-3">$ 100</h6>
-                  <div>
-                    <div className="product-detail">
-                      <h5>Brand:</h5>
-                      <p>Hevels</p>
-                    </div>
-                    <div className="product-detail">
-                      <h5>Type:</h5>
-                      <p>Watch</p>
-                    </div>
-                    <div className="product-detail">
-                      <h5>Availability:</h5>
-                      <p>In Stock</p>
-                    </div>
-                    <div className="product-detail">
-                      <h5>Color:</h5>
-                      <Color />
-                    </div>
-                    <div className="product-detail">
-                      <h5>Size:</h5>
-                      <div className="d-flex gap-1">
-                        <p>S</p>
-                        <p>M</p>
-                      </div>
-                    </div>
+                <div className="product-detail">
+                  <h5>Type:</h5>
+                  <p>Watch</p>
+                </div>
+                <div className="product-detail">
+                  <h5>Availability:</h5>
+                  <p>In Stock</p>
+                </div>
+                <div className="product-detail">
+                  <h5>Color:</h5>
+                  <Color />
+                </div>
+                <div className="product-detail">
+                  <h5>Size:</h5>
+                  <div className="d-flex gap-1">
+                    <p>S</p>
+                    <p>M</p>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-        </Container>
-      </div>
+        </div>
+        <div className="col-3">
+          <div className="compare-product-card position-relative">
+            <img
+              src="images/cross.svg"
+              className="cross position-absolute img-fluid"
+              alt="cross"
+            />
+            <div className="product-card-image">
+              <img src="images/watch.jpg" alt="watch" />
+            </div>
+            <div className="compare-product-details">
+              <h5 className="title">
+                Honor T1 7 .0 1 GB RAM 8 GB ROM 7 Inch With Wi-Fi+3G Tablet
+              </h5>
+              <h6 className="price mt-3">$ 100</h6>
+              <div>
+                <div className="product-detail">
+                  <h5>Brand:</h5>
+                  <p>Hevels</p>
+                </div>
+                <div className="product-detail">
+                  <h5>Type:</h5>
+                  <p>Watch</p>
+                </div>
+                <div className="product-detail">
+                  <h5>Availability:</h5>
+                  <p>In Stock</p>
+                </div>
+                <div className="product-detail">
+                  <h5>Color:</h5>
+                  <Color />
+                </div>
+                <div className="product-detail">
+                  <h5>Size:</h5>
+                  <div className="d-flex gap-1">
+                    <p>S</p>
+                    <p>M</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </Container>
     </>
   );
 };
