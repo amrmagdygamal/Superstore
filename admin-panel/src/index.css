@@ -95,9 +95,7 @@ main::-webkit-scrollbar {
   font-size: 16px;
 }
 .ant-menu-submenu-title:active,
-.ant-menu-submenu-title:focus,
-.ant-menu-item:active,
-.ant-menu-item:focus {
+.ant-menu-item:active {
   background-color: var(--light-yel) !important;
   color: var(--dark-blue) !important;
 }
