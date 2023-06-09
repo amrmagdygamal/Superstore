@@ -1,7 +1,6 @@
 
-import React from 'react'
 
-const CustomInput = (props) => {
+const CustomInput = (props: any) => {
 
   const { type, label, i_id, i_class, name } = props;
 
