@@ -1,6 +1,9 @@
 import React from 'react';
 import { Table } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
+import {BiEdit} from 'react-icons/bi';
+import {AiFillDelete} from 'react-icons/ai';
+
 
 
 interface DataType {
@@ -43,7 +46,7 @@ for (let i = 0; i < 46; i++) {
 const Productlist = () => {
   return (
     <div>
-      <h3 className="mb-4">Products</h3>
+      <h3 className="mb-4 title">Products</h3>
       <div>
       <Table columns={columns} dataSource={data1} />
       </div>

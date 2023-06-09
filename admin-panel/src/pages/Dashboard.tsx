@@ -133,49 +133,49 @@ const Dashboard = () => {
       <div className="d-flex justify-content-between align-items-center gap-3">
         <div className="d-flex justify-content-between align-items-end flex-grow-1 bg-white p-3 rounded">
           <div>
-            <p>Total</p> <h4 className="mb-0">$1100</h4>
+            <p className='desc'>Total</p> <h4 className="mb-0 sub-title sub-title">$1100</h4>
           </div>
           <div className="d-flex flex-column align-items-end">
             <h6 className='red'><BsArrowDownRight />-32%</h6>
-            <p className="mb-0">Compared To April 2022</p>
+            <p className="mb-0 desc">Compared To April 2022</p>
           </div>
         </div>
         <div className="d-flex justify-content-between align-items-end flex-grow-1 bg-white p-3 rounded">
           <div>
-            <p>Total</p> <h4 className="mb-0">$1100</h4>
+            <p className='desc'>Total</p> <h4 className="mb-0 sub-title">$1100</h4>
           </div>
           <div className="d-flex flex-column align-items-end">
             <h6 className='green'><BsArrowUpRight />32%</h6>
-            <p className="mb-0">Compared To April 2022</p>
+            <p className="mb-0 desc">Compared To April 2022</p>
           </div>
         </div>
         <div className="d-flex justify-content-between align-items-end flex-grow-1 bg-white p-3 rounded">
           <div>
-            <p>Total</p> <h4 className="mb-0">$1100</h4>
+            <p className='desc'>Total</p> <h4 className="mb-0 sub-title sub-title">$1100</h4>
           </div>
           <div className="d-flex flex-column align-items-end">
             <h6 className='red'><BsArrowDownRight />-32%</h6>
-            <p className="mb-0">Compared To April 2022</p>
+            <p className="mb-0 desc">Compared To April 2022</p>
           </div>
         </div>
         <div className="d-flex justify-content-between align-items-end flex-grow-1 bg-white p-3 rounded">
           <div>
-            <p>Total</p> <h4 className="mb-0">$1100</h4>
+            <p className='desc'>Total</p> <h4 className="mb-0 sub-title sub-title">$1100</h4>
           </div>
           <div className="d-flex flex-column align-items-end">
             <h6 className='green'><BsArrowUpRight />32%</h6>
-            <p className="mb-0">Compared To April 2022</p>
+            <p className="mb-0 desc">Compared To April 2022</p>
           </div>
         </div>
       </div>
-      <div className="mt-4">
-        <h3 className="mb-4">InCome Statics</h3>
+      <div className="mt-4 title">
+        <h3 className="mb-5">InCome Statics</h3>
         <div className="">
         <Column {...config} />
         </div>
       </div>
       <div className="mt-4">
-        <h3 className="mb-4">
+        <h3 className="mb-5 title">
           Recent Orders
         </h3>
         <div>

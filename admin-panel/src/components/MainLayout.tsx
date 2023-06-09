@@ -1,23 +1,22 @@
-import React, { useState } from "react";
-import { MenuFoldOutlined, MenuUnfoldOutlined } from "@ant-design/icons";
+import React, { useState } from 'react';
+import { MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons';
 import {
   AiOutlineDashboard,
   AiOutlineShoppingCart,
   AiOutlineUser,
   AiOutlineBgColors,
-} from "react-icons/ai";
-import { RiCouponLine } from "react-icons/ri";
-import { ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import { Link } from "react-router-dom";
-import { Outlet } from "react-router-dom";
-import { ImBlog } from "react-icons/im";
-import { IoIosNotifications } from "react-icons/io";
-import { FaClipboardList, FaBloggerB } from "react-icons/fa";
-import { SiBrandfolder } from "react-icons/si";
-import { BiCategoryAlt } from "react-icons/bi";
-import { Layout, Menu, theme } from "antd";
-import { useNavigate } from "react-router-dom";
+} from 'react-icons/ai';
+import { RiCouponLine } from 'react-icons/ri';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { Outlet } from 'react-router-dom';
+import { ImBlog } from 'react-icons/im';
+import { IoIosNotifications } from 'react-icons/io';
+import { FaClipboardList, FaBloggerB } from 'react-icons/fa';
+import { SiBrandfolder } from 'react-icons/si';
+import { BiCategoryAlt } from 'react-icons/bi';
+import { Layout, Menu, theme } from 'antd';
+import { useNavigate } from 'react-router-dom';
 const { Header, Sider, Content } = Layout;
 const MainLayout = () => {
   const [collapsed, setCollapsed] = useState(false);
@@ -31,136 +30,136 @@ const MainLayout = () => {
         <div className="logo">
           <h2 className="text-white fs-5 text-center py-3 mb-0">
             <span className="sm-logo">SP</span>
-            <span className="lg-logo">Super Store <span className="bg-white rounded-3 text-dark text-center p-1 ts-5">Admin</span></span>
+            <span className="lg-logo">
+              Super Store{' '}
+              <span className="bg-white rounded-3 text-dark text-center p-1 ts-5">
+                Admin
+              </span>
+            </span>
           </h2>
         </div>
         <Menu
           theme="dark"
           mode="inline"
-          defaultSelectedKeys={[""]}
+          defaultSelectedKeys={['']}
           onClick={({ key }) => {
-            if (key == "signout") {
-              return
+            if (key == 'signout') {
+              return;
             } else {
               navigate(key);
             }
           }}
           items={[
             {
-              key: "",
+              key: '',
               icon: <AiOutlineDashboard className="fs-4" />,
-              label: "Dashboard",
+              label: 'Dashboard',
             },
             {
-              key: "customers",
+              key: 'customers',
               icon: <AiOutlineUser className="fs-4" />,
-              label: "Customers",
+              label: 'Customers',
             },
             {
-              key: "Catalog",
+              key: 'Catalog',
               icon: <AiOutlineShoppingCart className="fs-4" />,
-              label: "Catalog",
+              label: 'Catalog',
               children: [
                 {
-                  key: "product",
+                  key: 'product',
                   icon: <AiOutlineShoppingCart className="fs-4" />,
-                  label: "Add Product",
+                  label: 'Add Product',
                 },
                 {
-                  key: "list-product",
+                  key: 'list-product',
                   icon: <AiOutlineShoppingCart className="fs-4" />,
-                  label: "Product List",
+                  label: 'Product List',
                 },
                 {
-                  key: "brand",
+                  key: 'brand',
                   icon: <SiBrandfolder className="fs-4" />,
-                  label: "Brand",
+                  label: 'Brand',
                 },
                 {
-                  key: "list-brand",
+                  key: 'list-brand',
                   icon: <SiBrandfolder className="fs-4" />,
-                  label: "Brand List ",
+                  label: 'Brand List ',
                 },
                 {
-                  key: "category",
+                  key: 'category',
                   icon: <BiCategoryAlt className="fs-4" />,
-                  label: "Category",
+                  label: 'Category',
                 },
                 {
-                  key: "list-category",
+                  key: 'list-category',
                   icon: <BiCategoryAlt className="fs-4" />,
-                  label: "Category List",
+                  label: 'Category List',
                 },
                 {
-                  key: "color",
+                  key: 'list-color',
                   icon: <AiOutlineBgColors className="fs-4" />,
-                  label: "Color",
+                  label: 'Color',
                 },
                 {
-                  key: "list-color",
+                  key: 'color',
                   icon: <AiOutlineBgColors className="fs-4" />,
-                  label: "Color List",
-                },
-                {
-                  key: "color",
-                  icon: <AiOutlineBgColors className="fs-4" />,
-                  label: "Add Color",
+                  label: 'Add Color',
                 },
               ],
             },
             {
-              key: "orders",
+              key: 'orders',
               icon: <FaClipboardList className="fs-4" />,
-              label: "Orders",
+              label: 'Orders',
             },
             {
-              key: "marketing",
+              key: 'marketing',
               icon: <RiCouponLine className="fs-4" />,
-              label: "Marketing",
+              label: 'Marketing',
               children: [
                 {
-                  key: "coupon",
+                  key: 'coupon',
                   icon: <ImBlog className="fs-4" />,
-                  label: "Add Coupon",
+                  label: 'Add Coupon',
                 },
                 {
-                  key: "coupon-list",
+                  key: 'coupon-list',
                   icon: <RiCouponLine className="fs-4" />,
-                  label: "Coupon List",
+                  label: 'Coupon List',
                 },
               ],
             },
             {
-              key: "blogs",
+              key: 'blogs',
               icon: <FaBloggerB className="fs-4" />,
-              label: "Blogs",
+              label: 'Blogs',
               children: [
                 {
-                  key: "blog",
+                  key: 'blog',
                   icon: <ImBlog className="fs-4" />,
-                  label: "Add Blog",
+                  label: 'Add Blog',
                 },
                 {
-                  key: "blog-list",
+                  key: 'blog-list',
                   icon: <FaBloggerB className="fs-4" />,
-                  label: "Blog List",
+                  label: 'Blog List',
                 },
                 {
-                  key: "blog-category",
+                  key: 'blog-category',
                   icon: <ImBlog className="fs-4" />,
-                  label: "Add Blog Category",
+                  label: 'Add Blog Category',
                 },
                 {
-                  key: "blog-category-list",
+                  key: 'blog-category-list',
                   icon: <FaBloggerB className="fs-4" />,
-                  label: "Blog Category List",
+                  label: 'Blog Category List',
                 },
               ],
             },
             {
-              key: "enquiries",
+              key: 'enquiries',
               icon: <FaClipboardList className="fs-4" />,
-              label: "Enquiries",
+              label: 'Enquiries',
             },
           ]}
         />
@@ -176,7 +175,7 @@ const MainLayout = () => {
           {React.createElement(
             collapsed ? MenuUnfoldOutlined : MenuFoldOutlined,
             {
-              className: "trigger",
+              className: 'trigger',
               onClick: () => setCollapsed(!collapsed),
             }
           )}
@@ -187,51 +186,74 @@ const MainLayout = () => {
                 3
               </span>
             </div>
-
-            <div className="d-flex gap-3 align-items-center dropdown">
+            <div className="dropdown d-flex gap-3 align-items-center ">
               <div>
-                <img
-                  width={55}
-                  height={55}
-                  src="/images/logoamr.jpg"
-                  alt=""
-                />
+                <img width={55} height={55} src="/images/logoamr.jpg" alt="" />
               </div>
-              <div
-                role="button"
-                id="dropdownMenuLink"
+              <button
+                className="border-0 bg-transparent"
+                type="button"
                 data-bs-toggle="dropdown"
                 aria-expanded="false"
               >
                 <h5 className="mb-0">Amr Magdy</h5>
                 <p className="mb-0">amrroraker@gmail.com</p>
-              </div>
-              <div className="dropdown-menu" aria-labelledby="dropdownMenuLink">
+              </button>
+              <ul className="dropdown-menu">
                 <li>
-                  <Link
-                    className="dropdown-item py-1 mb-1"
-                    style={{ height: "auto", lineHeight: "20px" }}
-                    to="/"
+                  <a
+                    className="dropdown-item"
+                    style={{ height: 'auto', lineHeight: '20px' }}
+                    href="/"
+                    onClick={() => console.log('View Profile clicked')}
                   >
                     View Profile
-                  </Link>
+                  </a>
                 </li>
                 <li>
-                  <Link
-                    className="dropdown-item py-1 mb-1"
-                    style={{ height: "auto", lineHeight: "20px" }}
-                    to="/"
+                  <a
+                    className="dropdown-item"
+                    style={{ height: 'auto', lineHeight: '20px' }}
+                    href="/"
+                    onClick={() => console.log('Signout clicked')}
                   >
                     Signout
-                  </Link>
+                  </a>
                 </li>
-              </div>
+              </ul>
+            </div>
+            <div className="dropdown">
+              <button
+                className="btn btn-secondary dropdown-toggle"
+                type="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                Dropdown
+              </button>
+              <ul className="dropdown-menu">
+                <li>
+                  <button className="dropdown-item" type="button">
+                    Action
+                  </button>
+                </li>
+                <li>
+                  <button className="dropdown-item" type="button">
+                    Another action
+                  </button>
+                </li>
+                <li>
+                  <button className="dropdown-item" type="button">
+                    Something else here
+                  </button>
+                </li>
+              </ul>
             </div>
           </div>
         </Header>
         <Content
           style={{
-            margin: "24px 16px",
+            margin: '24px 16px',
             padding: 24,
             minHeight: 280,
             background: colorBgContainer,

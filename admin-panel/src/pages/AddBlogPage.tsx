@@ -37,7 +37,7 @@ const AddBlogPage = () => {
 
   return (
     <div>
-      <h3 className="mb-4">Add Blog</h3>
+      <h3 className="mb-4 title">Add Blog</h3>
 
       <div className="">
         <form action="">
@@ -53,7 +53,7 @@ const AddBlogPage = () => {
               uploading company data or other banned files.
             </p>
           </Dragger>
-          <div className="mt-4">
+          <div className="mt-4 title">
             <CustomInput type="text" name="title" label="Enter Blog Title" />
           </div>
           <select name="category" className="form-control py-3 mb-3" id="">
