@@ -1,43 +1,43 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import colorService from './colorService';
+import OrderService from './orderService';
 
 const initialState = {
-  colors: [],
+  orders: [],
   isError: false,
   isLoading: false,
   isSuccess: false,
   message: '',
 };
 
-export const getColors = createAsyncThunk(
-  'brand/get-colors',
+export const getAllOrders = createAsyncThunk(
+  'Order/get-Orders',
   async (_, thunkAPI) => {
     try {
-      return await colorService.getColors();
+      return await OrderService.getAllOrders();
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }
   }
 );
 
-export const enquirySlice = createSlice({
-  name: 'colors',
+export const OrderSlice = createSlice({
+  name: 'Orders',
   initialState,
   reducers: {},
   extraReducers: (buildeer) => {
     buildeer
-      .addCase(getColors.pending, (state) => {
+      .addCase(getAllOrders.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(getColors.fulfilled, (state, action) => {
+      .addCase(getAllOrders.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isSuccess = true;
         state.isError = false;
-        state.colors = action.payload;
+        state.orders = action.payload;
         state.message = 'success';
       })
-      .addCase(getColors.rejected, (state, action) => {
+      .addCase(getAllOrders.rejected, (state, action) => {
         state.isError = true;
         state.isSuccess = false;
         state.isLoading = false;
@@ -46,4 +46,4 @@ export const enquirySlice = createSlice({
   },
 });
 
-export default enquirySlice.reducer;
+export default OrderSlice.reducer;

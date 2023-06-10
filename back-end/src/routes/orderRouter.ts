@@ -1,63 +1,30 @@
 import express, { Request, Response } from 'express';
 import asyncHandler from 'express-async-handler';
-import { Product } from '../model/ProductModel';
-import * as OrderControllers from '../controllers/orderCtr'
-import { auhtMiddleware } from '../middlewares/authentication';
+import * as OrderControllers from '../controllers/orderCtr';
+import { auhtMiddleware, isAdmin } from '../middlewares/authentication';
+import OrderModel from '../model/OrderModel';
 
 const orderRouter = express.Router();
 
+orderRouter.post('/', auhtMiddleware, OrderControllers.createOrder);
 
 
+orderRouter.get('/ordershistory', auhtMiddleware, OrderControllers.getUserOrders);
 
-orderRouter.get(
-  '/ordershistory',
-  auhtMiddleware,
-  OrderControllers.getOrders
-)
+orderRouter.get('/getallorders', auhtMiddleware,isAdmin,  OrderControllers.getAllOrders);
 
-
-orderRouter.get(
-  '/:id',
-  auhtMiddleware,
-  OrderControllers.getOrder
-);
-
-
-orderRouter.post(
-  '/',
-  auhtMiddleware,
-  OrderControllers.createOrder
-)
-
-
+orderRouter.get('/getorderbyuserid/:id', auhtMiddleware, isAdmin ,OrderControllers.getOrderByUserId);
 
 orderRouter.put(
-  '/:id/pay',
-  asyncHandler(async (req: Request, res: Response) => {
-    const order = await OrderModel.findById(req.params.id);
-
-    if (order) {
-      order.isPaid = true;
-      order.paidAt = new Date(Date.now());
-      order.paymentResult = {
-        paymentId: req.body.id,
-        status: req.body.status,
-        update_time: req.body.update_time,
-        email_address: req.body.email_address,
-      };
-      const updatedOrder = await order.save();
-
-      res.json({ order: updatedOrder, message: 'Order Paid Successfully' });
-    } else {
-      res.status(404).json({ message: 'Order Not found' });
-    }
-  })
+  '/updateorder/:id',
+  auhtMiddleware,
+  isAdmin,
+  OrderControllers.updateOrderStatus
 );
 
+orderRouter.get('/:id', auhtMiddleware, OrderControllers.getOrder);
 
 
-
-
-
+orderRouter.put('/:id/pay', auhtMiddleware, OrderControllers.payOrder);
 
 export default orderRouter;

@@ -81,47 +81,93 @@ export const createOrder = asyncHandler(
   }
 );
 
-export const getOrders = asyncHandler(async (req, res, next) => {
+export const getUserOrders = asyncHandler(async (req, res, next) => {
   const { _id } = req.user;
   validateMongoDbId(_id);
   try {
-    const orders = await OrderModel.find({ user: _id });
+    const userorders = await OrderModel.find({ orderby: _id });
 
-    res.json(orders);
+    res.json(userorders);
   } catch (error) {
     next(error);
   }
 });
 
-export const updateOrderStatus = asyncHandler ( async (req, res, next) => {
-  const {status} = req.body;
+export const getAllOrders = asyncHandler(
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const alluserorders = await OrderModel.find()
+        .populate('products.product')
+        .populate('orderby')
+        .exec();
+      res.json(alluserorders);
+    } catch (error) {
+      next(error);
+    }
+  }
+);
+
+export const getOrderByUserId = asyncHandler(async (req, res, next) => {
+  const { id } = req.params;
+  validateMongoDbId(id);
+  try {
+    const userorders = await OrderModel.find({ orderby: id })
+      .populate('products.product')
+      .populate('orderby')
+      .exec();
+    res.json(userorders);
+  } catch (error) {
+    next(error);
+  }
+});
+
+export const updateOrderStatus = asyncHandler(async (req, res, next) => {
+  const { status } = req.body;
   const { _id } = req.params;
   validateMongoDbId(_id);
 
   try {
-    
     const updateOrderStatus = await OrderModel.findOneAndUpdate(
-      {_id: _id},
+      { _id },
       {
         status: status,
         paymentResult: {
-          status: status
-        }
+          status: status,
+        },
       },
-      {new: true }
+      { new: true }
     );
   } catch (error) {
     next(error);
   }
-})
+});
 
-export const getOrder = asyncHandler ( async (req, res, next) => {
+export const getOrder = asyncHandler(async (req, res, next) => {
   const { _id } = req.user;
 
   try {
-    const findOrder = await OrderModel.findById(_id);
+    const findOrder = await OrderModel.findOne({orderby: _id});
     res.json(findOrder);
   } catch (error) {
-    next(error)
+    next(error);
   }
-})
+});
+
+
+export const payOrder =   asyncHandler(async (req: Request, res: Response) => {
+  const order = await OrderModel.findById(req.params._id);
+
+  if (order) {
+    order.isPaid = true;
+    order.paidAt = new Date(Date.now());
+    order.paymentResult = {
+      paymentId: req.body.id,
+      status: req.body.status,
+    };
+    const updatedOrder = await order.save();
+
+    res.json({ order: updatedOrder, message: 'Order Paid Successfully' });
+  } else {
+    res.status(404).json({ message: 'Order Not found' });
+  }
+});

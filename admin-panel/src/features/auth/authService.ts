@@ -3,6 +3,8 @@ import { base_url } from '../../utils/base_url';
 import { User } from '../../types/User';
 import { LoginData } from './authSlice';
 
+// login admin 
+
 const login = async (userInfo: LoginData) => {
   const response = await axios.post(`${base_url}users/admin-login`, userInfo);
   if (response.data) {
@@ -10,6 +12,10 @@ const login = async (userInfo: LoginData) => {
   }
   return response.data;
 };
+
+
+//  get orders 
+
 
 const authService = {
   login,
