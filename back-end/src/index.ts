@@ -53,12 +53,12 @@ app.use(cookieParser())
 
 app.use('/api/users', userRouter);
 app.use('/api/products', productRouter);
-app.use('/api/blog', blogRouter);
+app.use('/api/blogs', blogRouter);
 app.use('/api/prodcategory', prodCategRouter);
 app.use('/api/blogcategory', blogCategRouter);
-app.use('/api/brand', brandRouter);
+app.use('/api/brands', brandRouter);
 app.use('/api/coupon', couponRouter);
-app.use('/api/color', colorRouter);
+app.use('/api/colors', colorRouter);
 app.use('/api/enquiry', enquiryRouter);
 
 app.use('/api/orders', orderRouter);

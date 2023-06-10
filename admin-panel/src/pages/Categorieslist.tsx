@@ -1,54 +1,66 @@
-import React from 'react';
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { useEffect } from 'react';
 import { Table } from 'antd';
-import type { ColumnsType } from 'antd/es/table';
+import { useDispatch } from 'react-redux';
+import { AppDispatch } from '../app/store';
+import { useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
+import { BiEdit } from 'react-icons/bi';
+import { AiFillDelete } from 'react-icons/ai';
+import { getprodCategories } from '../features/productcategory/prodCategorySlice';
 
-
-interface DataType {
-  key: React.Key;
-  name: string;
-  product: number;
-  status: string;
-}
-
-const columns: ColumnsType<DataType> = [
+const columns: any = [
   {
     title: 'SNo',
     dataIndex: 'key',
   },
   {
-    title: 'Name',
-    dataIndex: 'name',
+    title: 'Title',
+    dataIndex: 'title',
+    sorter: (a: any, b: any) => a.title.length - b.title.length,
   },
+
   {
-    title: 'Product',
-    dataIndex: 'product',
-  },
-  {
-    title: 'Status',
-    dataIndex: 'status',
+    title: 'Action',
+    dataIndex: 'action',
   },
 ];
 
-const data1: DataType[] = [];
-for (let i = 0; i < 46; i++) {
-  data1.push({
-    key: i,
-    name: `Edward King ${i}`,
-    product: 32,
-    status: `London, Park Lane no. ${i}`,
-  });
-}
-
-
 const Categorieslist = () => {
+  const dispatch: AppDispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getprodCategories());
+  }, []);
+
+  const prodCategoryState = useSelector((state: any) => state.prodCategory.prodCategories);
+
+  const data1: any = [];
+  for (let i = 0; i < prodCategoryState.length; i++) {
+    data1.push({
+      key: i + 1,
+      title: prodCategoryState[i].title,
+      action: (
+        <>
+          <Link to="/" className="fs-3 text-dark">
+            <BiEdit />
+          </Link>
+          <Link className="ms-3 fs-3 text-danger" to="/">
+            <AiFillDelete />
+          </Link>
+        </>
+      ),
+    });
+  }
+
   return (
     <div>
       <h3 className="mb-4 title">Categories</h3>
       <div>
-      <Table columns={columns} dataSource={data1} />
+        <Table columns={columns} dataSource={data1} />
       </div>
     </div>
-  )
-}
+  );
+};
 
 export default Categorieslist;

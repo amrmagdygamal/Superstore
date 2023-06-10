@@ -1,46 +1,67 @@
-import React from 'react';
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import React, { useEffect } from 'react';
 import { Table } from 'antd';
-import type { ColumnsType } from 'antd/es/table';
+import { useDispatch } from 'react-redux';
+import { AppDispatch } from '../app/store';
+import { getBlogs } from '../features/blogs/blogSlice';
+import { useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
+import { BiEdit } from 'react-icons/bi';
+import { AiFillDelete } from 'react-icons/ai';
 
-
-interface DataType {
-  key: React.Key;
-  name: string;
-  product: number;
-  status: string;
-}
-
-const columns: ColumnsType<DataType> = [
+const columns: any = [
   {
     title: 'SNo',
     dataIndex: 'key',
   },
   {
-    title: 'Name',
-    dataIndex: 'name',
+    title: 'Title',
+    dataIndex: 'title',
+    sorter: (a: any, b: any) => a.title.length - b.title.length,
   },
   {
-    title: 'Product',
-    dataIndex: 'product',
+    title: 'Category',
+    dataIndex: 'category',
+    sorter: (a: any, b: any) => a.title.length - b.title.length,
   },
+
   {
-    title: 'Status',
-    dataIndex: 'status',
+    title: 'Action',
+    dataIndex: 'action',
   },
 ];
 
-const data1: DataType[] = [];
-for (let i = 0; i < 46; i++) {
-  data1.push({
-    key: i,
-    name: `Edward King ${i}`,
-    product: 32,
-    status: `London, Park Lane no. ${i}`,
-  });
-}
-
-
 const Bloglist = () => {
+
+  const dispatch: AppDispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getBlogs());
+  }, []);
+
+  const blogState = useSelector((state: any) => state.blog.blogs);
+
+  const data1: any = [];
+  for (let i = 0; i < blogState.length; i++) {
+      data1.push({
+        key: i + 1,
+        title: blogState[i].title,
+        categroy: blogState[i].name,
+        action: (
+          <>
+            <Link to="/" className="fs-3 text-dark">
+              <BiEdit />
+            </Link>
+            <Link className="ms-3 fs-3 text-danger" to="/">
+              <AiFillDelete />
+            </Link>
+          </>
+        ),
+      });
+  }
+
+
+
   return (
     <div>
       <h3 className="mb-4 title">Blogs List</h3>
