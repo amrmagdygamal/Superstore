@@ -1,0 +1,17 @@
+steps for implementing apis in front end using redux
+
+
+1- first after installing redux we create a folder for the store of the app
+
+2- creating a folder for features ( user athentication and produts utils) for fetching data from backend.
+
+3- first create a folder (auth) inside the features folder contains two files : first one called authSlice    &  second one called authService 
+
+4- In the authSlice we create default object for user and initialstate  and auth functions .
+
+5- in the authService file we create axios functions to call backend apis 
+ 
+6- create a folder for utils and inside create a base_url file for saving the base_url and export it 
+
+
+7- in the store we import the reducer and include it the store

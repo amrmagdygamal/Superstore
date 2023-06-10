@@ -1,46 +1,60 @@
-import React from 'react';
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import React, { useEffect } from 'react';
 import { Table } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
+import { getCustomers } from '../features/customers/customerSlice';
+import { AppDispatch } from '../app/store';
+import { useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
+import { User } from '../types/User';
 
 
-interface DataType {
-  key: React.Key;
-  name: string;
-  product: number;
-  status: string;
-}
 
-const columns: ColumnsType<DataType> = [
+
+const columns: any = [
   {
     title: 'SNo',
     dataIndex: 'key',
   },
   {
-    title: 'Name',
-    dataIndex: 'name',
+    title: 'Username',
+    dataIndex: 'username',
+    defaultSortOrder: "descend",
+    sorter: (a: any, b: any) => a.username - b.username,
   },
   {
-    title: 'Product',
-    dataIndex: 'product',
+    title: 'Email',
+    dataIndex: 'email',
   },
-  {
-    title: 'Status',
-    dataIndex: 'status',
-  },
+  
 ];
 
-const data1: DataType[] = [];
-for (let i = 0; i < 46; i++) {
-  data1.push({
-    key: i,
-    name: `Edward King ${i}`,
-    product: 32,
-    status: `London, Park Lane no. ${i}`,
-  });
-}
+
 
 
 const Customers = () => {
+  const dispatch:AppDispatch = useDispatch()
+
+
+
+  useEffect(() => {
+    dispatch(getCustomers())
+  }, [])
+
+  const customerState = useSelector((state: any) => state.customer.customers);
+
+  const data1: any = [];
+for (let i = 0; i < customerState.length; i++) {
+  if(customerState[i].role !== "admin") {
+    data1.push({
+      key: i + 1,
+      username: customerState[i].username,
+      email: customerState[i].email,
+    })
+  }
+}
+  
+
   return (
     <div>
       <h3 className="mb-4 title">Blogs List</h3>
