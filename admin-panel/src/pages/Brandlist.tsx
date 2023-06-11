@@ -8,6 +8,7 @@ import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { BiEdit } from 'react-icons/bi';
 import { AiFillDelete } from 'react-icons/ai';
+import { resetState } from '../features/customers/customerSlice';
 
 const columns: any = [
   {
@@ -30,6 +31,7 @@ const Brandlist = () => {
   const dispatch: AppDispatch = useDispatch();
 
   useEffect(() => {
+    dispatch(resetState())
     dispatch(getBrands());
   }, []);
 
@@ -42,7 +44,7 @@ const Brandlist = () => {
         name: brandState[i].name,
         action: (
           <>
-            <Link to="/" className="fs-3 text-dark">
+            <Link to={`/admin/brand/${brandState[i]._id}`} className="fs-3 text-dark">
               <BiEdit />
             </Link>
             <Link className="ms-3 fs-3 text-danger" to="/">
