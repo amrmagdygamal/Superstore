@@ -6,7 +6,15 @@ const getColors = async () => {
   return response.data;
 };
 
+
+const createColor = async (color: any) => {
+  const response = await axios.post(`${base_url}colors/`, color);
+  return response.data;
+};
+
+
 const Colorservice = {
   getColors,
+  createColor
 };
 export default Colorservice;

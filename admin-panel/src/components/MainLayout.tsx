@@ -78,7 +78,7 @@ const MainLayout = () => {
                 {
                   key: 'brand',
                   icon: <SiBrandfolder className="fs-4" />,
-                  label: 'Brand',
+                  label: 'Add Brand',
                 },
                 {
                   key: 'list-brand',
@@ -88,7 +88,7 @@ const MainLayout = () => {
                 {
                   key: 'category',
                   icon: <BiCategoryAlt className="fs-4" />,
-                  label: 'Category',
+                  label: 'Add Category',
                 },
                 {
                   key: 'list-category',
@@ -98,7 +98,7 @@ const MainLayout = () => {
                 {
                   key: 'list-color',
                   icon: <AiOutlineBgColors className="fs-4" />,
-                  label: 'Color',
+                  label: 'Colors',
                 },
                 {
                   key: 'color',

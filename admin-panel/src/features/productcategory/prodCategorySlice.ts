@@ -1,17 +1,11 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import ProdCategoryService from './prodCategoryService';
+import prodCategoryService from './prodCategoryService';
 
-const initialState = {
-  prodCategories: [],
-  isError: false,
-  isLoading: false,
-  isSuccess: false,
-  message: '',
-};
 
 export const getprodCategories = createAsyncThunk(
-  'brand/get-prodCategories',
+  'prodCategory/get-prodCategories',
   async (_, thunkAPI) => {
     try {
       return await ProdCategoryService.getProdCategory();
@@ -19,7 +13,40 @@ export const getprodCategories = createAsyncThunk(
       return thunkAPI.rejectWithValue(error);
     }
   }
+  );
+
+
+  
+export const createProdCategory = createAsyncThunk(
+  'prodcategory/create-prodcategory',
+  async (prodCategoryData: any, thunkAPI) => {
+    try {
+      return await prodCategoryService.createCategory(prodCategoryData);
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
 );
+
+
+  interface ProdCategorieState {
+    prodCategories: [];
+    isError: boolean;
+    isLoading: boolean;
+    isSuccess: boolean;
+    message: string;
+    createdProdCategory?: any
+  
+  }
+
+
+  const initialState: ProdCategorieState = {
+    prodCategories: [],
+    isError: false,
+    isLoading: false,
+    isSuccess: false,
+    message: '',
+  };
 
 export const prodCategorieSlice = createSlice({
   name: 'prodCategories',
@@ -42,7 +69,22 @@ export const prodCategorieSlice = createSlice({
         state.isSuccess = false;
         state.isLoading = false;
         state.message = action.error.message ?? '';
-      });
+      })
+      .addCase(createProdCategory.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(createProdCategory.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.isError = false;
+        state.createdProdCategory = action.payload;
+      })
+      .addCase(createProdCategory.rejected, (state, action) => {
+        state.isError = true;
+        state.isSuccess = false;
+        state.isLoading = false;
+        state.message = action.error.message ?? '';
+      })
   },
 });
 

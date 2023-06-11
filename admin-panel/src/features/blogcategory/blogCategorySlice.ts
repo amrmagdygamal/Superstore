@@ -2,16 +2,8 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import blogCategoryService from './blogCategoryService';
 
-const initialState = {
-  blogCategories: [],
-  isError: false,
-  isLoading: false,
-  isSuccess: false,
-  message: '',
-};
-
 export const getBlogCategories = createAsyncThunk(
-  'brand/get-blogCategories',
+  'blogcategory/get-blogcategories',
   async (_, thunkAPI) => {
     try {
       return await blogCategoryService.getBlogCategory();
@@ -20,6 +12,38 @@ export const getBlogCategories = createAsyncThunk(
     }
   }
 );
+
+
+  
+export const createBlogCategory = createAsyncThunk(
+  'blogcategory/create-blogcategory',
+  async (BlogCategoryData: any, thunkAPI) => {
+    try {
+      return await blogCategoryService.createBlogCategory(BlogCategoryData);
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
+
+
+interface BlogCategorieState {
+  blogCategories: [];
+  isError: boolean;
+  isLoading: boolean;
+  isSuccess: boolean;
+  message: string;
+  createdBlogCategory?: any
+
+}
+const initialState: BlogCategorieState = {
+  blogCategories: [],
+  isError: false,
+  isLoading: false,
+  isSuccess: false,
+  message: '',
+};
+
 
 export const blogCategorieSlice = createSlice({
   name: 'blogCategories',
@@ -42,7 +66,21 @@ export const blogCategorieSlice = createSlice({
         state.isSuccess = false;
         state.isLoading = false;
         state.message = action.error.message ?? '';
-      });
+      }).addCase(createBlogCategory.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(createBlogCategory.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.isError = false;
+        state.createdBlogCategory = action.payload;
+      })
+      .addCase(createBlogCategory.rejected, (state, action) => {
+        state.isError = true;
+        state.isSuccess = false;
+        state.isLoading = false;
+        state.message = action.error.message ?? '';
+      })
   },
 });
 
