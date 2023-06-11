@@ -12,8 +12,8 @@ const Resetpassword = () => {
           <h3 className="text-center title">Reset Password</h3>
           <p className="text-center">Create A  new Password</p>
           <form action="">
-            <CustomInput type="password" label="New Password" id="pass" name="password" />
-            <CustomInput type="password" label="Confirm Password" id="pass" name="password" />
+            <CustomInput type="password" label="New Password" i_id={"pass"} name="password" />
+            <CustomInput type="password" label="Confirm Password" i_id={"pass"} name="password" />
             <button
               className='border-0 px-3 py-2 text-white fw-bold w-100'
               style={{ "backgroundColor": "#ffd333"}}

@@ -1,24 +1,7 @@
-import mongoose, { Document, Model, model, Schema } from "mongoose";
+import mongoose, { Document, InferSchemaType, Model, model, Schema } from "mongoose";
 import crypto from "crypto";
 
-export interface User extends Document {
-  username: string;
-  email: string;
-  password: string;
-  role: string;
-  isBlocked: boolean;
-  cart: Array;
-  address: string;
-  wishlist: mongoose.Schema.Types.ObjectId[];
-  refreshToken?: string;
-  orders: mongoose.Schema.Types.ObjectId[];
-  passwordChangedAt?: string;
-  passwordResetToken?: string;
-  passwordResetExpires?: Date;
-  createPasswordResetToken: () => Promise<string>;
-}
-
-const userSchema = new Schema<User>({
+const userSchema = new Schema({
   username: {
     type: String,
     required: true,
@@ -75,6 +58,6 @@ userSchema.methods.createPasswordResetToken = async function () {
   return resetToken;
 };
 
-const UserModel: Model<User> = model<User>("User", userSchema);
+export type User = InferSchemaType<typeof userSchema>;
 
-export default UserModel;
+export default model<User>('User', userSchema);

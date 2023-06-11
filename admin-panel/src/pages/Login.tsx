@@ -4,8 +4,6 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { useDispatch, useSelector } from 'react-redux';
-import { LoginData, login } from '../features/auth/authSlice';
-import { User } from '../types/User';
 import { AppDispatch } from '../app/store';
 
 
@@ -13,16 +11,7 @@ const Login = () => {
 
   const dispatch: AppDispatch = useDispatch();
   const navigate = useNavigate();
-  interface RootState {
-    auth: {
-      userInfo: LoginData;
-      isLoading: boolean;
-      isSuccess: boolean;
-      isError: boolean;
-      message: string;
-      
-    }
-  }
+
 
   const authState = useSelector((state: RootState) => state);
 
@@ -71,9 +60,9 @@ const Login = () => {
             <CustomInput
               type="email"
               label="Email Address"
-              id="email"
               name="email"
               onChan={formik.handleChange('email')}
+              onBlur={formik.handleBlur('email')}
               val={formik.values.email}
             />
             <div className="error">
@@ -84,9 +73,9 @@ const Login = () => {
             <CustomInput
               type="password"
               label="Password"
-              id="pass"
               name="password"
               onChan={formik.handleChange('password')}
+              onBlur={formik.handleBlur('password')}
               val={formik.values.password}
             />
             <div className="error">

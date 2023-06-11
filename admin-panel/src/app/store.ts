@@ -8,6 +8,7 @@ import blogCategoryReducer from '../features/blogcategory/blogCategorySlice';
 import colorReducer from '../features/color/colorSlice';
 import blogReducer from '../features/blogs/blogSlice';
 import enquiryReducer from '../features/enquiries/enquiriesSlice';
+import imgReducer from '../features/upload/uploadSlice'
 
 export const store = configureStore({
   reducer: {
@@ -20,6 +21,7 @@ export const store = configureStore({
     color: colorReducer,
     blog: blogReducer,
     enquiry: enquiryReducer,
+    img: imgReducer,
   },
 });
 

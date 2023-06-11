@@ -15,10 +15,7 @@ const initialState = {
   message: '',
 };
 
-export interface LoginData {
-  email: string;
-  password: string;
-}
+
 
 export const login = createAsyncThunk(
   'auth/admin-login',

@@ -1,5 +1,16 @@
-const CustomInput = (props: any) => {
-  const { type, label, i_id, i_class, name, val, onChan } = props;
+interface propsType {
+  type: string
+  label?: string
+  i_id?: string 
+  name: string
+  val?: number | string 
+  i_class?: string
+  onChan?: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  onBlur?: (event: React.FocusEvent<HTMLInputElement>) => void;
+}
+
+const CustomInput = (props: propsType) => {
+  const { type, label, i_id, i_class, name, val, onChan, onBlur } = props;
 
   return (
     <div className="form-floating mt-3">
@@ -11,9 +22,9 @@ const CustomInput = (props: any) => {
         className={`form-control ${i_class}`}
         value={val}
         onChange={onChan}
-        onBlur={onChan}
+        onBlur={onBlur}
       />
-      <label htmlFor={label}>{label}</label>
+      <label htmlFor={i_id}>{label}</label>
     </div>
   );
 };

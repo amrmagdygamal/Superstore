@@ -6,7 +6,7 @@ const AddBlogCategory = () => {
       <h3 className="mb-4 title">Add Blog Category</h3>
       <div>
         <form action="">
-          <CustomInput type="text" label="Enter Blog Category" />
+          <CustomInput type="text" label="Enter Blog Category" name={''} />
           <button
             className="btn btn-success border-0 rounded-3 my-5"
             type="submit"

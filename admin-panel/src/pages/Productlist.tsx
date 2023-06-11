@@ -17,9 +17,9 @@ const columns: any = [
     dataIndex: "key",
   },
   {
-    title: "Title",
-    dataIndex: "title",
-    sorter: (a: any, b: any) => a.title.length - b.title.length,
+    title: "Name",
+    dataIndex: "name",
+    sorter: (a: any, b: any) => a.name.length - b.name.length,
   },
   {
     title: "Brand",
@@ -66,7 +66,7 @@ const Productlist = () => {
 for (let i = 0; i < productState.length; i++) {
     data1.push({
       key: i + 1,
-      title: productState[i].title,
+      name: productState[i].name,
       brand: productState[i].brand,
       price: `${productState[i].price}`,
       color: productState[i].color,

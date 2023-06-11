@@ -1,14 +1,6 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice, isPending } from '@reduxjs/toolkit';
 import BrandService from './brandService';
-
-const initialState = {
-  brands: [],
-  isError: false,
-  isLoading: false,
-  isSuccess: false,
-  message: '',
-};
 
 export const getBrands = createAsyncThunk(
   'brand/get-brands',
@@ -20,6 +12,36 @@ export const getBrands = createAsyncThunk(
     }
   }
 );
+
+
+export const createBrand = createAsyncThunk(
+  'brand/create-brands',
+  async (brandData: any, thunkAPI) => {
+    try {
+      return await BrandService.createBrand(brandData);
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
+
+interface BrandState {
+  brands: [];
+  isError: boolean;
+  isLoading: boolean;
+  isSuccess: boolean;
+  message: string;
+  createdBrand?: any
+
+}
+
+const initialState: BrandState = {
+  brands: [],
+  isError: false,
+  isLoading: false,
+  isSuccess: false,
+  message: '',
+};
 
 export const brandSlice = createSlice({
   name: 'brands',
@@ -38,6 +60,21 @@ export const brandSlice = createSlice({
         state.message = 'success';
       })
       .addCase(getBrands.rejected, (state, action) => {
+        state.isError = true;
+        state.isSuccess = false;
+        state.isLoading = false;
+        state.message = action.error.message ?? '';
+      })
+      .addCase(createBrand.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(createBrand.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isError = false;
+        state.isSuccess = true;
+        state.createdBrand = action.payload;
+      })
+      .addCase(createBrand.rejected, (state, action) => {
         state.isError = true;
         state.isSuccess = false;
         state.isLoading = false;

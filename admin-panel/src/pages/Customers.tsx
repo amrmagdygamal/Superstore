@@ -6,12 +6,19 @@ import { getCustomers } from '../features/customers/customerSlice';
 import { AppDispatch } from '../app/store';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
-import { User } from '../types/User';
+import {  User } from '../types/User';
 
 
 
 
-const columns: any = [
+interface Column {
+  title: string;
+  dataIndex: string;
+  defaultSortOrder?: string;
+  sorter?: (a: any, b: any) => number;
+}
+
+const columns:any = [
   {
     title: 'SNo',
     dataIndex: 'key',
@@ -19,16 +26,14 @@ const columns: any = [
   {
     title: 'Username',
     dataIndex: 'username',
-    defaultSortOrder: "descend",
-    sorter: (a: any, b: any) => a.username - b.username,
+    defaultSortOrder: 'descend',
+    sorter: (a: any, b: any) => a.username.localeCompare(b.username),
   },
   {
     title: 'Email',
     dataIndex: 'email',
   },
-  
 ];
-
 
 
 
@@ -43,16 +48,13 @@ const Customers = () => {
 
   const customerState = useSelector((state: any) => state.customer.customers);
 
-  const data1: any = [];
-for (let i = 0; i < customerState.length; i++) {
-  if(customerState[i].role !== "admin") {
-    data1.push({
-      key: i + 1,
-      username: customerState[i].username,
-      email: customerState[i].email,
-    })
-  }
-}
+  const data1: { key: number; username: string; email: string }[] = customerState
+  .filter((customer: User) => customer.role !== 'admin')
+  .map((customer: User, index: number) => ({
+    key: index + 1,
+    username: customer.username,
+    email: customer.email,
+  }));
   
 
   return (
