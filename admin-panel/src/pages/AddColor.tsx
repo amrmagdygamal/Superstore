@@ -6,7 +6,7 @@ import { toast } from "react-toastify";
 import * as yup from "yup";
 import { useFormik } from "formik";
 import {
-  createColor,
+  createColor, resetState,
 } from "../features/color/colorSlice";
 import { AppDispatch } from "../app/store";
 
@@ -43,6 +43,9 @@ const AddColor = () => {
     onSubmit: (values) => {
         dispatch(createColor(values));
         formik.resetForm();
+        setTimeout(() => {
+          dispatch(resetState());
+        }, 8000);
       }
   });
 

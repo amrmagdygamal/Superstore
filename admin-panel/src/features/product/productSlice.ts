@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { createAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import ProductService from './productService';
 
 export const getProducts = createAsyncThunk(
@@ -54,6 +54,8 @@ const initialState: ProductState = {
   
 };
 
+export const resetState = createAction('Reset_all');
+
 export const productSlice = createSlice({
   name: 'products',
   initialState,
@@ -90,7 +92,8 @@ export const productSlice = createSlice({
         state.isSuccess = false;
         state.isLoading = false;
         state.message = action.error.message ?? '';
-      });
+      })
+      .addCase(resetState, () => initialState);
   },
 });
 

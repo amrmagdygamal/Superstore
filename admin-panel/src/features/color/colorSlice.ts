@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { createAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import colorService from './colorService';
 
 
@@ -44,6 +44,8 @@ export const createColor = createAsyncThunk(
     message: '',
   };
 
+
+  export const resetState = createAction('Reset_all');
 export const colorSlice = createSlice({
   name: 'colors',
   initialState,
@@ -81,6 +83,7 @@ export const colorSlice = createSlice({
         state.isLoading = false;
         state.message = action.error.message ?? '';
       })
+      .addCase(resetState, () => initialState);
   },
 });
 

@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import { createAsyncThunk, createSlice, isPending } from '@reduxjs/toolkit';
+import { createAction, createAsyncThunk, createSlice, isPending } from '@reduxjs/toolkit';
 import BrandService from './brandService';
 
 export const getBrands = createAsyncThunk(
@@ -14,6 +14,7 @@ export const getBrands = createAsyncThunk(
 );
 
 
+
 export const createBrand = createAsyncThunk(
   'brand/create-brands',
   async (brandData: any, thunkAPI) => {
@@ -25,16 +26,21 @@ export const createBrand = createAsyncThunk(
   }
 );
 
+interface BrandInfo  {
+  title: string
+} 
+
 interface BrandState {
   brands: [];
   isError: boolean;
   isLoading: boolean;
   isSuccess: boolean;
   message: string;
-  createdBrand?: any
+  createdBrand?: BrandInfo
 
 }
 
+export const resetState = createAction("Reset_all");
 const initialState: BrandState = {
   brands: [],
   isError: false,
@@ -79,7 +85,8 @@ export const brandSlice = createSlice({
         state.isSuccess = false;
         state.isLoading = false;
         state.message = action.error.message ?? '';
-      });
+      })
+      .addCase(resetState, () => initialState);
   },
 });
 

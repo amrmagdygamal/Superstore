@@ -7,7 +7,7 @@ import * as yup from 'yup';
 import { useFormik } from 'formik';
 
 import { AppDispatch } from '../app/store';
-import { createBlogCategory } from '../features/blogcategory/blogCategorySlice';
+import { createBlogCategory, resetState } from '../features/blogcategory/blogCategorySlice';
 
 const schema = yup.object().shape({
   title: yup.string().required('Blog Category Name is Required'),
@@ -34,6 +34,9 @@ const AddBlogCategory = () => {
     onSubmit: (values) => {
       dispatch(createBlogCategory(values));
       formik.resetForm();
+      setTimeout(() => {
+        dispatch(resetState());
+      }, 8000);
     },
   });
 

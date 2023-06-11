@@ -222,33 +222,6 @@ const MainLayout = () => {
                 </li>
               </ul>
             </div>
-            <div className="dropdown">
-              <button
-                className="btn btn-secondary dropdown-toggle"
-                type="button"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
-              >
-                Dropdown
-              </button>
-              <ul className="dropdown-menu">
-                <li>
-                  <button className="dropdown-item" type="button">
-                    Action
-                  </button>
-                </li>
-                <li>
-                  <button className="dropdown-item" type="button">
-                    Another action
-                  </button>
-                </li>
-                <li>
-                  <button className="dropdown-item" type="button">
-                    Something else here
-                  </button>
-                </li>
-              </ul>
-            </div>
           </div>
         </Header>
         <Content
@@ -259,17 +232,17 @@ const MainLayout = () => {
             background: colorBgContainer,
           }}
         >
-
           <ToastContainer
-          position='top-center'
-          autoClose={400}
-          hideProgressBar={false}
-          newestOnTop={true}
-          closeOnClick
-          rtl={false}
-          pauseOnFocusLoss
-          draggable
-          theme='light'
+            position="top-center"
+            autoClose={400}
+            hideProgressBar={false}
+            newestOnTop={true}
+            closeOnClick
+            rtl={false}
+            limit={1}
+            pauseOnFocusLoss
+            draggable
+            theme="light"
           />
           <Outlet />
         </Content>

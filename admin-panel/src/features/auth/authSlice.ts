@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import authService from './authService';
-import { User } from '../../types/User';
+import { LoginData, User } from '../../types/User';
 
 const getUserformLocalStorage = localStorage.getItem('userInfo')
   ? JSON.parse(localStorage.getItem('userInfo')!)
@@ -49,7 +49,7 @@ export const authSlice = createSlice({
         state.isSuccess = false;
         state.isLoading = false;
         state.message = action.error.message ?? '';
-      });
+      })
   },
 });
 

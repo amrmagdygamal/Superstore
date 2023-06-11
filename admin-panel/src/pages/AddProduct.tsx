@@ -15,7 +15,7 @@ import { getColors } from '../features/color/colorSlice';
 import {toast} from 'react-toastify';
 import Dropzone from 'react-dropzone';
 import { deleteImg, uploadImg } from '../features/upload/uploadSlice';
-import { createProduct } from '../features/product/productSlice';
+import { createProduct, resetState } from '../features/product/productSlice';
 import CustomInput from '../components/CustomInput';
 import { getprodCategories } from '../features/productcategory/prodCategorySlice';
 
@@ -23,11 +23,15 @@ import { getprodCategories } from '../features/productcategory/prodCategorySlice
 
 
 const AddProduct = () => {
+
+
   const [color, setColor] = useState([]);
   const [images, setImages] = useState([]);
 
   const schema = Yup.object().shape({
     name: Yup.string().required('Name is Required'),
+    images: Yup.array().required("").min(1, 'You should one Image'),
+
     description: Yup.string().required('Description is Required'),
     price: Yup.number().required('Price is Required'),
     brand: Yup.string().required('Brand is Required'),
@@ -121,6 +125,9 @@ const AddProduct = () => {
       dispatch(createProduct(values))
       formik.resetForm();
       setColor([])
+      setTimeout(() => {
+        dispatch(resetState());
+      }, 8000);
 
     },
   });
@@ -289,6 +296,11 @@ const AddProduct = () => {
                 </div>
               );
             })}
+          </div>
+          <div className="error">
+            {formik.touched.images && formik.errors.images ? (
+              <div>{formik.errors.images}</div>
+            ) : null}
           </div>
           <button
             className="btn btn-success border-0 rounded-3 my-5"

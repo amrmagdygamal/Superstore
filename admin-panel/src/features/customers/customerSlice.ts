@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { createAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import customerService from './customerService';
 
 
@@ -23,6 +23,8 @@ export const getCustomers = createAsyncThunk(
   }
 );
 
+
+export const resetState = createAction('Reset_all');
 export const customerSlice = createSlice({
   name: 'users',
   initialState,
@@ -44,7 +46,8 @@ export const customerSlice = createSlice({
         state.isSuccess = false;
         state.isLoading = false;
         state.message = action.error.message ?? '';
-      });
+      })
+      .addCase(resetState, () => initialState);
   },
 });
 

@@ -1,8 +1,7 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { createAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import ProdCategoryService from './prodCategoryService';
 import prodCategoryService from './prodCategoryService';
-
 
 export const getprodCategories = createAsyncThunk(
   'prodCategory/get-prodCategories',
@@ -13,10 +12,8 @@ export const getprodCategories = createAsyncThunk(
       return thunkAPI.rejectWithValue(error);
     }
   }
-  );
+);
 
-
-  
 export const createProdCategory = createAsyncThunk(
   'prodcategory/create-prodcategory',
   async (prodCategoryData: any, thunkAPI) => {
@@ -28,26 +25,24 @@ export const createProdCategory = createAsyncThunk(
   }
 );
 
+interface ProdCategorieState {
+  prodCategories: [];
+  isError: boolean;
+  isLoading: boolean;
+  isSuccess: boolean;
+  message: string;
+  createdProdCategory?: any;
+}
 
-  interface ProdCategorieState {
-    prodCategories: [];
-    isError: boolean;
-    isLoading: boolean;
-    isSuccess: boolean;
-    message: string;
-    createdProdCategory?: any
-  
-  }
+const initialState: ProdCategorieState = {
+  prodCategories: [],
+  isError: false,
+  isLoading: false,
+  isSuccess: false,
+  message: '',
+};
 
-
-  const initialState: ProdCategorieState = {
-    prodCategories: [],
-    isError: false,
-    isLoading: false,
-    isSuccess: false,
-    message: '',
-  };
-
+export const resetState = createAction('Reset_all');
 export const prodCategorieSlice = createSlice({
   name: 'prodCategories',
   initialState,
@@ -85,6 +80,7 @@ export const prodCategorieSlice = createSlice({
         state.isLoading = false;
         state.message = action.error.message ?? '';
       })
+      .addCase(resetState, () => initialState);
   },
 });
 

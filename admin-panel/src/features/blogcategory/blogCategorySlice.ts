@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { createAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import blogCategoryService from './blogCategoryService';
 
 export const getBlogCategories = createAsyncThunk(
@@ -13,8 +13,6 @@ export const getBlogCategories = createAsyncThunk(
   }
 );
 
-
-  
 export const createBlogCategory = createAsyncThunk(
   'blogcategory/create-blogcategory',
   async (BlogCategoryData: any, thunkAPI) => {
@@ -26,16 +24,17 @@ export const createBlogCategory = createAsyncThunk(
   }
 );
 
-
 interface BlogCategorieState {
   blogCategories: [];
   isError: boolean;
   isLoading: boolean;
   isSuccess: boolean;
   message: string;
-  createdBlogCategory?: any
-
+  createdBlogCategory?: any;
 }
+
+export const resetState = createAction('Reset_all');
+
 const initialState: BlogCategorieState = {
   blogCategories: [],
   isError: false,
@@ -43,7 +42,6 @@ const initialState: BlogCategorieState = {
   isSuccess: false,
   message: '',
 };
-
 
 export const blogCategorieSlice = createSlice({
   name: 'blogCategories',
@@ -66,7 +64,8 @@ export const blogCategorieSlice = createSlice({
         state.isSuccess = false;
         state.isLoading = false;
         state.message = action.error.message ?? '';
-      }).addCase(createBlogCategory.pending, (state) => {
+      })
+      .addCase(createBlogCategory.pending, (state) => {
         state.isLoading = true;
       })
       .addCase(createBlogCategory.fulfilled, (state, action) => {
@@ -81,6 +80,7 @@ export const blogCategorieSlice = createSlice({
         state.isLoading = false;
         state.message = action.error.message ?? '';
       })
+      .addCase(resetState, () => initialState);
   },
 });
 
