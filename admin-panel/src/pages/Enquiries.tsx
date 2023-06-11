@@ -27,7 +27,7 @@ const columns: any = [
   {
     title: 'Number',
     dataIndex: 'number',
-    sorter: (a: any, b: any) => a.number.length - b.number.length,
+    sorter: (a: any, b: any) => a.number - b.number,
   },
   {
     title: 'Status',
