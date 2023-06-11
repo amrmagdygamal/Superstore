@@ -12,25 +12,20 @@ import { AppDispatch } from '../app/store';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
 import { getColors } from '../features/color/colorSlice';
-import {toast} from 'react-toastify';
+import { toast } from 'react-toastify';
 import Dropzone from 'react-dropzone';
 import { deleteImg, uploadImg } from '../features/upload/uploadSlice';
 import { createProduct, resetState } from '../features/product/productSlice';
 import CustomInput from '../components/CustomInput';
 import { getprodCategories } from '../features/productcategory/prodCategorySlice';
 
-
-
-
 const AddProduct = () => {
-
-
   const [color, setColor] = useState([]);
   const [images, setImages] = useState([]);
 
   const schema = Yup.object().shape({
     name: Yup.string().required('Name is Required'),
-    images: Yup.array().required("").min(1, 'You should one Image'),
+    images: Yup.array().required('').min(1, 'You should one Image'),
 
     description: Yup.string().required('Description is Required'),
     price: Yup.number().required('Price is Required'),
@@ -43,11 +38,8 @@ const AddProduct = () => {
     countInStock: Yup.number().required('Quantity is Required'),
   });
 
-
-
   const dispatch: AppDispatch = useDispatch();
 
-  
   const brandState = useSelector((state: any) => state.brand.brands);
   const colorState = useSelector((state: any) => state.color.colors);
   const imgState = useSelector((state: any) => state.img.images);
@@ -56,21 +48,21 @@ const AddProduct = () => {
     (state: any) => state.prodCategory.prodCategories
   );
 
-  const handleColors = (e : any) => {
+  const handleColors = (e: any) => {
     setColor(e);
-  }
-  
+  };
+
   useEffect(() => {
     dispatch(getBrands());
     dispatch(getColors());
     dispatch(getprodCategories());
   }, []);
-  
+
   interface Image {
     public_id: string;
     url: string;
   }
-  
+
   interface Color {
     _id: string;
     title: string;
@@ -80,32 +72,27 @@ const AddProduct = () => {
     color: i.title,
   }));
 
-    const img: any = [];
-    imgState.forEach((i: any) => {
-      img.push({
-        public_id: i.public_id,
-        url: i.url,
-      });
+  const img: any = [];
+  imgState.forEach((i: any) => {
+    img.push({
+      public_id: i.public_id,
+      url: i.url,
     });
+  });
 
-
-    const {isLoading, isSuccess, isError, createdProduct} = newProduct
+  const { isLoading, isSuccess, isError, createdProduct } = newProduct;
   useEffect(() => {
     formik.values.color = color ? color : [];
     formik.values.images = img;
   }, [color, images]);
 
-
   useEffect(() => {
-
-    if(isSuccess && createdProduct) {
-      toast.success("Product Added Successfully!");
+    if (isSuccess && createdProduct) {
+      toast.success('Product Added Successfully!');
     } else if (isError) {
       toast.error("Couldn't Add the product");
     }
-
-  }, [isLoading, isSuccess, isError])
-
+  }, [isLoading, isSuccess, isError]);
 
   const formik = useFormik({
     initialValues: {
@@ -117,18 +104,17 @@ const AddProduct = () => {
       countInStock: '',
       color: [],
       images: [],
-      tag: "",
+      tag: '',
     },
     validationSchema: schema,
     onSubmit: (values) => {
       // alert(JSON.stringify(values))
-      dispatch(createProduct(values))
+      dispatch(createProduct(values));
       formik.resetForm();
-      setColor([])
+      setColor([]);
       setTimeout(() => {
         dispatch(resetState());
       }, 8000);
-
     },
   });
   return (
@@ -230,7 +216,9 @@ const AddProduct = () => {
             value={formik.values.tag}
             className="form-control py-3 mb-3"
           >
-            <option value="featured" disabled>Featured</option>
+            <option value="featured" disabled>
+              Featured
+            </option>
             <option value="popular">Popular</option>
             <option value="special">Special</option>
           </select>
