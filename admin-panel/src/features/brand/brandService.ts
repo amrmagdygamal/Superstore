@@ -35,7 +35,7 @@ const BrandService = {
   getBrands,
   createBrand,
   getBrand,
-  updateBrand
+  updateBrand,
   deleteBrand
 };
 export default BrandService;

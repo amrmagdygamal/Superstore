@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Table } from 'antd';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '../app/store';
@@ -7,7 +7,8 @@ import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { BiEdit } from 'react-icons/bi';
 import { AiFillDelete } from 'react-icons/ai';
-import { getBlogCategories } from '../features/blogcategory/blogCategorySlice'
+import { deleteBlogcateg, getBlogCategories, resetState } from '../features/blogcategory/blogCategorySlice';
+import CustomModal from '../components/CustomeModel';
 
 const columns: any = [
   {
@@ -27,9 +28,22 @@ const columns: any = [
 ];
 
 const Blogcatlist = () => {
+  const [open, setOpen] = useState(false);
+  const [blogCategId, setBlogCategId] = useState('');
+
+  const showModel = (e: string) => {
+    setOpen(true);
+    setBlogCategId(e);
+  };
+
+  const hideModel = () => {
+    setOpen(false);
+  };
+
   const dispatch: AppDispatch = useDispatch();
 
   useEffect(() => {
+    dispatch( resetState());
     dispatch(getBlogCategories());
   }, []);
 
@@ -44,16 +58,30 @@ const Blogcatlist = () => {
       title: blogCategoryState[i].title,
       action: (
         <>
-          <Link to="/" className="fs-3 text-dark">
+          <Link
+            to={`/admin/blogCateg/${blogCategoryState[i]._id}`}
+            className="fs-3 text-dark"
+          >
             <BiEdit />
           </Link>
-          <Link className="ms-3 fs-3 text-danger" to="/">
+          <button
+            className="ms-3 fs-3 text-danger bg-transparent border-0"
+            onClick={() => showModel(blogCategoryState[i]._id)}
+          >
             <AiFillDelete />
-          </Link>
+          </button>
         </>
       ),
     });
   }
+
+  const handleDelete = (e: string) => {
+    dispatch(deleteBlogcateg(e));
+    setTimeout(() => {
+      dispatch(getBlogCategories());
+    }, 100);
+    setOpen(false);
+  };
 
   return (
     <div>
@@ -61,6 +89,14 @@ const Blogcatlist = () => {
       <div>
         <Table columns={columns} dataSource={data1} />
       </div>
+      <CustomModal
+        hideModal={hideModel}
+        open={open}
+        performAction={() => {
+          handleDelete(blogCategId);
+        }}
+        title="Are you sure you want to delete this Blog Category?"
+      />
     </div>
   );
 };

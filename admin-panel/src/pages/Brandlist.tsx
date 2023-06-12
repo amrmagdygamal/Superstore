@@ -3,12 +3,11 @@ import React, { useEffect, useState } from 'react';
 import { Table } from 'antd';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '../app/store';
-import { deleteBrand, getBrands } from '../features/brand/brandSlice';
+import { deleteBrand, getBrands, resetState } from '../features/brand/brandSlice';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { BiEdit } from 'react-icons/bi';
 import { AiFillDelete } from 'react-icons/ai';
-import { resetState } from '../features/customers/customerSlice';
 import CustomModal from '../components/CustomeModel';
 
 const columns: any = [
@@ -29,6 +28,9 @@ const columns: any = [
 ];
 
 const Brandlist = () => {
+  
+  const dispatch: AppDispatch = useDispatch();
+
   const [open, setOpen] = useState(false);
   const [brandId, setBrandId] = useState("");
 
@@ -41,7 +43,6 @@ const Brandlist = () => {
     setOpen(false);
   };
 
-  const dispatch: AppDispatch = useDispatch();
 
   useEffect(() => {
     dispatch(resetState());

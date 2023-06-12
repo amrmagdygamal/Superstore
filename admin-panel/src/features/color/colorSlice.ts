@@ -2,7 +2,6 @@
 import { createAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import colorService from './colorService';
 
-
 export const getColors = createAsyncThunk(
   'color/get-colors',
   async (_, thunkAPI) => {
@@ -14,7 +13,6 @@ export const getColors = createAsyncThunk(
   }
 );
 
-
 export const createColor = createAsyncThunk(
   'color/create-color',
   async (colorData: any, thunkAPI) => {
@@ -24,28 +22,71 @@ export const createColor = createAsyncThunk(
       return thunkAPI.rejectWithValue(error);
     }
   }
-  );
+);
 
-  interface ColorState {
-    colors: [];
-    isError: boolean;
-    isLoading: boolean;
-    isSuccess: boolean;
-    message: string;
-    createdcolor?: any
-  
+export const getColor = createAsyncThunk(
+  'color/get-color',
+  async (id: string, thunkAPI) => {
+    try {
+      return await colorService.getColor(id);
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
   }
-  
-  const initialState: ColorState = {
-    colors: [],
-    isError: false,
-    isLoading: false,
-    isSuccess: false,
-    message: '',
-  };
+);
+
+export const updateColor = createAsyncThunk(
+  'color/update-color',
+  async (color: ColorInfo, thunkAPI) => {
+    try {
+      return await colorService.updateColor(color);
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
+
+export const deleteColor = createAsyncThunk(
+  'color/delete-color',
+  async (id: string, thunkAPI) => {
+    try {
+      return await colorService.deleteColor(id);
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
 
 
-  export const resetState = createAction('Reset_all');
+
+export interface ColorInfo  {
+  _id?: string
+  title: string
+} 
+
+
+
+interface ColorState {
+  colors: [];
+  isError: boolean;
+  isLoading: boolean;
+  isSuccess: boolean;
+  message: string;
+  createdcolor?: any;
+  colorName?: string
+  updatedColor?: ColorInfo
+  deletedColor?: ColorInfo
+}
+
+const initialState: ColorState = {
+  colors: [],
+  isError: false,
+  isLoading: false,
+  isSuccess: false,
+  message: '',
+};
+
+export const resetState = createAction('Reset_all');
 export const colorSlice = createSlice({
   name: 'colors',
   initialState,
@@ -78,6 +119,51 @@ export const colorSlice = createSlice({
         state.createdcolor = action.payload;
       })
       .addCase(createColor.rejected, (state, action) => {
+        state.isError = true;
+        state.isSuccess = false;
+        state.isLoading = false;
+        state.message = action.error.message ?? '';
+      })
+      .addCase(getColor.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(getColor.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isError = false;
+        state.isSuccess = true;
+        state.colorName = action.payload.title;
+      })
+      .addCase(getColor.rejected, (state, action) => {
+        state.isError = true;
+        state.isSuccess = false;
+        state.isLoading = false;
+        state.message = action.error.message ?? '';
+      })
+      .addCase(updateColor.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(updateColor.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isError = false;
+        state.isSuccess = true;
+        state.updatedColor = action.payload;
+      })
+      .addCase(updateColor.rejected, (state, action) => {
+        state.isError = true;
+        state.isSuccess = false;
+        state.isLoading = false;
+        state.message = action.error.message ?? '';
+      })
+      .addCase(deleteColor.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(deleteColor.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isError = false;
+        state.isSuccess = true;
+        state.deletedColor = action.payload;
+      })
+      .addCase(deleteColor.rejected, (state, action) => {
         state.isError = true;
         state.isSuccess = false;
         state.isLoading = false;

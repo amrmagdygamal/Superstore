@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Table } from 'antd';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '../app/store';
@@ -7,7 +7,8 @@ import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { BiEdit } from 'react-icons/bi';
 import { AiFillDelete } from 'react-icons/ai';
-import { getprodCategories } from '../features/productcategory/prodCategorySlice';
+import { deleteCategory, getprodCategories, resetState } from '../features/productcategory/prodCategorySlice';
+import CustomModal from '../components/CustomeModel';
 
 const columns: any = [
   {
@@ -29,7 +30,21 @@ const columns: any = [
 const Categorieslist = () => {
   const dispatch: AppDispatch = useDispatch();
 
+  
+  const [open, setOpen] = useState(false);
+  const [categoryId, setCategoryId] = useState("");
+
+  const showModel = (e: string) => {
+    setOpen(true);
+    setCategoryId(e);
+  };
+  
+  const hideModel = () => {
+    setOpen(false);
+  };
+
   useEffect(() => {
+    dispatch(resetState());
     dispatch(getprodCategories());
   }, []);
 
@@ -42,16 +57,26 @@ const Categorieslist = () => {
       title: prodCategoryState[i].title,
       action: (
         <>
-          <Link to="/" className="fs-3 text-dark">
+          <Link to={`/admin/category/${prodCategoryState[i]._id}`} className="fs-3 text-dark">
             <BiEdit />
           </Link>
-          <Link className="ms-3 fs-3 text-danger" to="/">
+          <button className="ms-3 fs-3 text-danger bg-transparent border-0" onClick={() => showModel(prodCategoryState[i]._id)}>
             <AiFillDelete />
-          </Link>
+          </button>
         </>
       ),
     });
   }
+
+  const handleDelete = (e: string) => {
+    dispatch(deleteCategory(e));
+    setTimeout(() => {
+      dispatch(getprodCategories())
+    }, 100);
+    setOpen(false);
+  }
+
+
 
   return (
     <div>
@@ -59,6 +84,14 @@ const Categorieslist = () => {
       <div>
         <Table columns={columns} dataSource={data1} />
       </div>
+      <CustomModal
+        hideModal={hideModel}
+        open={open}
+        performAction={() => {
+          handleDelete(categoryId);
+        }}
+        title="Are you sure you want to delete this Category?"
+      />
     </div>
   );
 };
