@@ -7,7 +7,11 @@ import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { BiEdit } from 'react-icons/bi';
 import { AiFillDelete } from 'react-icons/ai';
-import { deleteCategory, getprodCategories, resetState } from '../features/productcategory/prodCategorySlice';
+import {
+  deleteCategory,
+  getprodCategories,
+  resetState,
+} from '../features/productcategory/prodCategorySlice';
 import CustomModal from '../components/CustomeModel';
 
 const columns: any = [
@@ -30,15 +34,14 @@ const columns: any = [
 const Categorieslist = () => {
   const dispatch: AppDispatch = useDispatch();
 
-  
   const [open, setOpen] = useState(false);
-  const [categoryId, setCategoryId] = useState("");
+  const [categoryId, setCategoryId] = useState('');
 
   const showModel = (e: string) => {
     setOpen(true);
     setCategoryId(e);
   };
-  
+
   const hideModel = () => {
     setOpen(false);
   };
@@ -48,7 +51,9 @@ const Categorieslist = () => {
     dispatch(getprodCategories());
   }, []);
 
-  const prodCategoryState = useSelector((state: any) => state.prodCategory.prodCategories);
+  const prodCategoryState = useSelector(
+    (state: any) => state.prodCategory.prodCategories
+  );
 
   const data1: any = [];
   for (let i = 0; i < prodCategoryState.length; i++) {
@@ -57,10 +62,16 @@ const Categorieslist = () => {
       title: prodCategoryState[i].title,
       action: (
         <>
-          <Link to={`/admin/category/${prodCategoryState[i]._id}`} className="fs-3 text-dark">
+          <Link
+            to={`/admin/category/${prodCategoryState[i]._id}`}
+            className="fs-3 text-dark"
+          >
             <BiEdit />
           </Link>
-          <button className="ms-3 fs-3 text-danger bg-transparent border-0" onClick={() => showModel(prodCategoryState[i]._id)}>
+          <button
+            className="ms-3 fs-3 text-danger bg-transparent border-0"
+            onClick={() => showModel(prodCategoryState[i]._id)}
+          >
             <AiFillDelete />
           </button>
         </>
@@ -71,12 +82,10 @@ const Categorieslist = () => {
   const handleDelete = (e: string) => {
     dispatch(deleteCategory(e));
     setTimeout(() => {
-      dispatch(getprodCategories())
+      dispatch(getprodCategories());
     }, 100);
     setOpen(false);
-  }
-
-
+  };
 
   return (
     <div>

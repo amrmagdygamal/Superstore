@@ -3,7 +3,11 @@ import React, { useEffect, useState } from 'react';
 import { Table } from 'antd';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '../app/store';
-import { deleteBrand, getBrands, resetState } from '../features/brand/brandSlice';
+import {
+  deleteBrand,
+  getBrands,
+  resetState,
+} from '../features/brand/brandSlice';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { BiEdit } from 'react-icons/bi';
@@ -28,21 +32,19 @@ const columns: any = [
 ];
 
 const Brandlist = () => {
-  
   const dispatch: AppDispatch = useDispatch();
 
   const [open, setOpen] = useState(false);
-  const [brandId, setBrandId] = useState("");
+  const [brandId, setBrandId] = useState('');
 
   const showModel = (e: string) => {
     setOpen(true);
     setBrandId(e);
   };
-  
+
   const hideModel = () => {
     setOpen(false);
   };
-
 
   useEffect(() => {
     dispatch(resetState());
@@ -64,7 +66,10 @@ const Brandlist = () => {
           >
             <BiEdit />
           </Link>
-          <button className="ms-3 fs-3 text-danger bg-transparent border-0" onClick={() => showModel(brandState[i]._id)}>
+          <button
+            className="ms-3 fs-3 text-danger bg-transparent border-0"
+            onClick={() => showModel(brandState[i]._id)}
+          >
             <AiFillDelete />
           </button>
         </>
@@ -75,11 +80,10 @@ const Brandlist = () => {
   const handleDelete = (e: string) => {
     dispatch(deleteBrand(e));
     setTimeout(() => {
-      dispatch(getBrands())
+      dispatch(getBrands());
     }, 100);
     setOpen(false);
-  }
-
+  };
 
   return (
     <div>
