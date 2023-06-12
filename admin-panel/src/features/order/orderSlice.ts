@@ -1,14 +1,7 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { createAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import OrderService from './orderService';
-
-const initialState = {
-  orders: [],
-  isError: false,
-  isLoading: false,
-  isSuccess: false,
-  message: '',
-};
+import { User } from '../../types/User';
 
 export const getAllOrders = createAsyncThunk(
   'order/get-orders',
@@ -20,6 +13,38 @@ export const getAllOrders = createAsyncThunk(
     }
   }
 );
+
+export const getOrderbyuserid = createAsyncThunk(
+  'order/get-order',
+  async (id: string, thunkAPI) => {
+    try {
+      return await OrderService.getOrderbyuserid(id);
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
+
+export type orderState = {
+  orders: [];
+  isError: boolean;
+  isLoading: boolean;
+  isSuccess: boolean;
+  message: string;
+  order?: any
+}
+
+
+export const resetState = createAction("Reset_all");
+
+const initialState: orderState = {
+  orders: [],
+  isError: false,
+  isLoading: false,
+  isSuccess: false,
+  message: '',
+};
+
 
 export const OrderSlice = createSlice({
   name: 'orders',
@@ -42,7 +67,24 @@ export const OrderSlice = createSlice({
         state.isSuccess = false;
         state.isLoading = false;
         state.message = action.error.message ?? '';
-      });
+      })
+      .addCase(getOrderbyuserid.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(getOrderbyuserid.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.isError = false;
+        state.order = action.payload;
+        state.message = 'success';
+      })
+      .addCase(getOrderbyuserid.rejected, (state, action) => {
+        state.isError = true;
+        state.isSuccess = false;
+        state.isLoading = false;
+        state.message = action.error.message ?? '';
+      })
+      .addCase(resetState, () => initialState)
   },
 });
 

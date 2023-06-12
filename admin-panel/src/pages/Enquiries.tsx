@@ -10,8 +10,7 @@ import {
 } from '../features/enquiries/enquiriesSlice';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { BiEdit } from 'react-icons/bi';
-import { AiFillDelete } from 'react-icons/ai';
+import { AiFillDelete, AiOutlineEye } from 'react-icons/ai';
 import CustomModal from '../components/CustomeModel';
 
 const columns: any = [
@@ -90,7 +89,7 @@ const Enquiries = () => {
             to={`/admin/enquiry/${enquiryState[i]._id}`}
             className="fs-3 text-dark"
           >
-            <BiEdit />
+            <AiOutlineEye />
           </Link>
           <button
             className="ms-3 fs-3 text-danger bg-transparent border-0"

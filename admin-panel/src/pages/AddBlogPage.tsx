@@ -42,7 +42,9 @@ const AddBlogPage = () => {
 
   
   const imgState = useSelector((state: any) => state.img.images);
+
   const blogState = useSelector((state: any) => state.blog);
+
   const blogCategoryState = useSelector(
     (state: any) => state.blogCategory.blogCategories
   );
@@ -73,6 +75,7 @@ const AddBlogPage = () => {
       useEffect(() => {
         if (getBlogId !== undefined) {
           dispatch(getBlog(getBlogId));
+          img.push(blogImages)
         } else {
           dispatch(resetState());
         }
@@ -85,11 +88,11 @@ const AddBlogPage = () => {
   
   useEffect(() => {
     if (isSuccess && createdBlog) {
-      toast.success('Coupon Added Successfullly!');
+      toast.success('Blog Added Successfullly!');
     }
     if (isSuccess && updatedBlog) {
-      toast.success('Coupon Updated Successfully!');
-      navigate('/admin/list-coupon');
+      toast.success('Blog Updated Successfully!');
+      navigate('/admin/list-blog');
     }
     if (isError) {
       toast.error('Something Went Wrong!');
@@ -108,7 +111,7 @@ const AddBlogPage = () => {
       description: blogDesc || '',
       blogCategory: blogCategory || '',
       author: blogAuthor || "",
-      images: blogImages || [],
+      images: "",
     },
 
 
@@ -217,7 +220,7 @@ const AddBlogPage = () => {
               )}
             </Dropzone>
           </div>
-          <div className="showimages d-flex flex-wrap gap-3">
+          <div className="showimages d-flex mt-3 flex-wrap gap-3">
             {imgState.map((i: any, j: string) => {
               return (
                 <div className="position-relative" key={j}>

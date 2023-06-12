@@ -41,37 +41,25 @@ const columns: any = [
   },
 ];
 
-const Orders = () => {
+const ViewOrder = () => {
   const dispatch: AppDispatch = useDispatch();
 
   useEffect(() => {
     dispatch(getAllOrders());
   }, []);
 
-  const AllOrderState = useSelector((state: any) => state.order.orders);
+  const AllOrderState = useSelector((state: any) => state.order.order[0].products);
 
   const data1: any = [];
   for (let i = 0; i < AllOrderState.length; i++) {
     data1.push({
       key: i + 1,
-      name: AllOrderState[i].name,
-      product: AllOrderState[i].products.map((i: any, j: string) => {
-        <Link to={`/admin/order/${AllOrderState[i].orderby._id}`} >
-          View Order
-        </Link>
-      }),
-      amount: AllOrderState[i].paymentResult.amount,
-      date: new Date(AllOrderState[i].created).toLocaleString(),
-      action: (
-        <>
-          <Link to={`/admin/order/${AllOrderState[i]._id}`} className="fs-3 text-dark">
-            <BiEdit />
-          </Link>
-          <Link className="ms-3 fs-3 text-danger" to="/">
-            <AiFillDelete />
-          </Link>
-        </>
-      ),
+      name: AllOrderState[i].product.name,
+      brand: AllOrderState[i].product.brand,
+      count: AllOrderState[i].count,
+      amount: AllOrderState[i].product.price,
+      color: AllOrderState[i].product.color,
+      date: AllOrderState[i].product.createdAt,
     });
   }
 
@@ -85,4 +73,4 @@ const Orders = () => {
   );
 };
 
-export default Orders;
+export default ViewOrder;

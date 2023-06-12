@@ -8,7 +8,15 @@ const getAllOrders = async () => {
   return response.data;
 };
 
+
+const getOrderbyuserid = async (id: string) => {
+  const response = await axios.get(`${base_url}orders/getorderbyuserid/${id}`);
+  return response.data;
+};
+
 const OrderService = {
   getAllOrders,
+  getOrderbyuserid
+
 };
 export default OrderService;

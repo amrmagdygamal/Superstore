@@ -22,6 +22,8 @@ import AddCategory from './pages/AddCategory'
 import AddBrand from './pages/AddBrand'
 import AddProduct from './pages/AddProduct'
 import AddCoupon from './pages/AddCoupon'
+import ShowEnquiry from './pages/ShowEnquiry'
+import ViewOrder from './pages/ViewOrder'
 
 function App() {
 
@@ -34,10 +36,12 @@ function App() {
         <Route path="/admin" element={<MainLayout />}>
           <Route index element={<Dashboard />}/>
           <Route path='enquiries' element={<Enquiries />}/>
+          <Route path='enquiries/:id' element={<ShowEnquiry />}/>
           <Route path='blog-list' element={<Bloglist />}/>
           <Route path='blog' element={<AddBlogPage />}/>
           <Route path='blog/:id' element={<AddBlogPage />}/>
           <Route path='orders' element={<Orders />}/>
+          <Route path='order/:id' element={<ViewOrder />}/>
           <Route path='customers' element={<Customers />}/>
           <Route path='blog-category-list' element={<Blogcatlist />}/>
           <Route path='blog-category' element={<AddBlogCategory />}/>

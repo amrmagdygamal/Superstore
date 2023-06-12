@@ -52,7 +52,7 @@ export const createOrder = asyncHandler(
 
       const newOrder = await new OrderModel({
         products: userCart?.products,
-        PaymentRequest: {
+        paymentResult: {
           paymentId: uniqid(),
           paymentMethod: 'COD',
           amount: finalAmount,
@@ -111,7 +111,7 @@ export const getOrderByUserId = asyncHandler(async (req, res, next) => {
   const { id } = req.params;
   validateMongoDbId(id);
   try {
-    const userorders = await OrderModel.find({ orderby: id })
+    const userorders = await OrderModel.findOne({ orderby: id })
       .populate('products.product')
       .populate('orderby')
       .exec();
