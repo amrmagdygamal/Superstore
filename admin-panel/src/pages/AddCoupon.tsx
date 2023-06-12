@@ -6,6 +6,7 @@ import { toast } from 'react-toastify';
 import * as yup from 'yup';
 import { useFormik } from 'formik';
 import {
+  CouponInfo,
   createCoupon,
   getCoupon,
   resetState,
@@ -33,7 +34,9 @@ const AddCoupon = () => {
     isError,
     isLoading,
     createdCoupon,
-    coupon,
+    couponName,
+    couponExpiry,
+    couponDiscount,
     updatedCoupon,
   } = useSelector((state: any) => state.coupon);
 
@@ -67,9 +70,9 @@ const AddCoupon = () => {
   const formik = useFormik({
     enableReinitialize: true,
     initialValues: {
-      name: coupon.name || '',
-      expiry: coupon.expiry || '',
-      discount: coupon.discount || '',
+      name: couponName ||'',
+      expiry: couponExpiry ||'',
+      discount: couponDiscount ||'',
     },
     validationSchema: schema,
     onSubmit: (values) => {

@@ -34,7 +34,7 @@ const AddCategory = () => {
     createdCategory,
     categoryName,
     updatedCategory,
-  } = useSelector((state: any) => state.category);
+  } = useSelector((state: any) => state.prodCategory);
 
   useEffect(() => {
     if (getCategoryId !== undefined) {

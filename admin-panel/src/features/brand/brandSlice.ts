@@ -61,8 +61,10 @@ export const deleteBrand = createAsyncThunk(
 );
 
 export interface BrandInfo  {
-  _id?: string
-  title: string
+  _id?: string,
+  brandData:  {
+    title: string
+  },
 } 
 
 interface BrandState {

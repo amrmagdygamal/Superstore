@@ -3,7 +3,6 @@ import { createAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import Couponservice from './couponService';
 import couponService from './couponService';
 
-
 export const getCoupons = createAsyncThunk(
   'coupon/get-coupons',
   async (_, thunkAPI) => {
@@ -15,7 +14,6 @@ export const getCoupons = createAsyncThunk(
   }
 );
 
-
 export const createCoupon = createAsyncThunk(
   'coupon/create-coupon',
   async (couponData: any, thunkAPI) => {
@@ -25,10 +23,7 @@ export const createCoupon = createAsyncThunk(
       return thunkAPI.rejectWithValue(error);
     }
   }
-  );
-
-
-  
+);
 
 export const getCoupon = createAsyncThunk(
   'coupon/get-coupon',
@@ -41,7 +36,6 @@ export const getCoupon = createAsyncThunk(
   }
 );
 
-  
 export const updateCoupon = createAsyncThunk(
   'coupon/update-coupon',
   async (coupon: CouponInfo, thunkAPI) => {
@@ -64,40 +58,38 @@ export const deleteCoupon = createAsyncThunk(
   }
 );
 
-
-
-export interface CouponInfo  {
-  _id?: string
-  name: string
-  expiry: Date
-  discount: number
-} 
-
-
-
-  interface CouponState {
-    coupons: [];
-    isError: boolean;
-    isLoading: boolean;
-    isSuccess: boolean;
-    message: string;
-    createdCoupon?: any
-    coupon?: CouponInfo
-    updatedCoupon?: CouponInfo
-    deletedCoupon?: CouponInfo
-  
-  }
-  
-  const initialState: CouponState = {
-    coupons: [],
-    isError: false,
-    isLoading: false,
-    isSuccess: false,
-    message: '',
+export interface CouponInfo {
+  _id?: string;
+  couponData: {
+    name: string;
+    expiry: Date;
+    discount: number;
   };
+}
 
+interface CouponState {
+  coupons: [];
+  isError: boolean;
+  isLoading: boolean;
+  isSuccess: boolean;
+  message: string;
+  createdCoupon?: CouponInfo;
+  updatedCoupon?: CouponInfo;
+  deletedCoupon?: CouponInfo;
+  couponName?: string;
+  couponDiscount?: number
+  couponExpiry?: Date
+}
 
-  export const resetState = createAction('Reset_all');
+const initialState: CouponState = {
+  coupons: [],
+  isError: false,
+  isLoading: false,
+  isSuccess: false,
+  message: '',
+};
+
+export const resetState = createAction('Reset_all');
 export const couponSlice = createSlice({
   name: 'coupons',
   initialState,
@@ -134,7 +126,7 @@ export const couponSlice = createSlice({
         state.isSuccess = false;
         state.isLoading = false;
         state.message = action.error.message ?? '';
-      })      
+      })
       .addCase(getCoupon.pending, (state) => {
         state.isLoading = true;
       })
@@ -142,7 +134,9 @@ export const couponSlice = createSlice({
         state.isLoading = false;
         state.isError = false;
         state.isSuccess = true;
-        state.coupon = action.payload;
+        state.couponName = action.payload.name;
+        state.couponDiscount = action.payload.discount;
+        state.couponExpiry = action.payload.expiry;
       })
       .addCase(getCoupon.rejected, (state, action) => {
         state.isError = true;

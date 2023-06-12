@@ -33,7 +33,7 @@ const Orders = () => {
     dispatch(getAllOrders());
   }, []);
 
-  const AllOrderState = useSelector((state: any) => state.AllOrder.AllOrders);
+  const AllOrderState = useSelector((state: any) => state.order.orders);
 
   const data1: any = [];
   for (let i = 0; i < AllOrderState.length; i++) {

@@ -8,13 +8,13 @@ const getBrands = async () => {
 };
 
 
-const createBrand = async (brand: any) => {
+const createBrand = async (brand: BrandInfo) => {
   const response = await axios.post(`${base_url}brands/`, brand);
   return response.data;
 };
 
 
-const updateBrand = async (brand: any) => {
+const updateBrand = async (brand: BrandInfo) => {
   const response = await axios.put(`${base_url}brands/${brand._id}`, {title: brand.brandData.title});
   return response.data;
 };

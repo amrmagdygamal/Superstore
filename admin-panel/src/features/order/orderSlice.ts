@@ -11,7 +11,7 @@ const initialState = {
 };
 
 export const getAllOrders = createAsyncThunk(
-  'Order/get-Orders',
+  'order/get-orders',
   async (_, thunkAPI) => {
     try {
       return await OrderService.getAllOrders();
@@ -22,7 +22,7 @@ export const getAllOrders = createAsyncThunk(
 );
 
 export const OrderSlice = createSlice({
-  name: 'Orders',
+  name: 'orders',
   initialState,
   reducers: {},
   extraReducers: (buildeer) => {

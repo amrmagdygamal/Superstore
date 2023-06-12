@@ -7,7 +7,11 @@ import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { BiEdit } from 'react-icons/bi';
 import { AiFillDelete } from 'react-icons/ai';
-import { deleteBlogcateg, getBlogCategories, resetState } from '../features/blogcategory/blogCategorySlice';
+import {
+  deleteBlogcateg,
+  getBlogCategories,
+  resetState,
+} from '../features/blogcategory/blogCategorySlice';
 import CustomModal from '../components/CustomeModel';
 
 const columns: any = [
@@ -43,7 +47,7 @@ const Blogcatlist = () => {
   const dispatch: AppDispatch = useDispatch();
 
   useEffect(() => {
-    dispatch( resetState());
+    dispatch(resetState());
     dispatch(getBlogCategories());
   }, []);
 
@@ -78,6 +82,7 @@ const Blogcatlist = () => {
   const handleDelete = (e: string) => {
     dispatch(deleteBlogcateg(e));
     setTimeout(() => {
+      setOpen(false)
       dispatch(getBlogCategories());
     }, 100);
     setOpen(false);

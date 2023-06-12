@@ -6,6 +6,7 @@ import brandReducer from '../features/brand/brandSlice';
 import prodCategoryReducer from '../features/productcategory/prodCategorySlice';
 import blogCategoryReducer from '../features/blogcategory/blogCategorySlice';
 import colorReducer from '../features/color/colorSlice';
+import orderReducer from '../features/order/orderSlice';
 import couponReducer from '../features/coupon/couponSlice';
 import blogReducer from '../features/blogs/blogSlice';
 import enquiryReducer from '../features/enquiries/enquiriesSlice';
@@ -24,6 +25,8 @@ export const store = configureStore({
     enquiry: enquiryReducer,
     img: imgReducer,
     coupon: couponReducer,
+    order: orderReducer,
+
   },
 });
 

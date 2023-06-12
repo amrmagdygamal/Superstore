@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { base_url } from '../../utils/base_url';
+import { CouponInfo } from './couponSlice';
 
 const getCoupons = async () => {
   const response = await axios.get(`${base_url}coupon/`);
@@ -7,17 +8,17 @@ const getCoupons = async () => {
 };
 
 
-const createCoupon = async (coupon: any) => {
+const createCoupon = async (coupon: CouponInfo) => {
   const response = await axios.post(`${base_url}coupon/`, coupon);
   return response.data;
 };
 
 
-const updateCoupon = async (coupon: any) => {
+const updateCoupon = async (coupon: CouponInfo) => {
   const response = await axios.put(`${base_url}coupons/${coupon._id}`, {
     name: coupon.couponData.name,
     expiry: coupon.couponData.expiry,
-    discount: coupon.couponData
+    discount: coupon.couponData.discount,
   });
   return response.data;
 };
