@@ -77,7 +77,7 @@ const AddCoupon = () => {
     validationSchema: schema,
     onSubmit: (values) => {
       if (getCouponId !== undefined) {
-        const data: any = { _id: getCouponId, couponData: values };
+        const data: CouponInfo = { _id: getCouponId, couponData: values };
         dispatch(updateCoupon(data));
       } else {
         dispatch(createCoupon(values));

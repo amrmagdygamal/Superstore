@@ -1,13 +1,18 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Table } from 'antd';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '../app/store';
-import { getEnquiries } from '../features/enquiries/enquiriesSlice';
+import {
+  deleteEnquiry,
+  getEnquiries,
+  resetState,
+} from '../features/enquiries/enquiriesSlice';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { BiEdit } from 'react-icons/bi';
 import { AiFillDelete } from 'react-icons/ai';
+import CustomModal from '../components/CustomeModel';
 
 const columns: any = [
   {
@@ -43,53 +48,86 @@ const columns: any = [
 
 const Enquiries = () => {
   const dispatch: AppDispatch = useDispatch();
+  const [open, setOpen] = useState(false);
+  const [enquiryId, setenquiryId] = useState('');
+  
+  const enquiryState = useSelector((state: any) => state.enquiry.enquiries);
+  const showModel = (e: string) => {
+    setOpen(true);
+    setenquiryId(e);
+  };
+
+  const hideModel = () => {
+    setOpen(false);
+  };
 
   useEffect(() => {
+    dispatch(resetState());
     dispatch(getEnquiries());
   }, []);
 
-  const Enquiriestate = useSelector((state: any) => state.brand.Enquiries);
 
   const data1: any = [];
-  for (let i = 0; i < Enquiriestate.length; i++) {
+  for (let i = 0; i < enquiryState.length; i++) {
     data1.push({
       key: i + 1,
-      name: Enquiriestate[i].name,
-      email: Enquiriestate[i].email,
-      number: Enquiriestate[i].number,
+      title: enquiryState[i].title,
+      category: enquiryState[i].category,
+      author: enquiryState[i].author,
       status: (
         <>
-          <select
-            name="status"
-            id=""
-            className="form-control form-select"
-          >
-            <option value="">
-              Set Status
-            </option>
+          <select name="status" id="" className="form-control form-select">
+          <option value="Submitted">Submitted</option>
+            <option value="Contacted">Contacted</option>
+            <option value="In Progress">In Progress</option>
+            <option value="Resolved">Resolved</option>
           </select>
         </>
       ),
       action: (
         <>
-          <Link to="/" className="fs-3 text-dark">
+          <Link
+            to={`/admin/enquiry/${enquiryState[i]._id}`}
+            className="fs-3 text-dark"
+          >
             <BiEdit />
           </Link>
-          <Link className="ms-3 fs-3 text-danger" to="/">
+          <button
+            className="ms-3 fs-3 text-danger bg-transparent border-0"
+            onClick={() => showModel(enquiryState[i]._id)}
+          >
             <AiFillDelete />
-          </Link>
+          </button>
         </>
       ),
     });
   }
 
+  const handleDelete = (e: string) => {
+    dispatch(deleteEnquiry(e));
+    setTimeout(() => {
+      dispatch(getEnquiries());
+    }, 100);
+    setOpen(false);
+  };
+
   return (
-    <div>
-      <h3 className="mb-4 title">Enquiries</h3>
+    <>
       <div>
-        <Table columns={columns} dataSource={data1} />
+        <h3 className="mb-4 title">Enquiries</h3>
+        <div>
+          <Table columns={columns} dataSource={data1} />
+        </div>
+      <CustomModal
+        hideModal={hideModel}
+        open={open}
+        performAction={() => {
+          handleDelete(enquiryId);
+        }}
+        title="Are you sure you want to delete this Enquiry?"
+      />
       </div>
-    </div>
+    </>
   );
 };
 

@@ -25,6 +25,11 @@ const columns: any = [
     dataIndex: 'category',
     sorter: (a: any, b: any) => a.category.length - b.category.length,
   },
+  {
+    title: 'Author',
+    dataIndex: 'author',
+    sorter: (a: any, b: any) => a.author.length - b.author.length,
+  },
 
   {
     title: 'Action',
@@ -33,6 +38,10 @@ const columns: any = [
 ];
 
 const Bloglist = () => {
+  
+  const dispatch: AppDispatch = useDispatch();
+
+
   const [open, setOpen] = useState(false);
   const [blogId, setBlogId] = useState('');
 
@@ -44,13 +53,11 @@ const Bloglist = () => {
   const hideModel = () => {
     setOpen(false);
   };
-
-  const dispatch: AppDispatch = useDispatch();
-
+  
   useEffect(() => {
     dispatch(resetState());
     dispatch(getBlogs());
-  }, []);
+  }, [])
 
   const blogState = useSelector((state: any) => state.blog.blogs);
 
@@ -59,7 +66,8 @@ const Bloglist = () => {
     data1.push({
       key: i + 1,
       title: blogState[i].title,
-      categroy: blogState[i].category,
+      category: blogState[i].category,
+      author: blogState[i].author,
       action: (
         <>
           <Link

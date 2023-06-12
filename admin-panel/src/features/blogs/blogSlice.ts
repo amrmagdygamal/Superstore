@@ -56,6 +56,11 @@ export const deleteBlog = createAsyncThunk(
   }
 );
 
+
+interface Image {
+  public_id: string;
+  url: string;
+}
 export interface BlogInfo {
   _id?: string,
   blogData: {
@@ -74,9 +79,13 @@ interface BlogState {
   isSuccess: boolean;
   message: string;
   createdBlog?: BlogInfo;
-  Blog?: BlogInfo;
   updatedBlog?: BlogInfo;
   deletedBlog?: BlogInfo;
+  blogName?: string;
+  blogDesc?: string;
+  blogCategory?: string;
+  blogAuthor?: string;
+  blogImages?: any;
 }
 
 const initialState: BlogState = {
@@ -132,7 +141,11 @@ export const blogSlice = createSlice({
         state.isLoading = false;
         state.isError = false;
         state.isSuccess = true;
-        state.Blog = action.payload
+        state.blogName = action.payload.title;
+        state.blogDesc = action.payload.description;
+        state.blogCategory = action.payload.category;
+        state.blogAuthor = action.payload.author;
+        state.blogImages = action.payload.images;
       })
       .addCase(getBlog.rejected, (state, action) => {
         state.isLoading = false;

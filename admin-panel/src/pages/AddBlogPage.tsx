@@ -12,108 +12,127 @@ import { useSelector } from 'react-redux';
 import {toast} from 'react-toastify';
 import Dropzone from 'react-dropzone';
 import { deleteImg, uploadImg } from '../features/upload/uploadSlice';
-import { createBlog, resetState } from '../features/blogs/blogSlice';
+import { BlogInfo, createBlog, getBlog, resetState, updateBlog } from '../features/blogs/blogSlice';
 import CustomInput from '../components/CustomInput';
 import { getBlogCategories } from '../features/blogcategory/blogCategorySlice';
+import { useLocation, useNavigate } from 'react-router-dom';
+
+
+const schema = Yup.object().shape({
+  title: Yup.string().required('Title is Required'),
+  images: Yup.array().required("").min(1, 'You should one Image'),
+  description: Yup.string().required('Description is Required'),
+  blogCategory: Yup.string().required('Category is Required'),
+
+  author: Yup.string().required('Author Name is Required'),
+});
 
 
 const AddBlogPage = () => {
 
+  const dispatch: AppDispatch = useDispatch();
 
   const [images, setImages] = useState([]);
 
-  const schema = Yup.object().shape({
-    title: Yup.string().required('Title is Required'),
-    images: Yup.array().required("").min(1, 'You should one Image'),
-    description: Yup.string().required('Description is Required'),
-    blogCategory: Yup.string().required('Category is Required'),
-
-    author: Yup.string().required('Author Name is Required'),
-  });
+  const location = useLocation();
+  const navigate = useNavigate();
+  const getBlogId = location.pathname.split('/')[3];
 
 
-
-  const dispatch: AppDispatch = useDispatch();
 
   
   const imgState = useSelector((state: any) => state.img.images);
-  const newBlog = useSelector((state: any) => state.blog);
+  const blogState = useSelector((state: any) => state.blog);
   const blogCategoryState = useSelector(
     (state: any) => state.blogCategory.blogCategories
   );
 
+  const {
+    isSuccess,
+    isError,
+    isLoading,
+    createdBlog,
+    updatedBlog,
+    blogName,
+    blogDesc,
+    blogCategory,
+    blogAuthor,
+    blogImages,
+  } = blogState
   
-  useEffect(() => {
-    dispatch(getBlogCategories());
-  }, []);
   
-  interface Image {
-    public_id: string;
-    url: string;
-  }
-  
-
-    const img: any = [];
-    imgState.forEach((i: any) => {
-      img.push({
-        public_id: i.public_id,
-        url: i.url,
+      const img: any = [];
+      imgState.forEach((i: any) => {
+        img.push({
+          public_id: i.public_id,
+          url: i.url,
+        });
       });
-    });
 
-
-    const {isLoading, isSuccess, isError, createdBlog} = newBlog
+      
+      useEffect(() => {
+        if (getBlogId !== undefined) {
+          dispatch(getBlog(getBlogId));
+        } else {
+          dispatch(resetState());
+        }
+      }, [getBlogId]);
+      
+      useEffect(() => {
+        formik.values.images = img;
+      }, [images]);
+      
+  
   useEffect(() => {
-    formik.values.images = img;
-  }, [images]);
-
-
-  useEffect(() => {
-
-    if(isSuccess && createdBlog) {
-      toast.success("Blog Added Successfully!");
-    } else if (isError) {
-      toast.error("Couldn't Add the Blog");
+    if (isSuccess && createdBlog) {
+      toast.success('Coupon Added Successfullly!');
     }
+    if (isSuccess && updatedBlog) {
+      toast.success('Coupon Updated Successfully!');
+      navigate('/admin/list-coupon');
+    }
+    if (isError) {
+      toast.error('Something Went Wrong!');
+    }
+  }, [isSuccess, isError, isLoading]);
 
-  }, [isLoading, isSuccess, isError])
+
+
+
+
 
 
   const formik = useFormik({
     initialValues: {
-      title: '',
-      description: '',
-      blogCategory: '',
-      author: "",
-      images: [],
+      title: blogName || '',
+      description: blogDesc || '',
+      blogCategory: blogCategory || '',
+      author: blogAuthor || "",
+      images: blogImages || [],
     },
+
+
     validationSchema: schema,
     onSubmit: (values) => {
-      // alert(JSON.stringify(values))
-      dispatch(createBlog(values))
-      formik.resetForm();
-      setTimeout(() => {
-        dispatch(resetState());
-      }, 8000);
+      if (getBlogId !== undefined) {
+        const data: any = { _id: getBlogId, blogData: values };
+        dispatch(updateBlog(data));
+      } else {
+        dispatch(createBlog(values));
+        formik.resetForm();
+        setTimeout(() => {
+          dispatch(resetState());
+        }, 300);
+      }
     },
   });
 
-
-  // const hanSubmit = (event: any) => {
-  //   event.preventDefault();
-  //   if (formik.values.images.length == 0) {
-  //     toast.error("You Should Upload one Image at least")
-  //   } else {
-  //     formik.handleSubmit();
-  //   }
-
-  // }
 
 
 
   return (
     <div>
-      <h3 className="mb-4 title">Add Blog</h3>
+      <h3 className="mb-4 title">{getBlogId !== undefined ? 'Edit' : 'Add'} Blog</h3>
 
       <div className="">
         <form action="" onSubmit={formik.handleSubmit} >
@@ -130,7 +149,7 @@ const AddBlogPage = () => {
           </div>
           <div className="error mb-4">
             {formik.touched.title && formik.errors.title ? (
-              <div>{formik.errors.title}</div>
+              <div>{formik.errors.title as React.ReactNode}</div>
             ) : null}
           </div>
           <ReactQuill
@@ -141,7 +160,7 @@ const AddBlogPage = () => {
           />
           <div className="error mb-4">
             {formik.touched.description && formik.errors.description ? (
-              <div>{formik.errors.description}</div>
+              <div>{formik.errors.description as React.ReactNode}</div>
             ) : null}
           </div>
           <select
@@ -163,7 +182,7 @@ const AddBlogPage = () => {
           </select>
           <div className="error">
             {formik.touched.blogCategory && formik.errors.blogCategory ? (
-              <div>{formik.errors.blogCategory}</div>
+              <div>{formik.errors.blogCategory as React.ReactNode}</div>
             ) : null}
           </div>
           <div className="mt-4 title">
@@ -179,7 +198,7 @@ const AddBlogPage = () => {
           </div>
           <div className="error mb-4">
             {formik.touched.author && formik.errors.author ? (
-              <div>{formik.errors.author}</div>
+              <div>{formik.errors.author as React.ReactNode}</div>
             ) : null}
           </div>
           <div className="bg-white border-1 mt-4 p-5 text-center">
@@ -215,14 +234,14 @@ const AddBlogPage = () => {
           </div>
           <div className="error">
             {formik.touched.images && formik.errors.images ? (
-              <div>{formik.errors.images}</div>
+              <div>{formik.errors.images as React.ReactNode}</div>
             ) : null}
           </div>
           <button
             className="btn btn-success border-0 rounded-3 my-5"
             type="submit"
           >
-            Add Blog
+            {getBlogId !== undefined ? 'Edit' : 'Add'} Blog
           </button>
         </form>
       </div>

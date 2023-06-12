@@ -20,6 +20,7 @@ const updateBlog = async (blog: BlogInfo) => {
       title: blog.blogData.title,
       description: blog.blogData.description,
       category: blog.blogData.category,
+      author: blog.blogData.author,
       images: blog.blogData.images,
     },
     config
