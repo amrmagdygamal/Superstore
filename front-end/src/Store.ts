@@ -154,4 +154,4 @@ function StoreProvider(props: React.PropsWithChildren<{}>) {
   return <Store.Provider value={{ state, dispatch }} {...props} />;
 }
 
-export { Store, StoreProvider };
+ { Store, StoreProvider };

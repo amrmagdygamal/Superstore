@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { Table } from 'antd';
 import { BiEdit } from 'react-icons/bi';
 import { AiFillDelete } from 'react-icons/ai';
-import { AppDispatch } from '../app/store';
+import { AppDispatch, RootState } from '../app/store';
 import {
   deleteProduct,
   getProducts,
@@ -48,10 +48,29 @@ const columns: any = [
   },
 ];
 
+
+interface Product {
+  id: string;
+  title: string;
+  category: string;
+  author: string;
+  // other properties...
+}
+
+interface ProductState {
+  products: Product[];
+  loading: boolean;
+  error: string | null;
+}
+
+
+
+
+
 const Productlist = () => {
   const dispatch: AppDispatch = useDispatch();
 
-  const productState = useSelector((state: any) => state.product.products);
+  const productState = useSelector((state: RootState) => state.product.products);
 
   const [open, setOpen] = useState(false);
   const [productId, setProductId] = useState('');
@@ -74,7 +93,7 @@ const Productlist = () => {
   for (let i = 0; i < productState.length; i++) {
     data1.push({
       key: i + 1,
-      title: productState[i].title,
+      title: productState[i].name,
       category: productState[i].category,
       author: productState[i].author,
       action: (
