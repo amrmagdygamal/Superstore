@@ -21,22 +21,10 @@ import { TbArrowsShuffle } from 'react-icons/tb';
 import { MdFavorite } from 'react-icons/md';
 import Container from '../components/Container';
 
+
+
 const ProductPage = () => {
-  const params = useParams();
-  const { data: products } = useGetProductsQuery();
-
-  const { _id } = params;
-
-  const {
-    data: product,
-    isLoading,
-    error,
-  } = useGetProductDetailsBy_idQuery(_id!);
-
-  const navigate = useNavigate();
-
-  const { state, dispatch } = useContext(Store);
-  const { cart } = state;
+  const dispatch: AppDispatch = useDispatch();
 
   const copyToClipboard = (text: string) => {
     console.log('text', text);
@@ -97,7 +85,7 @@ const ProductPage = () => {
             </div>
             <div>
               <img
-                src="/images/Apple_watch.webp"
+                src="/images/Apple_watcنصh.webp"
                 className="img-fluid"
                 alt=""
               />

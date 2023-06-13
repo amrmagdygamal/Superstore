@@ -7,43 +7,55 @@ import { getError } from '../utils';
 import { ApiError } from '../types/ApiErrors';
 import { Form } from 'react-bootstrap';
 import LoadingBox from '../components/LoadingBox';
+import * as Yup from 'yup';
 import Meta from '../components/Meta';
 import BreadCrumb from '../components/BreadCrumb';
 import Container from '../components/Container';
+import { useFormik } from 'formik';
 
 const LoginPage = () => {
-  const navigate = useNavigate();
-  const { search } = useLocation();
-  const redirectInUrl = new URLSearchParams(search).get('redirect');
-  const redirect = redirectInUrl ? redirectInUrl : '/';
+  
+  
+  const schema = Yup.object().shape({
+    name: Yup.string().required('Name is Required'),
+    images: Yup.array().required('').min(1, 'You should one Image'),
+  
+    description: Yup.string().required('Description is Required'),
+    price: Yup.number().required('Price is Required'),
+    brand: Yup.string().required('Brand is Required'),
+    tag: Yup.string().required('Tag is Required'),
+    category: Yup.string().required('Category is Required'),
+    color: Yup.array()
+      .min(1, 'Pick at least one color')
+      .required('Color is Required'),
+    countInStock: Yup.number().required('Quantity is Required'),
+  });
 
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-
-  const { state, dispatch } = useContext(Store);
-  const { userInfo } = state;
-
-  const { mutateAsync: login, isLoading } = userSigninMutation();
-
-  const submitHandler = async (e: React.SyntheticEvent) => {
-    e.preventDefault();
-
-    try {
-      const data = await login({
-        email,
-        password,
-      });
-      dispatch({ type: 'USER_SIGNIN', payload: data });
-      localStorage.setItem('userInfo', JSON.stringify(data));
-      navigate(redirect);
-    } catch (error) {
-      toast.error(getError(error as ApiError));
-    }
-  };
-
-  useEffect(() => {
-    if (userInfo) navigate(redirect);
-  }, [navigate, redirect, userInfo]);
+  const dispatch: AppDispatch = useDispatch();
+  
+  const formik = useFormik({
+    initialValues: {
+      name: '',
+      description: '',
+      price: '',
+      brand: '',
+      category: '',
+      countInStock: '',
+      color: [],
+      images: [],
+      tag: '',
+    },
+    validationSchema: schema,
+    onSubmit: (values) => {
+      // alert(JSON.stringify(values))
+      dispatch(createProduct(values));
+      formik.resetForm();
+      setColor([]);
+      setTimeout(() => {
+        dispatch(resetState());
+      }, 8000);
+    },
+  });
 
   return (
     <>

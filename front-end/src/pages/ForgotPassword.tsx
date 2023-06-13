@@ -5,9 +5,14 @@ import { Link } from 'react-router-dom';
 import LoadingBox from '../components/LoadingBox';
 import { Form } from 'react-bootstrap';
 import Container from '../components/Container';
+import { useDispatch } from 'react-redux';
 
 const ForgotPassword = () => {
-  const [isLoading, setIsLoading] = useState();
+
+
+  const dispatch: AppDispatch = useDispatch();
+
+
   return (
     <>
       <Meta title="Contact Us" />

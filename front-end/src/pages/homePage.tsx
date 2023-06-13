@@ -12,9 +12,22 @@ import SpecialProduct from '../components/SpecialProduct';
 import Container from '../components/Container';
 import Meta from '../components/Meta';
 import Contain from '../components/Contain';
+import { useDispatch, useSelector } from 'react-redux';
+
 
 const HomePage = () => {
-  const { data: products, isLoading, error } = useGetProductsQuery();
+
+
+  const dispatch: AppDispatch = useDispatch();
+
+  const brandState = useSelector((state: any) => state.brand.brands);
+  const colorState = useSelector((state: any) => state.color.colors);
+  const imgState = useSelector((state: 
+
+
+    const prodCategoryState = useSelector(
+      (state: any) => state.prodCategory.prodCategories
+    );
 
   return isLoading ? (
     <LoadingBox />

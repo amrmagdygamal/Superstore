@@ -43,8 +43,8 @@ export const loginUser = createAsyncThunk(
 
 export const resetState = createAction('Reset_all');
 
-export const authSlice = createSlice({
-  name: 'auth',
+export const userSlice = createSlice({
+  name: 'user',
   initialState,
   reducers: {},
   extraReducers: (buildeer) => {
@@ -85,4 +85,4 @@ export const authSlice = createSlice({
   },
 });
 
-export default authSlice.reducer;
+export default userSlice.reducer;

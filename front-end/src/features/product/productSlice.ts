@@ -49,7 +49,7 @@ export const getproduct = createAsyncThunk(
 export const resetState = createAction('Reset_all');
 
 
-export const authSlice = createSlice({
+export const productSlice = createSlice({
   name: 'products',
   initialState,
   reducers: {},
@@ -91,4 +91,4 @@ export const authSlice = createSlice({
   },
 });
 
-export default authSlice.reducer;
+export default productSlice.reducer;
