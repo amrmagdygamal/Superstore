@@ -3,7 +3,6 @@ import { Row } from 'react-bootstrap';
 import MessageBox from '../components/MessageBox';
 import LoadingBox from '../components/LoadingBox';
 import ProductItem from '../components/ProductItem';
-import { useGetProductsQuery } from '../hooks/productHooks';
 import { ApiError } from '../types/ApiErrors';
 import { getError } from '../utils';
 import { Link } from 'react-router-dom';
@@ -16,6 +15,8 @@ import Contain from '../components/Contain';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch } from '../app/store';
 import { getproducts } from '../features/product/productSlice';
+import { getBlogs } from '../features/blog/blogSlice';
+import moment from 'moment';
 
 const HomePage = () => {
   const dispatch: AppDispatch = useDispatch();
@@ -27,6 +28,7 @@ const HomePage = () => {
     (state: any) => state.productCategory.categories
   );
   const productState = useSelector((state: any) => state.product.products);
+  const blogState = useSelector((state: any) => state.blog.blogs);
 
   const { isLoading, isError, isSuccess} = productState;
 
@@ -36,8 +38,13 @@ const HomePage = () => {
     dispatch(getproducts());
   };
 
+  const getAllBlogs = () => {
+    dispatch(getBlogs());
+  };
+
   useEffect(() => {
     getAllProducts();
+    getAllBlogs();
   }, []);
 
 
@@ -356,18 +363,23 @@ const HomePage = () => {
           </div>
         </Row>
         <Row>
-          <div className="col-3">
-            <BlogCard />
-          </div>
-          <div className="col-3">
-            <BlogCard />
-          </div>
-          <div className="col-3">
-            <BlogCard />
-          </div>
-          <div className="col-3">
-            <BlogCard />
-          </div>
+        {blogState &&
+              blogState?.map((blog: any, index: number) => {
+              if (index < 3) {
+                return (
+                  <div className="col-3" key={index}>
+                    <BlogCard
+                      id={blog?._id}
+                      title={blog?.title}
+                      description={blog?.description}
+                      image={blog.images[0].url}
+                      author={blog.author}
+                      date={moment(blog.createdAt).format('MMMM Do YYYY, h:mm')}
+                    />
+                  </div>
+                );
+              }
+            })}
         </Row>
       </Contain>
       <div className="container-xxl">

@@ -1,14 +1,39 @@
 import Meta from '../components/Meta';
 import BreadCrumb from '../components/BreadCrumb';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { HiOutlineArrowLeft } from 'react-icons/hi';
 import Container from '../components/Container';
+import { getBlog} from '../features/blog/blogSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch } from '../app/store';
+import moment from 'moment';
+import { useEffect } from 'react';
+
 
 const BlogPage = () => {
+
+
+  const dispatch: AppDispatch = useDispatch();
+  const blogState = useSelector((state: any) => state.blog.blog);
+  const location = useLocation();
+
+  const getBlogId = location.pathname.split("/")[2]
+
+  const getABlog = () => {
+    dispatch(getBlog(getBlogId));
+  };
+
+  useEffect(() => {
+    getABlog();
+  }, []);
+
+
+
+
   return (
     <>
-      <Meta title="Blog Page" />
-      <BreadCrumb title="Blog Page" />
+      <Meta title={blogState.title} />
+      <BreadCrumb title={blogState.title} />
       <Container class1="blog-wrapper home-wrapper-2 py-5">
         <div className="col-3">
           <div className="filter-card mb-3">
@@ -25,20 +50,13 @@ const BlogPage = () => {
         </div>
         <div className="col-9">
           <div className="blog-page">
-            <h3 className="title">A Beatiful Sunday Morning Resaissance</h3>
+            <h3 className="title">{blogState.title}</h3>
             <img
-              src="/images/blog-4.webp"
+              src={blogState.images[0].url ? blogState.images[0].url : "/images/blog-1.jpg"}
               className="img-fluid w-100 my-4"
               alt="blog"
             />
-            <p>
-              You're only as good as your last collection, whick is an enormous
-              pressure. I think there is something about luzury - it's not
-              something people need, but it's what they want. It really pulls at
-              their heart. I have a fantastic relationship with money.
-              Scelerisque sociosqu ullamcorper urna nisl mollis vestibulum
-              pretium commodo inceptos cum condimentum placerat accumsan ante
-              vestibulum.
+            <p dangerouslySetInnerHTML={{ __html: blogState.description}}>
             </p>
             <Link to="/blog" className="d-flex gap-1 align-items-center fs-5">
               <HiOutlineArrowLeft />

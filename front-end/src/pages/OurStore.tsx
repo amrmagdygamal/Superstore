@@ -35,8 +35,10 @@ const OurStore = () => {
     dispatch(getproducts());
   };
 
+
   useEffect(() => {
     getAllProducts();
+
   }, []);
   return isLoading ? (
     <LoadingBox />
