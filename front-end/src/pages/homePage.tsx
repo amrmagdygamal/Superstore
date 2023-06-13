@@ -1,3 +1,4 @@
+import {useEffect} from 'react';
 import { Row } from 'react-bootstrap';
 import MessageBox from '../components/MessageBox';
 import LoadingBox from '../components/LoadingBox';
@@ -13,26 +14,41 @@ import Container from '../components/Container';
 import Meta from '../components/Meta';
 import Contain from '../components/Contain';
 import { useDispatch, useSelector } from 'react-redux';
-
+import { AppDispatch } from '../app/store';
+import { getproducts } from '../features/product/productSlice';
 
 const HomePage = () => {
-
-
   const dispatch: AppDispatch = useDispatch();
 
   const brandState = useSelector((state: any) => state.brand.brands);
   const colorState = useSelector((state: any) => state.color.colors);
-  const imgState = useSelector((state: 
+
+  const prodCategoryState = useSelector(
+    (state: any) => state.productCategory.categories
+  );
+  const productState = useSelector((state: any) => state.product.products);
+
+  const { isLoading, isError, isSuccess} = productState;
 
 
-    const prodCategoryState = useSelector(
-      (state: any) => state.prodCategory.prodCategories
-    );
+
+  const getAllProducts = () => {
+    dispatch(getproducts());
+  };
+
+  useEffect(() => {
+    getAllProducts();
+  }, []);
+
+
+
+
+
 
   return isLoading ? (
     <LoadingBox />
-  ) : error ? (
-    <MessageBox variant="danger">{getError(error as ApiError)}</MessageBox>
+  ) : isError ? (
+    <MessageBox variant="danger">{getError(isError as ApiError)}</MessageBox>
   ) : (
     <>
       <Container class1="home-wrapper-2 py-5">
@@ -223,9 +239,7 @@ const HomePage = () => {
         <div className="col-12">
           <h3 className="section_heading">Features Colections</h3>
         </div>
-        {products!.map((product) => (
-          <ProductItem product={product} />
-        ))}
+        <ProductItem data={productState ? productState : []} />
       </Container>
       <Container class1="famous-wrapper py-5 home-wrapper-2">
         <div className="col-3">
@@ -301,9 +315,7 @@ const HomePage = () => {
         <div className="col-12">
           <h3 className="section_heading">Our Popular Products</h3>
         </div>
-        {products!.map((product) => (
-          <ProductItem product={product} />
-        ))}
+        <ProductItem data={productState ? productState : []} />
       </Container>
       <Container class1="marque-wrapper home-wrapper py-5">
         <div className="col-12">

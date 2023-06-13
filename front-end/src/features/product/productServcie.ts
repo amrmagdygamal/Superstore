@@ -1,6 +1,8 @@
 
 import axios from 'axios';
 import { base_url } from '../../utils/base_url';
+import { config } from '../../utils/axiosconfig';
+
 
 
 
@@ -9,12 +11,23 @@ import { base_url } from '../../utils/base_url';
 
 const getProducts = async () => {
   const response = await axios.get(`${base_url}pruducts/`);
-  return response.data;
+  if(response.data) {
+    return response.data;
+  }
 };
 
 const getProduct = async (id: string) => {
   const response = await axios.get(`${base_url}pruducts/${id}/`);
-  return response.data;
+  if(response.data) {
+    return response.data;
+  }
+};
+
+const addToWishList = async (id: string) => {
+  const response = await axios.put(`${base_url}pruducts/wishlist/`, { id}, config);
+  if(response.data) {
+    return response.data;
+  }
 };
 
 
@@ -23,6 +36,7 @@ const getProduct = async (id: string) => {
 const productService = {
   getProducts,
   getProduct,
+  addToWishList
 };
 
 export default productService;

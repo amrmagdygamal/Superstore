@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
-import { User } from '../model/UserModel';
+import   User  from '../model/UserModel';
 import asyncHandler from 'express-async-handler';
 import validateEnv from '../Util/validateEnv';
 import jwt from 'jsonwebtoken'
@@ -26,11 +26,11 @@ export const auhtMiddleware = asyncHandler(async (req: Request, res: Response, n
 });
   
 
-export const isAdmin = asyncHandler(async(req, res, next) => {
-  const { email } = req.user;
+export const isAdmin = asyncHandler(async(req: Request, _res: Response, next: NextFunction) => {
+  const email  = req.user;
   const adminUser = await User.findOne({ email });
 
-  if(adminUser.role !== "admin"){
+  if(adminUser?.role !== "admin"){
     throw new Error("You are not admin")
   } else {
     next()

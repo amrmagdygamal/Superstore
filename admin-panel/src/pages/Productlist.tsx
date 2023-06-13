@@ -70,7 +70,7 @@ interface ProductState {
 const Productlist = () => {
   const dispatch: AppDispatch = useDispatch();
 
-  const productState = useSelector((state: RootState) => state.product.products);
+  const productState = useSelector((state: any) => state.product.products);
 
   const [open, setOpen] = useState(false);
   const [productId, setProductId] = useState('');

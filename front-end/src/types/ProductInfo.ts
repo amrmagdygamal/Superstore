@@ -2,12 +2,12 @@ export type ProductInfo = {
   _id: string
   name: string;
   description: string;
-  image: string;
+  images: any;
   price: number;
   slug: string;
   category: string;
   brand: string;
   countInStock: number;
-  rating: number;
+  totalrating: number;
   numReviews: number;
 };

@@ -43,7 +43,7 @@ export const uploadPhoto = multer({
   fileFilter: multerFilter,
   limits: {
     // limit the size of files that can be uploaded.to 2mb
-    fileSize: 2000000,
+    fileSize: 1000000,
   },
 });
 
@@ -87,7 +87,7 @@ export const blogImgResize = async (req: Request, res: Response, next: NextFunct
   await Promise.all(
     req.files.map(async (file) => {
       await sharp(file.path)
-      .resize(300, 300)
+      .resize(200, 200)
       .toFormat('jpeg')
       .jpeg({ quality: 90 })
       .toFile(`public/images/blogs/${file.fieldname}.jpeg`);

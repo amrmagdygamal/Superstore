@@ -2,70 +2,72 @@ import { Button, Card } from 'react-bootstrap';
 import { ProductInfo } from '../types/ProductInfo';
 import { Link, useLocation } from 'react-router-dom';
 import { useContext } from 'react';
-import { Store } from '../Store';
-import { AddProductToCart } from '../utils';
 import { toast } from 'react-toastify';
 import Rating from './Rating';
+import { useDispatch } from 'react-redux';
+import { AppDispatch } from '../app/store';
+import { addToWishList } from '../features/product/productSlice';
 
 
 interface ProductItemProps {
-  product: ProductInfo;
+  data: ProductInfo[];
   grid?: number;
 }
 
 
-const ProductItem = ({ product, grid }: ProductItemProps)=> {
+const ProductItem = (props: ProductItemProps)=> {
+
+  const dispatch: AppDispatch = useDispatch();
+
+  const { grid, data} = props;
+
   const location = useLocation();
-  const { state, dispatch } = useContext(Store);
 
-  const {
-    cart: { cartItems },
-  } = state;
+  const addWishlist = (id: string) => {
+    dispatch(addToWishList(id))
+  }
 
-  const addToCartHandler = () => {
-    const existItem = cartItems.find((x) => x._id === product._id);
-    const quantity = existItem ? existItem.quantity + 1 : 1;
 
-    if (product.countInStock < quantity) {
-      toast.warn('Sorry. Product is out of stock');
-      return;
-    }
-    dispatch({
-      type: 'CART_ADD_ITEM',
-      payload: { ...AddProductToCart(product), quantity },
-    });
-    toast.success('Item added to the cart');
-  };
+
+
+
+
 
   return (
     <div className={`${location.pathname == "/store" ? `gr-${grid}` : "col-3"}`}>
-      <Card className="product-card mb-4 position-relative">
+      {data?.map((product: ProductInfo, index: number) => {
+        return (
+          <Card
+            key={index} className="product-card mb-4 position-relative">
         <div className="wishlist-icon position-absolute">
-          <Link to="">
+          <button className='border-0 bg-transparent' onClick={(e) => {addWishlist(product._id)}}>
               <img src="/images/wish.svg" alt="wishlist" />
-          </Link>
+          </button>
         </div>
         <Link to={`/product/:id`}>
           <div className="product-image">
-            <img src='/images/watch.jpg' alt={product.name} />
-            <img src='/images/watch-1.avif' alt={product.name} />
+            <img src={product.images[0].url} alt={product.name} />
+            <img src={product.images[1].url} alt={product.name} />
           </div>
         </Link>
 
         <Card.Body>
           <Link to={`/product/${product._id}`}>
-            <h6 className="brand">Havels</h6>
+            <h6 className="brand">{product.brand}</h6>
             <Card.Title>{product.name}</Card.Title>
           </Link>
-          <Rating rating={product.rating} />
-          <Card.Text>${product.price}</Card.Text>
+          car
+          <Rating rating={product.totalrating} />
+
+          <Card.Text>{product.description}</Card.Text>
+          <Card.Text>$ {product.price}</Card.Text>
 
           {product.countInStock === 0 ? (
             <Button variant="lignt" disabled>
               Out of stock
             </Button>
           ) : (
-            <Button onClick={addToCartHandler}>Add to Cart</Button>
+            <Button>Add to Cart</Button>
           )}
         </Card.Body>
         <div className="action-bar position-absolute">
@@ -82,6 +84,9 @@ const ProductItem = ({ product, grid }: ProductItemProps)=> {
           </div>
         </div>
       </Card>
+        )
+      })}
+      
     </div>
   );
 };

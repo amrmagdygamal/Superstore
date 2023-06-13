@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import BreadCrumb from '../components/BreadCrumb';
 import Meta from '../components/Meta';
 import { Badge } from 'react-bootstrap';
@@ -11,15 +11,37 @@ import LoadingBox from '../components/LoadingBox';
 import { getError } from '../utils';
 import { ApiError } from '../types/ApiErrors';
 import MessageBox from '../components/MessageBox';
+import { useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
+import { AppDispatch } from '../app/store';
+import { getproducts } from '../features/product/productSlice';
 
 const OurStore = () => {
-  const [grid, setGrid] = useState(4);
-  const { data: products, isLoading, error } = useGetProductsQuery();
+  const dispatch: AppDispatch = useDispatch();
 
+  const [grid, setGrid] = useState(4)
+
+  const brandState = useSelector((state: any) => state.brand.brands);
+  const colorState = useSelector((state: any) => state.color.colors);
+
+  const prodCategoryState = useSelector(
+    (state: any) => state.productCategory.categories
+  );
+  const productState = useSelector((state: any) => state.product.products);
+
+  const { isLoading, isError, isSuccess } = productState;
+
+  const getAllProducts = () => {
+    dispatch(getproducts());
+  };
+
+  useEffect(() => {
+    getAllProducts();
+  }, []);
   return isLoading ? (
     <LoadingBox />
-  ) : error ? (
-    <MessageBox variant="danger">{getError(error as ApiError)}</MessageBox>
+  ) : isError ? (
+    <MessageBox variant="danger">{getError(isError as ApiError)}</MessageBox>
   ) : (
     <>
       <Meta title="Our Store" />
@@ -215,24 +237,12 @@ const OurStore = () => {
               <div className="d-flex align-items-center gap-2">
                 <p className="mb-0">Sort By:</p>
                 <select name="" id="" className="form-control form-select">
-                  <option value="best-selling">
-                    Best Selling
-                  </option>
-                  <option value="best-selling">
-                    Alphabetically, A-Z
-                  </option>
-                  <option value="title-ascending">
-                    Alphabetically, Z-A
-                  </option>
-                  <option value="best-selling">
-                    Best Selling
-                  </option>
-                  <option value="best-selling">
-                    Best Selling
-                  </option>
-                  <option value="best-selling">
-                    Best Selling
-                  </option>
+                  <option value="best-selling">Best Selling</option>
+                  <option value="best-selling">Alphabetically, A-Z</option>
+                  <option value="title-ascending">Alphabetically, Z-A</option>
+                  <option value="best-selling">Best Selling</option>
+                  <option value="best-selling">Best Selling</option>
+                  <option value="best-selling">Best Selling</option>
                 </select>
               </div>
               <div className="d-flex align-items-center gap-3">
@@ -276,9 +286,7 @@ const OurStore = () => {
           </div>
           <div className="products-list pb-5">
             <div className="d-flex flex-wrap gap-2">
-              {products!.map((product) => (
-                <ProductItem product={product} grid={grid} />
-              ))}
+              <ProductItem data={productState ? productState : []} grid={grid} />
             </div>
           </div>
         </div>
