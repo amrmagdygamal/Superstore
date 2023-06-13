@@ -2,19 +2,9 @@
 import { createAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import userService from './userService';
 import { toast } from 'react-toastify';
+import { UserInfo } from '../../types/UserInfo';
 
 
-const getUserformLocalStorage = localStorage.getItem('userInfo')
-  ? JSON.parse(localStorage.getItem('userInfo')!)
-  : null;
-
-const initialState = {
-  userInfo: getUserformLocalStorage,
-  isError: false,
-  isLoading: false,
-  isSuccess: false,
-  message: '',
-};
 
 
 
@@ -40,7 +30,47 @@ export const loginUser = createAsyncThunk(
       return thunkAPI.rejectWithValue(error);
     }
   }
-);
+  );
+
+
+
+
+export const getUserWishlist = createAsyncThunk(
+  'user/wishlist',
+  async (_, thunkAPI) => {
+    try {
+      return await userService.getUserWishlist();
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+  );
+
+
+
+  export interface UserState {
+    userInfo: any
+    isError: boolean,
+    isLoading: boolean,
+    isSuccess: boolean,
+    message: string,
+    user?: any
+    wishlist?: any
+  } 
+
+
+
+  const getUserformLocalStorage = localStorage.getItem('userInfo')
+    ? JSON.parse(localStorage.getItem('userInfo')!)
+    : null;
+  
+  const initialState: UserState = {
+    userInfo: getUserformLocalStorage,
+    isError: false,
+    isLoading: false,
+    isSuccess: false,
+    message: '',
+  };
 
 export const resetState = createAction('Reset_all');
 
@@ -79,7 +109,7 @@ export const userSlice = createSlice({
         state.isLoading = false;
         state.isSuccess = true;
         state.isError = false;
-        state.userInfo = action.payload;
+        state.user = action.payload;
         state.message = 'success';
         if(state.isSuccess === true) {
           localStorage.setItem("token", action.payload.token)
@@ -94,6 +124,23 @@ export const userSlice = createSlice({
         if(state.isSuccess === false) {
           toast.error("Failed to login")
         }
+      })
+      .addCase(getUserWishlist.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(getUserWishlist.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.isError = false;
+        state.wishlist = action.payload;
+        state.message = 'success';
+        
+      })
+      .addCase(getUserWishlist.rejected, (state, action) => {
+        state.isError = true;
+        state.isSuccess = false;
+        state.isLoading = false;
+        state.message = action.error.message ?? '';
       })
       .addCase(resetState, () => initialState);
   },

@@ -280,7 +280,7 @@ export const updateUser = asyncHandler(async (req, res, next) => {
 // save user address
 
 export const saveAddress = asyncHandler(async (req, res, next) => {
-  const { _id } = req.user;
+  const  _id  = req.user;
   validateMongoDbId(_id);
 
   try {
