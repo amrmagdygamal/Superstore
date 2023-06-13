@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { createAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import userService from './userService';
+import { toast } from 'react-toastify';
 
 
 const getUserformLocalStorage = localStorage.getItem('userInfo')
@@ -58,12 +59,18 @@ export const userSlice = createSlice({
         state.isError = false;
         state.userInfo = action.payload;
         state.message = 'success';
+        if(state.isSuccess === true) {
+          toast.info("User Signed Up successfully")
+        }
       })
       .addCase(signUpUser.rejected, (state, action) => {
         state.isError = true;
         state.isSuccess = false;
         state.isLoading = false;
         state.message = action.error.message ?? '';
+        if(state.isSuccess === false) {
+          toast.error("Failed to signup")
+        }
       })
       .addCase(loginUser.pending, (state) => {
         state.isLoading = true;

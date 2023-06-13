@@ -15,12 +15,15 @@ import { resetState, signUpUser } from '../features/user/userSlice';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '../app/store';
 
-const schema = Yup.object().shape({
-  username: Yup.string().required('UserName is Required'),
+const signUpSchema = Yup.object().shape({
+  username: Yup.string().defined().required('UserName is Required'),
 
-  email: Yup.string().required('Description is Required'),
-  password: Yup.string().required('Password is Required'),
-  confirmPassword: Yup.string().required('Confirm Password is Required'),
+  email: Yup.string().email("Enter valid Email").nullable().required('Description is Required'),
+  password: Yup.string()
+    .required('Please enter a password')
+    // check minimum characters
+    .min(8, 'Password must have at least 8 characters'),
+  confirmPassword: Yup.string().required('Confirm Password is Required').oneOf([Yup.ref('password'), ""], 'Passwords must match'),
 });
 
 const SignUpPage = () => {
@@ -38,13 +41,14 @@ const SignUpPage = () => {
       password: '',
       confirmPassword: '',
     },
-    validationSchema: schema,
+    validationSchema: signUpSchema,
     onSubmit: (values) => {
       dispatch(signUpUser(values));
       formik.resetForm();
       setTimeout(() => {
         dispatch(resetState());
-      }, 300);
+        navigate("/login/")
+      }, 200);
     },
   });
 
@@ -119,7 +123,8 @@ const SignUpPage = () => {
                   value={formik.values.confirmPassword}
                 />
                 <div className="error mb-4">
-                  {formik.touched.confirmPassword && formik.errors.confirmPassword ? (
+                  {formik.touched.confirmPassword &&
+                  formik.errors.confirmPassword ? (
                     <div>{formik.errors.confirmPassword}</div>
                   ) : null}
                 </div>
