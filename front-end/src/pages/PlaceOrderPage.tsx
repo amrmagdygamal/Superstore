@@ -1,6 +1,5 @@
 import { useContext, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Store } from '../Store';
 import { useCreateOrderMutation } from '../hooks/orderHooks';
 import { getError } from '../utils';
 import { ApiError } from '../types/ApiErrors';

@@ -1,6 +1,5 @@
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useContext, useEffect } from 'react';
-import { Store } from "../Store";
 import { useGetOrderQuery, useGetPaypalClientIdQuery, usePayOrderMutation } from "../hooks/orderHooks";
 import LoadingBox from "../components/LoadingBox";
 import MessageBox from "../components/MessageBox";

@@ -1,7 +1,6 @@
 import React from 'react';
 import { useContext, useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Store } from '../Store';
 import CheckOutSteps from '../components/CheckOutSteps';
 import { Nav } from 'react-bootstrap';
 import Meta from '../components/Meta';
@@ -10,7 +9,6 @@ import Container from '../components/Container';
 
 const Checkout = () => {
   const navigate = useNavigate();
-  const { state, dispatch } = useContext(Store);
 
   const {
     userInfo,

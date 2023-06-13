@@ -4,7 +4,6 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import HomePage from './pages/HomePage';
 import ProductPage from './pages/ProductPage';
-import { Store } from './Store';
 import CartPage from './pages/CartPage';
 import LoginPage from './pages/LoginPage';
 import SignUpPage from './pages/SignUpPage';
@@ -30,13 +29,7 @@ import ShippingPolicy from './pages/ShippingPolicy';
 import Checkout from './pages/Checkout';
 
 function App() {
-  const {
-    state: { mode },
-  } = useContext(Store);
 
-  useEffect(() => {
-    document.body.setAttribute('data-bs-theme', mode);
-  }, [mode]);
 
   return (
     <BrowserRouter>

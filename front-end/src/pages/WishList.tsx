@@ -44,7 +44,8 @@ const WishList = () => {
       <BreadCrumb title="Wishlist Page" />
       <Container class1="wishlist home-wrapper-2 py-5">
         {WishListState.length === 0 && <div className='text-center fs-4'><b>No Products added to Wishlist</b></div>}
-        {WishListState.map((product: any, index: string) => {
+        {WishListState&&
+          WishListState.map((product: any, index: string) => {
           <div className="col-3">
           <div className="wishlist-card position-relative">
             <img

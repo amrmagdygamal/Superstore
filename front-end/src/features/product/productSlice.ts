@@ -1,19 +1,15 @@
-/* eslint-disable @typescript-eslint/no-non-null-assertion */
-import { createAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import productService from './productServcie';
 
-
-
 export interface productState {
-  products: [],
-  isError: boolean,
-  isLoading: boolean,
-  isSuccess: boolean,
-  message: string,
-  product?: any
-  addToWishlist?: any
+  products: [];
+  isError: boolean;
+  isLoading: boolean;
+  isSuccess: boolean;
+  message: string;
+  product?: any;
+  addToWishlist?: any;
 }
-
 
 const initialState: productState = {
   products: [],
@@ -22,8 +18,6 @@ const initialState: productState = {
   isSuccess: false,
   message: '',
 };
-
-
 
 export const getproducts = createAsyncThunk(
   'product/get-products',
@@ -35,8 +29,9 @@ export const getproducts = createAsyncThunk(
     }
   }
 );
+
 export const getproduct = createAsyncThunk(
-  'product/get-products',
+  'product/get-product',
   async (id: string, thunkAPI) => {
     try {
       return await productService.getProduct(id);
@@ -45,6 +40,7 @@ export const getproduct = createAsyncThunk(
     }
   }
 );
+
 export const addToWishList = createAsyncThunk(
   'product/wishlist',
   async (id: string, thunkAPI) => {
@@ -56,16 +52,12 @@ export const addToWishList = createAsyncThunk(
   }
 );
 
-
-export const resetState = createAction('Reset_all');
-
-
 export const productSlice = createSlice({
   name: 'products',
   initialState,
   reducers: {},
-  extraReducers: (buildeer) => {
-    buildeer
+  extraReducers: (builder) => {
+    builder
       .addCase(getproducts.pending, (state) => {
         state.isLoading = true;
       })
@@ -113,8 +105,7 @@ export const productSlice = createSlice({
         state.isSuccess = false;
         state.isLoading = false;
         state.message = action.error.message ?? '';
-      })
-      .addCase(resetState, () => initialState);
+      });
   },
 });
 

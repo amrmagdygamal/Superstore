@@ -2,7 +2,24 @@ import { Badge, Card, Col } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import ReachStars from 'react-rating-stars-component';
 
-const SpecialProduct = () => {
+const SpecialProduct = (props: any) => {
+
+  const {
+    name,
+    description,
+    price,
+    numReviews,
+    ratings,
+    brand,
+    category,
+    totalrating,
+    tags,
+    images,
+    countInStock,
+    color,
+    sold, 
+  } = props;
+
   return (
     <div className="col-6 mb-4">
       <Card className="special-product-card">
@@ -14,9 +31,9 @@ const SpecialProduct = () => {
           </Link>
           <Card.Body>
             <Link to={''}>
-              <h6 className="brand">Havels</h6>
+              <h6 className="brand">{brand}</h6>
               <Card.Title>
-                Samsoung Galaxy Note10+
+                {name}
                 <br />
                 Mobile Phone; sim
               </Card.Title>
@@ -24,12 +41,13 @@ const SpecialProduct = () => {
             <ReachStars
               count={5}
               size={24}
-              value={3}
+              value={totalrating}
               edit={false}
               activeColor="#ffd700"
             />
             <Card.Text>
-              <span className="red-p">$199.999</span> &nbsp; <s>$200</s>
+              <span className="red-p">{price}</span>
+               {/* &nbsp; <s>$200</s> */}
             </Card.Text>
             <div className="discount-till d-flex align-items-center gap-1">
               <p className="mb-0">
@@ -42,15 +60,15 @@ const SpecialProduct = () => {
               </div>
             </div>
             <div className="prod-count my-3">
-              <p>Products: 5</p>
+              <p>Products: {countInStock}</p>
               <div className="progress">
                 <div
                   className="progress-bar"
                   role="progressbar"
-                  style={{ width: '25%' }}
-                  aria-valuenow={25}
+                  style={{ width: countInStock / countInStock + sold * 100 + "%" }}
+                  aria-valuenow={countInStock / countInStock + sold * 100}
                   aria-valuemin={0}
-                  aria-valuemax={100}
+                  aria-valuemax={sold+countInStock}
                 ></div>
               </div>
             </div>

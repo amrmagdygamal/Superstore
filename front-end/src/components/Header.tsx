@@ -1,24 +1,21 @@
 import React, { useContext } from 'react';
 import { Badge, Nav, NavDropdown, Navbar, Row } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
-import { Store } from '../Store';
 import Rating from './Rating';
 import { BsSearch } from 'react-icons/bs';
 import { Link, NavLink } from 'react-router-dom';
 import Container from './Container';
 
 const Header = () => {
-  const {
-    state: { mode, cart, userInfo },
-    dispatch,
-  } = useContext(Store);
+
 
   const switchModelHandler = () => {
-    dispatch({ type: 'SWITCH_MODE' });
+    console.log("kdjflakj");
+    
   };
 
   const signOutHandler = () => {
-    dispatch({ type: 'USER_SIGNOUT' });
+    
     localStorage.removeItem('userInfo');
     localStorage.removeItem('cartItems');
     localStorage.removeItem('shippingAddress');

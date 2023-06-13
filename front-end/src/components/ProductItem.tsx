@@ -10,16 +10,17 @@ import { addToWishList } from '../features/product/productSlice';
 
 
 interface ProductItemProps {
-  data: ProductInfo[];
+  product: ProductInfo;
   grid?: number;
 }
 
 
 const ProductItem = (props: ProductItemProps)=> {
 
+
   const dispatch: AppDispatch = useDispatch();
 
-  const { grid, data} = props;
+  const { grid, product} = props;
 
   const location = useLocation();
 
@@ -35,12 +36,9 @@ const ProductItem = (props: ProductItemProps)=> {
 
   return (
     <div className={`${location.pathname == "/store" ? `gr-${grid}` : "col-3"}`}>
-      {data?.map((product: ProductInfo, index: number) => {
-        return (
-          <Card
-            key={index} className="product-card mb-4 position-relative">
+          <Card  className="product-card mb-4 position-relative">
         <div className="wishlist-icon position-absolute">
-          <button className='border-0 bg-transparent' onClick={(e) => {addWishlist(product._id)}}>
+          <button className='border-0 bg-transparent' onClick={() => {addWishlist(product._id)}}>
               <img src="/images/wish.svg" alt="wishlist" />
           </button>
         </div>
@@ -84,8 +82,6 @@ const ProductItem = (props: ProductItemProps)=> {
           </div>
         </div>
       </Card>
-        )
-      })}
       
     </div>
   );

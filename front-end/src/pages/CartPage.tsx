@@ -1,6 +1,5 @@
 import { useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Store } from '../Store';
 import { toast } from 'react-toastify';
 import { CartItem } from '../types/Cart';
 import Meta from '../components/Meta';
@@ -12,13 +11,7 @@ import MessageBox from '../components/MessageBox';
 const CartPage = () => {
   const navigate = useNavigate();
 
-  const {
-    state: {
-      cart: { cartItems },
-      mode,
-    },
-    dispatch,
-  } = useContext(Store);
+
 
   const updateCartHandler = (item: CartItem, quantity: number) => {
     if (item.countInStock < quantity) {

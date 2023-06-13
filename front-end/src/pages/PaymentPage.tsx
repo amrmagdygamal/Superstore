@@ -1,6 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Store } from '../Store';
 import CheckOutSteps from '../components/CheckOutSteps';
 import { Button, Container, Form } from 'react-bootstrap';
 import { Helmet } from 'react-helmet-async';
@@ -9,11 +8,8 @@ import { Helmet } from 'react-helmet-async';
 const PaymentPage = () => {
 
   const navigate = useNavigate()
-  const { state, dispatch } = useContext(Store)
 
-  const {
-    cart: { shippingAddress, paymentMethod}
-  } = state;
+
 
   const [payMethodName, setPayMethodName] = useState(paymentMethod || 'PayPal')
 
