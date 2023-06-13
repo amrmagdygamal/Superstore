@@ -17,6 +17,7 @@ import { AppDispatch } from '../app/store';
 import { getproducts } from '../features/product/productSlice';
 import { getBlogs } from '../features/blog/blogSlice';
 import moment from 'moment';
+import { ProductInfo } from '../types/ProductInfo';
 
 const HomePage = () => {
   const dispatch: AppDispatch = useDispatch();
@@ -240,7 +241,7 @@ const HomePage = () => {
           <h3 className="section_heading">Features Colections</h3>
         </div>
         {productState &&
-          productState?.map((product: any, index: number) => {
+          productState?.map((product: ProductInfo, index: number) => {
             if (product.tags === 'popular') {
             return (
               <ProductItem product={product} key={index} />

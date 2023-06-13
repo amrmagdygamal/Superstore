@@ -4,10 +4,11 @@ export type ProductInfo = {
   description: string;
   images: any;
   price: number;
-  slug: string;
   category: string;
   brand: string;
   countInStock: number;
   totalrating: number;
   numReviews: number;
+  sold: number;
+  
 };

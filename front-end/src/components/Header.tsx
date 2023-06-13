@@ -5,14 +5,15 @@ import Rating from './Rating';
 import { BsSearch } from 'react-icons/bs';
 import { Link, NavLink } from 'react-router-dom';
 import Container from './Container';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch } from '../app/store';
 
 const Header = () => {
+  const dispatch: AppDispatch = useDispatch();
 
+  const userState = useSelector((state: any) => state.user);
 
-  const switchModelHandler = () => {
-    console.log("kdjflakj");
-    
-  };
+  const {isLoading, isError, isSuccess, userInfo, user} = userState;
 
   const signOutHandler = () => {
     
@@ -120,7 +121,7 @@ const Header = () => {
               to="/cart"
             >
               <img src="/images/cart.svg" alt="cart" />
-              {cart.cartItems.length > 0 && (
+              {/* {cart.cartItems.length > 0 && (
                 <div className="d-flex flex-column gap-1">
                   <span>
                     <Badge pill bg="white" text="dark">
@@ -129,7 +130,7 @@ const Header = () => {
                   </span>
                   <p className="mb-0">${cart.totalPrice}</p>
                 </div>
-              )}
+              )} */}
             </Link>
           </Nav>
         </div>

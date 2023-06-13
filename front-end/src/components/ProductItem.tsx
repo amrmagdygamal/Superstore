@@ -38,29 +38,29 @@ const ProductItem = (props: ProductItemProps)=> {
     <div className={`${location.pathname == "/store" ? `gr-${grid}` : "col-3"}`}>
           <Card  className="product-card mb-4 position-relative">
         <div className="wishlist-icon position-absolute">
-          <button className='border-0 bg-transparent' onClick={() => {addWishlist(product._id)}}>
+          <button className='border-0 bg-transparent' onClick={() => {addWishlist(product?._id)}}>
               <img src="/images/wish.svg" alt="wishlist" />
           </button>
         </div>
-        <Link to={`/product/:id`}>
+        <Link to={`/product/${product?._id}`}>
           <div className="product-image">
-            <img src={product.images[0].url} alt={product.name} />
-            <img src={product.images[1].url} alt={product.name} />
+            <img src={product?.images[0]} alt={product?.name} />
+            <img src={product?.images[0]} alt={product?.name} />
           </div>
         </Link>
 
         <Card.Body>
-          <Link to={`/product/${product._id}`}>
-            <h6 className="brand">{product.brand}</h6>
-            <Card.Title>{product.name}</Card.Title>
+          <Link to={`/product/${product?._id}`}>
+            <h6 className="brand">{product?.brand}</h6>
+            <Card.Title>{product?.name}</Card.Title>
           </Link>
           car
-          <Rating rating={product.totalrating} />
+          <Rating rating={product?.totalrating} />
 
-          <Card.Text>{product.description}</Card.Text>
-          <Card.Text>$ {product.price}</Card.Text>
+          <Card.Text>{product?.description}</Card.Text>
+          <Card.Text>$ {product?.price}</Card.Text>
 
-          {product.countInStock === 0 ? (
+          {product?.countInStock === 0 ? (
             <Button variant="lignt" disabled>
               Out of stock
             </Button>
