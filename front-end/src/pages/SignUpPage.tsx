@@ -18,7 +18,7 @@ import { AppDispatch } from '../app/store';
 const signUpSchema = Yup.object().shape({
   username: Yup.string().defined().required('UserName is Required'),
 
-  email: Yup.string().email("Enter valid Email").nullable().required('Description is Required'),
+  email: Yup.string().email("Enter valid Email").required('Email is Required'),
   password: Yup.string()
     .required('Please enter a password')
     // check minimum characters
@@ -86,7 +86,7 @@ const SignUpPage = () => {
                   placeholder="Email"
                   onChange={formik.handleChange('email')}
                   onBlur={formik.handleBlur('email')}
-                  value={formik.values.username}
+                  value={formik.values.email}
                 />
                 <div className="error mb-4">
                   {formik.touched.email && formik.errors.email ? (

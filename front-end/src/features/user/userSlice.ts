@@ -60,7 +60,7 @@ export const userSlice = createSlice({
         state.userInfo = action.payload;
         state.message = 'success';
         if(state.isSuccess === true) {
-          toast.info("User Signed Up successfully")
+          toast.info("Signed Up successfully")
         }
       })
       .addCase(signUpUser.rejected, (state, action) => {
@@ -81,12 +81,19 @@ export const userSlice = createSlice({
         state.isError = false;
         state.userInfo = action.payload;
         state.message = 'success';
+        if(state.isSuccess === true) {
+          localStorage.setItem("token", action.payload.token)
+          toast.info("Logded in  successfully")
+        }
       })
       .addCase(loginUser.rejected, (state, action) => {
         state.isError = true;
         state.isSuccess = false;
         state.isLoading = false;
         state.message = action.error.message ?? '';
+        if(state.isSuccess === false) {
+          toast.error("Failed to login")
+        }
       })
       .addCase(resetState, () => initialState);
   },

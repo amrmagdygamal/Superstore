@@ -12,51 +12,40 @@ import Meta from '../components/Meta';
 import BreadCrumb from '../components/BreadCrumb';
 import Container from '../components/Container';
 import { useFormik } from 'formik';
+import { useDispatch } from 'react-redux';
+import { AppDispatch } from '../app/store';
+import { loginUser } from '../features/user/userSlice';
+
+const loginSchema = Yup.object().shape({
+
+  email: Yup.string().email("Enter valid Email").required('Email is Required'),
+  password: Yup.string()
+    .required('Please enter a password')
+    // check minimum characters
+    .min(8, 'Password must have at least 8 characters'),
+});
 
 const LoginPage = () => {
   
   
-  const schema = Yup.object().shape({
-    name: Yup.string().required('Name is Required'),
-    images: Yup.array().required('').min(1, 'You should one Image'),
-  
-    description: Yup.string().required('Description is Required'),
-    price: Yup.number().required('Price is Required'),
-    brand: Yup.string().required('Brand is Required'),
-    tag: Yup.string().required('Tag is Required'),
-    category: Yup.string().required('Category is Required'),
-    color: Yup.array()
-      .min(1, 'Pick at least one color')
-      .required('Color is Required'),
-    countInStock: Yup.number().required('Quantity is Required'),
-  });
-
   const dispatch: AppDispatch = useDispatch();
-  
+
+  const navigate = useNavigate();
+  const { search } = useLocation();
+  const redirectInUrl = new URLSearchParams(search).get('redirect');
+  const redirect = redirectInUrl ? redirectInUrl : '/';
+
   const formik = useFormik({
     initialValues: {
-      name: '',
-      description: '',
-      price: '',
-      brand: '',
-      category: '',
-      countInStock: '',
-      color: [],
-      images: [],
-      tag: '',
+      email: '',
+      password: '',
     },
-    validationSchema: schema,
+    validationSchema: loginSchema,
     onSubmit: (values) => {
-      // alert(JSON.stringify(values))
-      dispatch(createProduct(values));
+      dispatch(loginUser(values));
       formik.resetForm();
-      setColor([]);
-      setTimeout(() => {
-        dispatch(resetState());
-      }, 8000);
     },
   });
-
   return (
     <>
       <Meta title="Login Page" />
@@ -65,30 +54,42 @@ const LoginPage = () => {
         <div className="col-12">
           <div className="auth-card">
             <h3 className="text-center mb-3">Login</h3>
-            <Form onSubmit={submitHandler}>
+            <Form onSubmit={formik.handleSubmit}>
               <Form.Group className="mb-3" controlId="email">
-                <Form.Control
-                  type="email"
-                  name='email'
+              <Form.Control
+                  name="email"
+                  className="form-input h-50 py-3"
+                  type="text"
                   placeholder="Email"
-                  className="form-input"
-                  required
-                  onChange={(e) => setEmail(e.target.value)}
+                  onChange={formik.handleChange('email')}
+                  onBlur={formik.handleBlur('email')}
+                  value={formik.values.email}
                 />
+                <div className="error mb-4">
+                  {formik.touched.email && formik.errors.email ? (
+                    <div>{formik.errors.email}</div>
+                  ) : null}
+                </div>
               </Form.Group>
               <Form.Group className="mb-3" controlId="password">
-                <Form.Control
-                  type="password"
-                  name='password'
+              <Form.Control
+                  name="password"
+                  className="form-input h-50 py-3"
+                  type="text"
                   placeholder="Password"
-                  className="form-input"
-                  required
-                  onChange={(e) => setPassword(e.target.value)}
+                  onChange={formik.handleChange('password')}
+                  onBlur={formik.handleBlur('password')}
+                  value={formik.values.password}
                 />
+                <div className="error mb-4">
+                  {formik.touched.password && formik.errors.password ? (
+                    <div>{formik.errors.password}</div>
+                  ) : null}
+                </div>
               </Form.Group>
               <Link to="/forgot-password">Forgot Passowrd</Link>
               <div className="my-3 d-flex gap-4 justify-content-center">
-                <button className="button" disabled={isLoading} type="submit">
+                <button className="button" disabled={} type="submit">
                   Login
                 </button>
 
