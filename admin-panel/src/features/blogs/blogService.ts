@@ -29,13 +29,13 @@ const updateBlog = async (blog: BlogInfo) => {
   return response.data;
 };
 const getBlog = async (id: string) => {
-  const response = await axios.get(`${base_url}blogs/${id}`, config);
+  const response = await axios.get(`${base_url}blogs/${id}/`, config);
 
   return response.data;
 };
 
 const deleteBlog = async (id: string) => {
-  const response = await axios.delete(`${base_url}blogs/${id}`, config);
+  const response = await axios.delete(`${base_url}blogs/${id}/`, config);
 
   return response.data;
 };

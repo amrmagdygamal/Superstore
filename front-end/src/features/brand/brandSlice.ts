@@ -1,21 +1,21 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { createAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import productService from './productServcie';
+import brandService from './brandService';
 
 
 
-export interface productState {
-  products: [],
+export interface brandState {
+  brands: [],
   isError: boolean,
   isLoading: boolean,
   isSuccess: boolean,
   message: string,
-  product?: any
+  brand?: any
 }
 
 
-const initialState: productState = {
-  products: [],
+const initialState: brandState = {
+  brands: [],
   isError: false,
   isLoading: false,
   isSuccess: false,
@@ -24,21 +24,21 @@ const initialState: productState = {
 
 
 
-export const getproducts = createAsyncThunk(
-  'product/get-products',
+export const getBrands = createAsyncThunk(
+  'brand/get-brands',
   async (_, thunkAPI) => {
     try {
-      return await productService.getProducts();
+      return await brandService.getBrands();
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }
   }
 );
-export const getproduct = createAsyncThunk(
-  'product/get-products',
+export const getBrand = createAsyncThunk(
+  'brand/get-brand',
   async (id: string, thunkAPI) => {
     try {
-      return await productService.getProduct(id);
+      return await brandService.getBrand(id);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }
@@ -49,39 +49,39 @@ export const getproduct = createAsyncThunk(
 export const resetState = createAction('Reset_all');
 
 
-export const authSlice = createSlice({
-  name: 'products',
+export const brandSlice = createSlice({
+  name: 'brands',
   initialState,
   reducers: {},
   extraReducers: (buildeer) => {
     buildeer
-      .addCase(getproducts.pending, (state) => {
+      .addCase(getBrands.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(getproducts.fulfilled, (state, action) => {
+      .addCase(getBrands.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isSuccess = true;
         state.isError = false;
-        state.products = action.payload;
+        state.brands = action.payload;
         state.message = 'success';
       })
-      .addCase(getproducts.rejected, (state, action) => {
+      .addCase(getBrands.rejected, (state, action) => {
         state.isError = true;
         state.isSuccess = false;
         state.isLoading = false;
         state.message = action.error.message ?? '';
       })
-      .addCase(getproduct.pending, (state) => {
+      .addCase(getBrand.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(getproduct.fulfilled, (state, action) => {
+      .addCase(getBrand.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isSuccess = true;
         state.isError = false;
-        state.product = action.payload;
+        state.brand = action.payload;
         state.message = 'success';
       })
-      .addCase(getproduct.rejected, (state, action) => {
+      .addCase(getBrand.rejected, (state, action) => {
         state.isError = true;
         state.isSuccess = false;
         state.isLoading = false;
@@ -91,4 +91,4 @@ export const authSlice = createSlice({
   },
 });
 
-export default authSlice.reducer;
+export default brandSlice.reducer;

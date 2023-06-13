@@ -1,21 +1,21 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { createAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import productService from './productServcie';
+import blogCategoryService from './blogCategoryService';
 
 
 
-export interface productState {
-  products: [],
+export interface blogCategoryState {
+  blogCategories: [],
   isError: boolean,
   isLoading: boolean,
   isSuccess: boolean,
   message: string,
-  product?: any
+  blogCategory?: any
 }
 
 
-const initialState: productState = {
-  products: [],
+const initialState: blogCategoryState = {
+  blogCategories: [],
   isError: false,
   isLoading: false,
   isSuccess: false,
@@ -24,21 +24,21 @@ const initialState: productState = {
 
 
 
-export const getproducts = createAsyncThunk(
-  'product/get-products',
+export const getblogCategories = createAsyncThunk(
+  'blogCategory/get-blogCategorys',
   async (_, thunkAPI) => {
     try {
-      return await productService.getProducts();
+      return await blogCategoryService.getblogCategories();
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }
   }
 );
-export const getproduct = createAsyncThunk(
-  'product/get-products',
+export const getblogCategory = createAsyncThunk(
+  'blogCategory/get-blogCategory',
   async (id: string, thunkAPI) => {
     try {
-      return await productService.getProduct(id);
+      return await blogCategoryService.getblogCategory(id);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }
@@ -49,39 +49,39 @@ export const getproduct = createAsyncThunk(
 export const resetState = createAction('Reset_all');
 
 
-export const authSlice = createSlice({
-  name: 'products',
+export const blogCategorySlice = createSlice({
+  name: 'blogCategorys',
   initialState,
   reducers: {},
   extraReducers: (buildeer) => {
     buildeer
-      .addCase(getproducts.pending, (state) => {
+      .addCase(getblogCategories.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(getproducts.fulfilled, (state, action) => {
+      .addCase(getblogCategories.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isSuccess = true;
         state.isError = false;
-        state.products = action.payload;
+        state.blogCategories = action.payload;
         state.message = 'success';
       })
-      .addCase(getproducts.rejected, (state, action) => {
+      .addCase(getblogCategories.rejected, (state, action) => {
         state.isError = true;
         state.isSuccess = false;
         state.isLoading = false;
         state.message = action.error.message ?? '';
       })
-      .addCase(getproduct.pending, (state) => {
+      .addCase(getblogCategory.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(getproduct.fulfilled, (state, action) => {
+      .addCase(getblogCategory.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isSuccess = true;
         state.isError = false;
-        state.product = action.payload;
+        state.blogCategory = action.payload;
         state.message = 'success';
       })
-      .addCase(getproduct.rejected, (state, action) => {
+      .addCase(getblogCategory.rejected, (state, action) => {
         state.isError = true;
         state.isSuccess = false;
         state.isLoading = false;
@@ -91,4 +91,4 @@ export const authSlice = createSlice({
   },
 });
 
-export default authSlice.reducer;
+export default blogCategorySlice.reducer;
