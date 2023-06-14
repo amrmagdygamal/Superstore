@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import ReactStars from 'react-rating-stars-component';
 import Rating from '../components/Rating';
 import { useEffect, useState } from 'react';
@@ -15,25 +15,28 @@ import { useDispatch } from 'react-redux';
 import { getproduct } from '../features/product/productSlice';
 import { useSelector } from 'react-redux';
 import { ProductInfo } from '../types/ProductInfo';
-import { addToCart } from '../features/user/userSlice';
+import { addToCart, getUserCart } from '../features/user/userSlice';
 import { toast } from 'react-toastify';
 
 const ProductPage = () => {
   const dispatch: AppDispatch = useDispatch();
   const location = useLocation();
-
+  const navigate = useNavigate();
   const getProductId = location.pathname.split('/')[2];
   const productState = useSelector((state: any) => state.product.product);
+  const addCartState = useSelector((state: any) => state.user.addCart);
   const cartState = useSelector((state: any) => state.user.cart);
   const [color, setColor] = useState({});
   const [colorBorder, setColorBorder] = useState(false);
+  const [alreadyAdded, setAlreadyAdded] = useState(true);
 
+  const {isLoading, isError, isSuccess, addCart} = addCartState;
   const colors: any = [];
 
   useEffect(() => {
     colors.push(color);
-    if(colors.length > quantity) {
-      setQuantity(colors.length)
+    if (colors.length > quantity) {
+      setQuantity(colors.length);
     }
   }, [color]);
 
@@ -43,23 +46,35 @@ const ProductPage = () => {
     setQuantity(e);
   };
 
-
-  
   useEffect(() => {
     dispatch(getproduct(getProductId));
   }, []);
+
   
+  useEffect(() => {
+    dispatch(getUserCart());
+  }, [addCart, isSuccess]);
+  
+
+  useEffect(() => {
+    for (let index = 0; index < cartState?.products?.length; index++) {
+      if (getProductId == cartState?.products[index]._id) {
+        setAlreadyAdded(true);
+      }
+    }
+  }, []);
+
   const prodcartData = { getProductId, colors, quantity };
 
   const addProductToCart = (data: any) => {
     if (colors.length == 0) {
       if (productState?.color.length == 1) {
-        setColor(productState.color[0])
-      } else{
-        toast.error("Please Choose Color")
+        setColor(productState.color[0]);
+      } else {
+        toast.error('Please Choose Color');
       }
     } else {
-      dispatch(addToCart(prodcartData))
+      dispatch(addToCart(prodcartData));
     }
   };
 
@@ -164,8 +179,8 @@ const ProductPage = () => {
                         <Color
                           col={col}
                           key={index}
-                            setColor={setColor}
-                            setColorBorder={setColorBorder}
+                          setColor={setColor}
+                          setColorBorder={setColorBorder}
                           border={colorBorder}
                         />
                       </ul>
@@ -173,59 +188,83 @@ const ProductPage = () => {
                   })}
               </div>
               <div className="d-flex gap-3 align-items-center flex-row mt-2 mb-3">
-                <h3 className="type-title">Quantity :</h3>
-                <div className="">
-                  <input
-                    type="type"
-                    name="count"
-                    style={{ width: '3rem', maxHeight: '2rem' }}
-                    value={quantity}
-                    className="form-control text-center"
-                    id=""
-                  />
-                </div>
-                <div className="d-flex gap-2 align-items-center">
-                  {productState?.countInStock > quantity ? (
-                    <button
-                      onClick={() => setQuantity(quantity + 1)}
-                      className="button py-1 px-3"
-                    >
-                      +
-                    </button>
-                  ) : (
-                    <button
-                      disabled
-                      className="button bg-secondary text-white py-1 px-3"
-                    >
-                      +
-                    </button>
-                  )}
-                  {quantity > 1 ? (
-                    <button
-                      onClick={() => setQuantity(quantity - 1)}
-                      className="button py-1 px-3"
-                    >
-                      -
-                    </button>
-                  ) : (
-                    <button
-                      disabled
-                      className="button bg-secondary py-1 px-3"
-                    >
-                      -
-                    </button>
-                  )}
-                </div>
+                {alreadyAdded === false ? (
+                  <>
+                    <h3 className="type-title">Quantity :</h3>
+                    <div className="">
+                      <input
+                        type="type"
+                        name="count"
+                        style={{ width: '3rem', maxHeight: '2rem' }}
+                        value={quantity}
+                        className="form-control text-center"
+                        id=""
+                      />
+                    </div>
+                    <div className="d-flex gap-2 align-items-center">
+                      {quantity < 10 ? (
+                        <button
+                          onClick={() => setQuantity(quantity + 1)}
+                          className="button py-1 px-3"
+                        >
+                          +
+                        </button>
+                      ) : (
+                        <button
+                          disabled
+                          className="button bg-secondary text-white py-1 px-3"
+                        >
+                          +
+                        </button>
+                      )}
+                      {quantity > 1 ? (
+                        <button
+                          onClick={() => setQuantity(quantity - 1)}
+                          className="button py-1 px-3"
+                        >
+                          -
+                        </button>
+                      ) : (
+                        <button
+                          disabled
+                          className="button bg-secondary py-1 px-3"
+                        >
+                          -
+                        </button>
+                      )}
+                    </div>
+                  </>
+                ) : (
+                  <>
+                  <h3 className="title text-success mb-0">Already Added to Cart :</h3>
+                  </>
+                )}
+
                 <div className="d-flex ms-5 align-items-center gap-3">
-                  <button
-                    onClick={() => addProductToCart(prodcartData)}
-                    className="button m-2 py-3 px-4"
-                    type="submit"
-                  >
-                    Add To Cart
-                  </button>
+                  {alreadyAdded === false ? (
+                    <>
+                      <button
+                        onClick={() => addProductToCart(prodcartData)}
+                        className="button m-2 py-3 px-4"
+                        type="submit"
+                      >
+                        Add To Cart
+                      </button>
+                    </>
+                  ) : (
+                    <>
+                      <button
+                        onClick={() => navigate("/cart")}
+                        className="button m-2 py-3 px-4"
+                        type="submit"
+                      >
+                        Go Cart
+                      </button>
+                    </>
+                  )}
+
                   <Link
-                    to="/signup"
+                    to="/checkout"
                     className="signup button py-3 px-4"
                     type="submit"
                   >
