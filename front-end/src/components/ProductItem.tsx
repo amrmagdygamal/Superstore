@@ -1,12 +1,13 @@
 import { Button, Card } from 'react-bootstrap';
 import { ProductInfo } from '../types/ProductInfo';
-import { Link, useLocation } from 'react-router-dom';
-import { useContext } from 'react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { useContext, useEffect } from 'react';
 import { toast } from 'react-toastify';
 import Rating from './Rating';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '../app/store';
 import { addToWishList } from '../features/product/productSlice';
+import { addToCart } from '../features/user/userSlice';
 
 
 interface ProductItemProps {
@@ -18,17 +19,22 @@ interface ProductItemProps {
 const ProductItem = (props: ProductItemProps)=> {
 
 
+  const addProductToCart = (id: string) => {
+    dispatch(addToCart(id))
+  }
+
+
   const dispatch: AppDispatch = useDispatch();
+  const navigate = useNavigate();
 
   const { grid, product} = props;
 
   const location = useLocation();
+  const getProductId = location.pathname.split("/")[2]
 
   const addWishlist = (id: string) => {
     dispatch(addToWishList(id))
   }
-
-
 
 
 
@@ -42,12 +48,12 @@ const ProductItem = (props: ProductItemProps)=> {
               <img src="/images/wish.svg" alt="wishlist" />
           </button>
         </div>
-        <Link to={`/product/${product?._id}`}>
+        <div>
           <div className="product-image">
-            <img src={product?.images[0]} alt={product?.name} />
-            <img src={product?.images[0]} alt={product?.name} />
+            <img onClick={() => navigate(`/product/${product?._id}`)} src={product?.images} alt={product?.name} />
+            <img onClick={() => navigate(`/product/${product?._id}`)} src={product?.images} alt={product?.name} />
           </div>
-        </Link>
+        </div>
 
         <Card.Body>
           <Link to={`/product/${product?._id}`}>
@@ -59,22 +65,14 @@ const ProductItem = (props: ProductItemProps)=> {
 
           <Card.Text>{product?.description}</Card.Text>
           <Card.Text>$ {product?.price}</Card.Text>
-
-          {product?.countInStock === 0 ? (
-            <Button variant="lignt" disabled>
-              Out of stock
-            </Button>
-          ) : (
-            <Button>Add to Cart</Button>
-          )}
         </Card.Body>
         <div className="action-bar position-absolute">
           <div className="d-flex gap-2 flex-column">
             <Link to="">
               <img src="/images/prodcompare.svg" alt="compare" />
             </Link>
-            <Link to="">
-              <img src="/images/view.svg" alt="view" />
+            <Link to={`/product/${product?._id}`}>
+              <img onClick={() => navigate(`/product/${product?._id}`)} src="/images/view.svg" alt="view" />
             </Link>
             <Link to="">
               <img src="/images/add-cart.svg" alt="addcart" />

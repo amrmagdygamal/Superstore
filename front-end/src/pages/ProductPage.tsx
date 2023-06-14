@@ -1,18 +1,8 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import { Link, useNavigate, useParams } from 'react-router-dom';
-import LoadingBox from '../components/LoadingBox';
-import MessageBox from '../components/MessageBox';
-import { AddProductToCart, getError } from '../utils';
-import { ApiError } from '../types/ApiErrors';
+import { Link, useLocation } from 'react-router-dom';
 import ReactStars from 'react-rating-stars-component';
 import Rating from '../components/Rating';
-import { useContext, useState } from 'react';
-import { Store } from '../Store';
-import { toast } from 'react-toastify';
-import {
-  useGetProductDetailsBy_idQuery,
-  useGetProductsQuery,
-} from '../hooks/productHooks';
+import { useEffect, useState } from 'react';
 import Meta from '../components/Meta';
 import BreadCrumb from '../components/BreadCrumb';
 import ProductItem from '../components/ProductItem';
@@ -20,11 +10,45 @@ import { Color } from '../components/Color';
 import { TbArrowsShuffle } from 'react-icons/tb';
 import { MdFavorite } from 'react-icons/md';
 import Container from '../components/Container';
-
-
+import { AppDispatch } from '../app/store';
+import { useDispatch } from 'react-redux';
+import { getproduct } from '../features/product/productSlice';
+import { useSelector } from 'react-redux';
+import { ProductInfo } from '../types/ProductInfo';
+import { addToCart } from '../features/user/userSlice';
 
 const ProductPage = () => {
   const dispatch: AppDispatch = useDispatch();
+  const location = useLocation();
+
+  const getProductId = location.pathname.split('/')[2];
+  const productState = useSelector((state: any) => state.product.product);
+  const cartState = useSelector((state: any) => state.user.cart);
+  const [color, setColor] = useState([]);
+  const [colorBorder, setColorBorder] = useState(false);
+
+  const colors: any = [];
+
+  useEffect(() => {
+    colors.push(color);
+  }, [color]);
+
+  const [quantity, setQuantity] = useState(1);
+
+  const handlerQuant = (e: number) => {
+    setQuantity(e);
+  };
+
+  
+  useEffect(() => {
+    dispatch(getproduct(getProductId));
+  }, []);
+  
+  const prodcartData = { getProductId, colors, quantity };
+
+  const addProductToCart = (data: any) => {
+    dispatch(addToCart(data));
+  };
 
   const copyToClipboard = (text: string) => {
     console.log('text', text);
@@ -35,29 +59,10 @@ const ProductPage = () => {
     document.execCommand('copy');
     textField.remove();
   };
-  const addToCartHandler = () => {
-    const existItem = cart.cartItems.find((x) => x._id === product!._id);
-    const quantity = existItem ? existItem.quantity + 1 : 1;
-
-    if (product!.countInStock < quantity) {
-      toast.warn('sorry the product is out of stock');
-      return;
-    }
-    dispatch({
-      type: 'CART_ADD_ITEM',
-      payload: { ...AddProductToCart(product!), quantity },
-    });
-    toast.success('Produt added to the cart');
-    navigate('/cart');
-  };
 
   const [orderedProduct, setOrderedProduct] = useState(true);
 
-  return isLoading ? (
-    <LoadingBox />
-  ) : error ? (
-    <MessageBox variant="danger">{getError(error as ApiError)}</MessageBox>
-  ) : (
+  return (
     <>
       <Meta title="Product Name" />
       <BreadCrumb title="Product Name" />
@@ -65,54 +70,31 @@ const ProductPage = () => {
         <div className="col-6">
           <div className="product-image-section">
             <div>
-              <img src="/images/Apple_watch.webp" alt="" />
+              <img src={productState?.images[0].url} alt="" />
             </div>
           </div>
           <div className="other-images d-flex flex-wrap gap-2">
-            <div>
-              <img
-                src="/images/Apple_watch.webp"
-                className="img-fluid"
-                alt=""
-              />
-            </div>
-            <div>
-              <img
-                src="/images/Apple_watch.webp"
-                className="img-fluid"
-                alt=""
-              />
-            </div>
-            <div>
-              <img
-                src="/images/Apple_watcنصh.webp"
-                className="img-fluid"
-                alt=""
-              />
-            </div>
-            <div>
-              <img
-                src="/images/Apple_watch.webp"
-                className="img-fluid"
-                alt=""
-              />
-            </div>
+            {productState?.images.map((img: any, index: number) => {
+              return (
+                <div key={index}>
+                  <img src={img?.url} alt="" />
+                </div>
+              );
+            })}
           </div>
         </div>
         <div className="col-6">
           <div className="product-page-details">
             <div className="border-bottom">
-              <h3 className="title">
-                Kids Headphones Bulk 10 Pack Multi Colored For Students
-              </h3>
+              <h3 className="title">{productState?.name}</h3>
             </div>
             <div className="border-bottom py-3">
-              <p className="price">$ 100</p>
+              <p className="price">$ {productState?.price}</p>
               <div className="d-flex align-items-center gap-1">
                 <ReactStars
                   count={5}
                   size={24}
-                  value={4}
+                  value={productState?.totalrating.toString()}
                   edit={true}
                   activeColor="#ffd700"
                 />
@@ -125,19 +107,19 @@ const ProductPage = () => {
             <div className="border-bottom py-3">
               <div className="d-flex gap-2 align-items-center my-2">
                 <h3 className="type-title">Type:</h3>
-                <p className="type-detail">Headsets</p>
+                <p className="type-detail">{productState?.category}</p>
               </div>
               <div className="d-flex gap-2 align-items-center my-2">
                 <h3 className="type-title">Brand</h3>
-                <p className="type-detail">Hevels</p>
+                <p className="type-detail">{productState?.brand}</p>
               </div>
               <div className="d-flex gap-2 align-items-cente my-2r">
                 <h3 className="type-title">Category:</h3>
-                <p className="type-detail">HeadPhones</p>
+                <p className="type-detail">{productState?.category}</p>
               </div>
               <div className="d-flex gap-2 align-items-center my-2">
                 <h3 className="type-title">Tags:</h3>
-                <p className="type-detail">Watch</p>
+                <p className="type-detail">{productState?.tags}</p>
               </div>
               <div className="d-flex gap-2 align-items-center my-2">
                 <h3 className="type-title">Availabilty:</h3>
@@ -162,26 +144,80 @@ const ProductPage = () => {
               </div>
               <div className="d-flex gap-1 flex-column mt-2 mb-3">
                 <h3 className="type-title">Color :</h3>
-                <Color />
+                {productState &&
+                  productState?.color?.map((col: any, index: number) => {
+                    return (
+                      <ul className="colors">
+                        <Color
+                          col={col}
+                          key={index}
+                          onClick={() => {
+                            setColor(col.title);
+                            setColorBorder(true);
+                          }}
+                          border={colorBorder}
+                        />
+                      </ul>
+                    );
+                  })}
               </div>
               <div className="d-flex gap-3 align-items-center flex-row mt-2 mb-3">
                 <h3 className="type-title">Quantity :</h3>
                 <div className="">
                   <input
-                    type="number"
-                    name=""
-                    min={1}
-                    max={10}
-                    style={{ width: '4rem' }}
-                    className="form-control"
+                    type="type"
+                    name="count"
+                    style={{ width: '3rem', maxHeight: '2rem' }}
+                    value={quantity}
+                    className="form-control text-center"
                     id=""
                   />
                 </div>
+                <div className="d-flex gap-2 align-items-center">
+                  {productState?.countInStock > quantity ? (
+                    <button
+                      onClick={() => setQuantity(quantity + 1)}
+                      className="button py-1 px-3"
+                    >
+                      +
+                    </button>
+                  ) : (
+                    <button
+                      disabled
+                      className="button bg-secondary text-white py-1 px-3"
+                    >
+                      +
+                    </button>
+                  )}
+                  {quantity > 1 ? (
+                    <button
+                      onClick={() => setQuantity(quantity - 1)}
+                      className="button py-1 px-3"
+                    >
+                      -
+                    </button>
+                  ) : (
+                    <button
+                      disabled
+                      className="button bg-secondary py-1 px-3"
+                    >
+                      -
+                    </button>
+                  )}
+                </div>
                 <div className="d-flex ms-5 align-items-center gap-3">
-                  <button className="button border-0" type="submit">
+                  <button
+                    onClick={() => addProductToCart(prodcartData)}
+                    className="button m-2 py-3 px-4"
+                    type="submit"
+                  >
                     Add To Cart
                   </button>
-                  <Link to="/signup" className="signup button" type="submit">
+                  <Link
+                    to="/signup"
+                    className="signup button py-3 px-4"
+                    type="submit"
+                  >
                     Buy It Now
                   </Link>
                 </div>
@@ -212,7 +248,7 @@ const ProductPage = () => {
                 <a
                   href="javascript:void(0);"
                   onClick={() => {
-                    copyToClipboard('/images/Apple_watch.webp');
+                    copyToClipboard(window.location.href);
                   }}
                 >
                   Copy Product Link:{' '}
@@ -226,12 +262,9 @@ const ProductPage = () => {
         <div className="col-12">
           <h4>Description</h4>
           <div className="p-2 bg-white box-shadow">
-            <p>
-              Lorem ipsum dolor sit, amet consectetur adipisicing elit. Eum
-              soluta, porro cum ea modi, debitis veniam laboriosam ipsa nulla
-              architecto molestiae itaque obcaecati rerum delectus? Quod
-              molestiae sequi minus atque?
-            </p>
+            <p
+              dangerouslySetInnerHTML={{ __html: productState?.description }}
+            ></p>
           </div>
         </div>
       </Container>
@@ -243,7 +276,7 @@ const ProductPage = () => {
               <div>
                 <h4 className="mb-2">Customer Reviews</h4>
                 <div className="d-flex align-items-center gap-2">
-                  <Rating rating={3} />
+                  <Rating rating={productState?.totalrating} />
                   <p className="mb-0">Based on 2 Reviews</p>
                 </div>
               </div>
@@ -290,7 +323,7 @@ const ProductPage = () => {
                 <ReactStars
                   count={5}
                   size={24}
-                  value={4}
+                  value={productState?.totalrating}
                   edit={true}
                   activeColor="#ffd700"
                 />
@@ -309,9 +342,12 @@ const ProductPage = () => {
         <div className="col-12">
           <h3 className="section_heading">Our Popular Products</h3>
         </div>
-        {products!.map((product) => (
-          <ProductItem product={product} />
-        ))}
+        {productState &&
+          productState?.map((product: ProductInfo, index: number) => {
+            if (product.tags === 'popular') {
+              return <ProductItem product={product} key={index} />;
+            }
+          })}
       </Container>
     </>
   );

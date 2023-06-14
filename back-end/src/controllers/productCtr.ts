@@ -49,7 +49,7 @@ export const deleteProduct = asyncHandler(async (req, res, next) => {
 export const getProduct = asyncHandler(async (req, res, next) => {
   try {
     const { _id } = req.params;
-    const findProduct = await ProductModel.findById(_id);
+    const findProduct = await ProductModel.findById(_id).populate("color").exec();
 
     res.json(findProduct);
   } catch (error) {

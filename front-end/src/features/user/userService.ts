@@ -32,6 +32,14 @@ const getUserWishlist = async () => {
 };
 
 
+const addToCart = async (prodData: any) => {
+  const response = await axios.post(`${base_url}users/cart`,{ prodId: prodData.id, colors: prodData.colors, quantity: prodData.quantity }, config);
+  if (response.data) {
+    return response.data;
+  }
+};
+
+
 //  get orders 
 
 
@@ -39,6 +47,7 @@ const userService = {
   signUp,
   login,
   getUserWishlist,
+  addToCart,
 };
 
 export default userService;

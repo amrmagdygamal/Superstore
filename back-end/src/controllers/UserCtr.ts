@@ -26,15 +26,10 @@ export const signup = asyncHandler(
           success: false,
         });
       }
-      const findUsername = await UserModel.findOne({
-        username: username,
-      }).exec();
+      const existingUsername= await UserModel.findOne({ username }).collation({ locale: "en", strength: 2}).exec();
 
-      if (findUsername) {
-        res.json({
-          msg: 'Username already taken. Please choose a different one or log in instead.',
-          success: false,
-        });
+      if(existingUsername) {
+        throw createHttpError(409, "Username already taken")
       }
 
       const findEmail = await UserModel.findOne({ email: email }).exec();
@@ -442,8 +437,8 @@ export const resetPassword = asyncHandler(async (req, res) => {
   res.json(user);
 });
 
-export const getWishList = asyncHandler(async (req, res, next) => {
-  const userId = req.user._id;
+export const getWishList = asyncHandler(async (req: Request, res: Response, next) => {
+  const userId = req.user?._id;
 
   try {
     const findUser = await UserModel.findById(userId).populate('wishlist');
@@ -457,9 +452,8 @@ export const getWishList = asyncHandler(async (req, res, next) => {
 // Add to Cart Function
 
 export const addToCart = asyncHandler(async (req, res, next) => {
-  const { _id } = req.user;
-  const { prodId } = req.body;
-  validateMongoDbId(_id);
+  const _id  = req.user?._id;
+  const { prodId, colors, quantity } = req.body;
 
   try {
     const user = await UserModel.findById(_id);
@@ -496,11 +490,11 @@ export const addToCart = asyncHandler(async (req, res, next) => {
       // add the product to the cart
       const newProduct = {
         name: product?.name ?? '',
-        quantity: 1,
-        image: product?.images[0] ?? '',
+        quantity: quantity,
         price: product?.price ?? 0,
-        color: product?.color,
+        color: colors ?? undefined,
         product: product?._id,
+        image: product?.images[0]?.url ?? '' // ensure image is always a string
       };
       cart.products.push(newProduct);
     }
@@ -521,9 +515,8 @@ export const addToCart = asyncHandler(async (req, res, next) => {
 
 // Delete from Cart Function
 export const deleteFromCart = asyncHandler(async (req, res, next) => {
-  const { _id } = req.user;
+  const _id = req.user?._id;
   const { prodId } = req.body;
-  validateMongoDbId(_id);
 
   try {
     const user = await UserModel.findById(_id);
@@ -577,8 +570,7 @@ export const deleteFromCart = asyncHandler(async (req, res, next) => {
 });
 
 export const getUserCart = asyncHandler(async (req, res, next) => {
-  const { _id } = req.user;
-  validateMongoDbId(_id);
+  const _id = req.user?._id;
 
   try {
     const cart = await CartModel.findOne({ customer: _id }).populate(
@@ -593,8 +585,7 @@ export const getUserCart = asyncHandler(async (req, res, next) => {
 });
 
 export const emptyCart = asyncHandler(async (req, res, next) => {
-  const { _id } = req.user;
-  validateMongoDbId(_id);
+  const _id = req.user?._id;
 
   try {
     const user = await UserModel.findOne({ _id });
@@ -608,9 +599,8 @@ export const emptyCart = asyncHandler(async (req, res, next) => {
 });
 
 export const applyCoupon = asyncHandler(async (req, res, next) => {
-  const { _id } = req.user;
+  const _id = req.user?._id;
   const { coupon } = req.body;
-  validateMongoDbId(_id);
 
   try {
     // Check if the coupon is valid

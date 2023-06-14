@@ -2,6 +2,7 @@ import mongoose, { Document, InferSchemaType, Model, model, Schema } from "mongo
 import crypto from "crypto";
 
 const userSchema = new Schema({
+  _id: String,
   username: {
     type: String,
     required: true,

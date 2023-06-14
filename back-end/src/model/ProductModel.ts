@@ -1,4 +1,6 @@
 import mongoose, { InferSchemaType, Schema, model } from 'mongoose';
+import { User } from './UserModel';
+import { Color } from './ColorModel';
 
 const productSchema = new Schema(
   {
@@ -34,7 +36,7 @@ const productSchema = new Schema(
       select: false,
     },
     numReviews: { type: Number, default: 0 },
-    color: [],
+    color: [{type: mongoose.Schema.Types.ObjectId, ref: "Color"}],
     tags: String,
   },
   {

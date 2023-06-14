@@ -1,15 +1,17 @@
+interface PropsTypes {
+  col: any
+  onClick: any
+  border: boolean
+}
 
+export const Color = (props: PropsTypes) => {
 
-export const Color = () => {
+  const {col, onClick, border} = props
   return (
-    <>
-      <ul className="colors">
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-
-      </ul>
-    </>
+    <div style={{border: border == true ? `3px solid ${col.title}` : ""}} className="p-2 text-center rounded-circle">
+      
+        <li style={{backgroundColor: col.title}} onClick={onClick}></li>
+      
+    </div>
   );
 };

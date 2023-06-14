@@ -5,7 +5,7 @@ import LoadingBox from '../components/LoadingBox';
 import ProductItem from '../components/ProductItem';
 import { ApiError } from '../types/ApiErrors';
 import { getError } from '../utils';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Marquee from 'react-fast-marquee';
 import BlogCard from '../components/BlogCard';
 import SpecialProduct from '../components/SpecialProduct';
@@ -21,6 +21,7 @@ import { ProductInfo } from '../types/ProductInfo';
 
 const HomePage = () => {
   const dispatch: AppDispatch = useDispatch();
+  const navigate = useNavigate();
 
   const brandState = useSelector((state: any) => state.brand.brands);
   const colorState = useSelector((state: any) => state.color.colors);
@@ -242,13 +243,10 @@ const HomePage = () => {
         </div>
         {productState &&
           productState?.map((product: ProductInfo, index: number) => {
-            if (product.tags === 'popular') {
-            return (
-              <ProductItem product={product} key={index} />
-            )
+            if (product.tags === 'features') {
+              return <ProductItem product={product} key={index} />;
             }
-          })
-        }
+          })}
       </Container>
       <Container class1="famous-wrapper py-5 home-wrapper-2">
         <div className="col-3">
@@ -316,24 +314,9 @@ const HomePage = () => {
         </Row>
         <Row>
           {productState &&
-            productState?.map((product: any, index: number) => {
+            productState?.map((product: ProductInfo, index: number) => {
               if (product.tags === 'special') {
-                return (
-                  <SpecialProduct
-                    key={index}
-                    name={product?.name}
-                    description={product?.description}
-                    category={product?.category}
-                    brand={product?.brand}
-                    countInStock={product?.countInStock}
-                    numReviews={product?.numReviews}
-                    tags={product?.tags}
-                    images={product?.images}
-                    ratings={product?.ratings}
-                    price={product?.price}
-                    totalrating={product?.totalrating.string()}
-                  />
-                );
+                return <SpecialProduct product={product} key={index} />;
               }
             })}
         </Row>
@@ -342,9 +325,12 @@ const HomePage = () => {
         <div className="col-12">
           <h3 className="section_heading">Our Popular Products</h3>
         </div>
-                  <ProductItem
-                    data={productState ? productState : []}
-                  />
+        {productState &&
+          productState?.map((product: ProductInfo, index: number) => {
+            if (product.tags === 'popular') {
+              return <ProductItem product={product} key={index} />;
+            }
+          })}
       </Container>
       <Container class1="marque-wrapper home-wrapper py-5">
         <div className="col-12">

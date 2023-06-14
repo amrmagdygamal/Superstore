@@ -1,4 +1,7 @@
+
 import mongoose, { InferSchemaType, model } from 'mongoose';
+import { Product } from './ProductModel';
+import { User } from './UserModel';
 
 const CartModel = new mongoose.Schema(
   {

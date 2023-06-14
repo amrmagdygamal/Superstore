@@ -1,39 +1,33 @@
 import { Badge, Card, Col } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import ReachStars from 'react-rating-stars-component';
+import { ProductInfo } from '../types/ProductInfo';
 
-const SpecialProduct = (props: any) => {
+interface propsTypes {
+  product: ProductInfo
+}
+
+
+const SpecialProduct = (props: propsTypes) => {
 
   const {
-    name,
-    description,
-    price,
-    numReviews,
-    ratings,
-    brand,
-    category,
-    totalrating,
-    tags,
-    images,
-    countInStock,
-    color,
-    sold, 
+    product
   } = props;
 
   return (
     <div className="col-6 mb-4">
       <Card className="special-product-card">
         <div className="d-flex justify-content-between">
-          <Link to="">
+          <Link to={`/product/${product?._id}`}>
             <div className="">
               <img src="images/watch.jpg" className="img-fluid" alt="watch" />
             </div>
           </Link>
           <Card.Body>
-            <Link to={''}>
-              <h6 className="brand">{brand}</h6>
+            <Link to={''} onClick={(e) => e.preventDefault()}>
+              <h6 className="brand">{product?.brand}</h6>
               <Card.Title>
-                {name}
+                {product?.name}
                 <br />
                 Mobile Phone; sim
               </Card.Title>
@@ -41,12 +35,12 @@ const SpecialProduct = (props: any) => {
             <ReachStars
               count={5}
               size={24}
-              value={totalrating}
+              value={product?.totalrating}
               edit={false}
               activeColor="#ffd700"
             />
             <Card.Text>
-              <span className="red-p">{price}</span>
+              <span className="red-p">{product?.price}</span>
                {/* &nbsp; <s>$200</s> */}
             </Card.Text>
             <div className="discount-till d-flex align-items-center gap-1">
@@ -60,20 +54,20 @@ const SpecialProduct = (props: any) => {
               </div>
             </div>
             <div className="prod-count my-3">
-              <p>Products: {countInStock}</p>
+              <p>Products: {product?.countInStock}</p>
               <div className="progress">
                 <div
                   className="progress-bar"
                   role="progressbar"
-                  style={{ width: countInStock / countInStock + sold * 100 + "%" }}
-                  aria-valuenow={countInStock / countInStock + sold * 100}
+                  style={{ width: product?.countInStock / product?.countInStock + product?.sold * 100 + "%" }}
+                  aria-valuenow={product?.countInStock / product?.countInStock + product?.sold * 100}
                   aria-valuemin={0}
-                  aria-valuemax={sold+countInStock}
+                  aria-valuemax={product?.sold+product?.countInStock}
                 ></div>
               </div>
             </div>
-            <Link className='button' to='/'>
-              Add To Cart
+            <Link className='button' to={`/product/${product?._id}`}>
+              View
             </Link>
           </Card.Body>
         </div>
