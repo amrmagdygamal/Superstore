@@ -110,7 +110,7 @@ export const getAllProducts = asyncHandler(async (req, res, next) => {
 });
 
 export const addToWishList = asyncHandler(async (req, res, next) => {
-  const { _id } = req.user;
+  const _id = req.user?._id;
 
   const { prodId } = req.body;
 

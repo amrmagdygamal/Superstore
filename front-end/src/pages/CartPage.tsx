@@ -1,16 +1,11 @@
-import { useContext, useEffect } from 'react';
+import { useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
-import { CartItem } from '../types/Cart';
 import Meta from '../components/Meta';
 import BreadCrumb from '../components/BreadCrumb';
-import { AiFillDelete } from 'react-icons/ai';
 import Container from '../components/Container';
-import MessageBox from '../components/MessageBox';
 import { AppDispatch } from '../app/store';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
-import { ProductInfo } from '../types/ProductInfo';
 import { getUserCart } from '../features/user/userSlice';
 import CartItemProd from '../components/CartItemProd';
 
@@ -20,28 +15,16 @@ const CartPage = () => {
   const location = useLocation();
 
   const cartState = useSelector((state: any) => state.user.cart);
+  const deleteFromCartState = useSelector((state: any) => state.user.deletFromCart);
+
+  const { isLoading , isError, isSuccess, deletFromCartState} = deleteFromCartState;
 
   useEffect(() => {
     dispatch(getUserCart());
-  }, []);
-
-  const updateCartHandler = (item: CartItem, quantity: number) => {
-    if (item.countInStock < quantity) {
-      toast.warn('Sorry Product is out of stock');
-    }
-    dispatch({
-      type: 'CART_ADD_ITEM',
-      payload: { ...item, quantity },
-    });
-    toast.success('Item Added to the Cart');
-  };
+  }, [deletFromCartState]);
 
   const checkoutHandler = () => {
     navigate('/login?redirect=/shipping');
-  };
-
-  const removeitemHandler = (item: CartItem) => {
-    dispatch({ type: 'CART_REMOVE_ITEM', payload: item });
   };
 
   return (
@@ -57,9 +40,14 @@ const CartPage = () => {
               <h4 className="w-15">Quantity</h4>
               <h4 className="w-15">Total</h4>
             </div>
-
-                  <CartItemProd cartProd={cartState?.products[0]} />
-
+            {cartState &&
+              cartState?.products.map((cartProd: any, index: number) => {
+                return (
+                  <>
+                    <CartItemProd key={index} cartProd={cartProd} />
+                  </>
+                );
+              })}
           </>
         </div>
         <div className="col-12 py-2">

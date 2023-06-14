@@ -24,7 +24,15 @@ const getProduct = async (id: string) => {
 };
 
 const addToWishList = async (id: string) => {
-  const response = await axios.put(`${base_url}pruducts/wishlist/`, { id}, config);
+  const response = await axios.put(`${base_url}pruducts/wishlist/`, {prodId: id}, config);
+  if(response.data) {
+    return response.data;
+  }
+};
+
+
+const deleteFromCart = async (id: string) => {
+  const response = await axios.put(`${base_url}users/delete-from-cart/`, {prodId: id}, config);
   if(response.data) {
     return response.data;
   }
@@ -36,7 +44,7 @@ const addToWishList = async (id: string) => {
 const productService = {
   getProducts,
   getProduct,
-  addToWishList
+  addToWishList,
 };
 
 export default productService;

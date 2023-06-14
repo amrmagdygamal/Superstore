@@ -60,6 +60,19 @@ export const getUserCart = createAsyncThunk(
   }
   );
 
+  
+export const deleteFromCart = createAsyncThunk(
+  'user/delete-from-cart',
+  async (prodId: string, thunkAPI) => {
+    try {
+      return await userService.deleteFromCart(prodId);
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
+
+
 export interface UserState {
   userInfo: any;
   isError: boolean;
@@ -70,6 +83,7 @@ export interface UserState {
   wishlist?: any;
   addCart?: any;
   cart?: any
+  deletFromCart?: any
 }
 
 const getUserformLocalStorage = localStorage.getItem('userInfo')
@@ -186,6 +200,22 @@ export const userSlice = createSlice({
         state.message = 'success';
       })
       .addCase(getUserCart.rejected, (state, action) => {
+        state.isError = true;
+        state.isSuccess = false;
+        state.isLoading = false;
+        state.message = action.error.message ?? '';
+      })
+      .addCase(deleteFromCart.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(deleteFromCart.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.isError = false;
+        state.deletFromCart = action.payload;
+        state.message = 'success';
+      })
+      .addCase(deleteFromCart.rejected, (state, action) => {
         state.isError = true;
         state.isSuccess = false;
         state.isLoading = false;

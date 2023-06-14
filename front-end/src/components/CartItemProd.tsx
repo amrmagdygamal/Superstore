@@ -2,6 +2,9 @@ import React from 'react';
 import { AiFillDelete } from 'react-icons/ai';
 import { Color } from './Color';
 import { Link } from 'react-router-dom';
+import { AppDispatch } from '../app/store';
+import { useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 interface PropsTypes {
   cartProd: any;
@@ -9,6 +12,16 @@ interface PropsTypes {
 
 const CartItemProd = (props: PropsTypes) => {
   const { cartProd } = props;
+
+  const dispatch: AppDispatch = useDispatch();
+
+  const deleteFromCartState = useSelector((state: any) => state.user.deletFromCart);
+
+  
+  const handleDelete = (e: string) => {
+    dispatch(deleteFromCartState(e))
+  }
+
 
   return (
     <div className="cart-data py-3 mb-2 d-flex  py-3 justify-content-between align-items-center">
@@ -56,7 +69,7 @@ const CartItemProd = (props: PropsTypes) => {
           />
         </div>
         <div>
-          <AiFillDelete className="text-danger" />
+          <AiFillDelete onClick={() => handleDelete(cartProd.product._id)} className="text-danger" />
         </div>
       </div>
       <div className="w-15">
