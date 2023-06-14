@@ -3,8 +3,47 @@ import BreadCrumb from '../components/BreadCrumb';
 import { AiOutlineHome, AiOutlineMail } from 'react-icons/ai';
 import { BiInfoCircle, BiPhoneCall } from 'react-icons/bi';
 import Container from '../components/Container';
+import { useDispatch } from 'react-redux';
+import { AppDispatch } from '../app/store';
+import * as Yup from 'yup';
+
+import { useLocation, useNavigate } from 'react-router-dom';
+import { useFormik } from 'formik';
+import { Form } from 'react-bootstrap';
+import { postQuery } from '../features/contact/contactSlice';
+
+const signUpSchema = Yup.object().shape({
+  name: Yup.string().defined().required('Name is Required'),
+
+  email: Yup.string().email('Enter valid Email').required('Email is Required'),
+  mobile: Yup.string()
+    .required('Mobile Number is required'),
+  comment:  Yup.string()
+  .required('Comment is required'),
+});
 
 const Contact = () => {
+  const dispatch: AppDispatch = useDispatch();
+
+  const navigate = useNavigate();
+  const { search } = useLocation();
+  const redirectInUrl = new URLSearchParams(search).get('redirect');
+  const redirect = redirectInUrl ? redirectInUrl : '/';
+
+  const formik = useFormik({
+    initialValues: {
+      name: '',
+      email: '',
+      mobile: '',
+      comment: '',
+    },
+    validationSchema: signUpSchema,
+    onSubmit: (values) => {
+      dispatch(postQuery(values));
+      formik.resetForm();
+    },
+  });
+
   return (
     <>
       <Meta title="Contact Us" />
@@ -25,37 +64,72 @@ const Contact = () => {
           <div className="contact-inner box-shadow d-flex justify-content-between">
             <div>
               <h3 className="contact-title mb-4">Contact</h3>
-              <form action="" className="d-flex flex-column gap-3">
-                <div>
-                  <input
-                    placeholder="Name"
-                    className="form-control"
-                    type="text"
-                  />
+              <form action="" onSubmit={formik.handleSubmit} className="d-flex flex-column gap-4">
+            <div>
+                <input
+                  name="name"
+                  className="form-control h-50 py-3"
+                  type="text"
+                  placeholder="Name"
+                  onChange={formik.handleChange('name')}
+                  onBlur={formik.handleBlur('name')}
+                  value={formik.values.name}
+                />
+                <div className="error">
+                  {formik.touched.name && formik.errors.name ? (
+                    <div>{formik.errors.name}</div>
+                  ) : null}
                 </div>
-                <div>
+            </div>
+              <div>
                   <input
-                    placeholder="Email"
-                    className="form-control"
-                    type="email"
-                  />
+                  name="email"
+                  className="form-control h-50 py-3"
+                  type="text"
+                  placeholder="Email"
+                  onChange={formik.handleChange('email')}
+                  onBlur={formik.handleBlur('email')}
+                  value={formik.values.email}
+                />
+                <div className="error">
+                  {formik.touched.email && formik.errors.email ? (
+                    <div>{formik.errors.email}</div>
+                  ) : null}
                 </div>
-                <div>
+              </div>
+              <div>
                   <input
-                    placeholder="Mobile Number"
-                    className="form-control"
-                    type="tel"
-                  />
+                  name="mobile"
+                  className="form-control h-50 py-3"
+                  type="text"
+                  placeholder="Mobile"
+                  onChange={formik.handleChange('mobile')}
+                  onBlur={formik.handleBlur('mobile')}
+                  value={formik.values.mobile}
+                />
+                <div className="error">
+                  {formik.touched.mobile && formik.errors.mobile ? (
+                    <div>{formik.errors.mobile}</div>
+                  ) : null}
                 </div>
+              </div>
                 <div>
                   <textarea
                     className="w-100 form-control"
-                    name=""
+                    name="comment"
                     id=""
                     cols={30}
                     rows={4}
-                    placeholder="Comments"
-                  ></textarea>
+                    placeholder="comment"
+                  onChange={formik.handleChange('comment')}
+                  onBlur={formik.handleBlur('comment')}
+                  value={formik.values.comment}
+                  />
+                  <div className="error">
+                  {formik.touched.comment && formik.errors.comment ? (
+                    <div>{formik.errors.comment}</div>
+                  ) : null}
+                </div>
                 </div>
                 <div>
                   <button className="button border-0">Submit</button>

@@ -46,9 +46,8 @@ const SignUpPage = () => {
       dispatch(signUpUser(values));
       formik.resetForm();
       setTimeout(() => {
-        dispatch(resetState());
         navigate("/login/")
-      }, 200);
+      }, 900);
     },
   });
 

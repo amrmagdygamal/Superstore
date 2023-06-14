@@ -29,7 +29,10 @@ body {
   padding: 1rem;
 }
 
-
+.error {
+  color: red;
+  font-size: 12px;
+}
 
 .section-heading {
   font-size: 1.7rem;
