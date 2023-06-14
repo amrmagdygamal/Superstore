@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import Meta from '../components/Meta';
 import BreadCrumb from '../components/BreadCrumb';
@@ -15,9 +15,12 @@ const CartPage = () => {
   const location = useLocation();
 
   const cartState = useSelector((state: any) => state.user.cart);
-  const deleteFromCartState = useSelector((state: any) => state.user.deletFromCart);
+  const deleteFromCartState = useSelector(
+    (state: any) => state.user.deletFromCart
+  );
 
-  const { isLoading , isError, isSuccess, deletFromCartState} = deleteFromCartState;
+  const { isLoading, isError, isSuccess, deletFromCartState } =
+    deleteFromCartState;
 
   useEffect(() => {
     dispatch(getUserCart());
@@ -55,18 +58,23 @@ const CartPage = () => {
             Continue Shipping
           </Link>
         </div>
-        <div className="col-12 cart-subtotal d-flex justify-content-between my-3 py-2">
-          <Link to="/order">Order special instructions</Link>
-          <div className="d-flex flex-column  align-items-end">
-            <h4>
-              Subtotal <h4 className="ms-1 d-inline fs-6">$100.00</h4>
-            </h4>
-            <h4 className="my-3">Taxes and shipping calculated at checkout</h4>
-            <Link to="/checkout" className="my-3 button">
-              Check Out
-            </Link>
+        {cartState?.cartTotal > 0 && (
+          <div className="col-12 cart-subtotal d-flex justify-content-between my-3 py-2">
+            <Link to="/order">Order special instructions</Link>
+            <div className="d-flex flex-column  align-items-end">
+              <h4>
+                Subtotal{' '}
+                <h4 className="ms-1 d-inline fs-6">$ {cartState?.cartTotal}</h4>
+              </h4>
+              <h4 className="my-3">
+                Taxes and shipping calculated at checkout
+              </h4>
+              <Link to="/checkout" className="my-3 button">
+                Check Out
+              </Link>
+            </div>
           </div>
-        </div>
+        )}
       </Container>
     </>
   );
