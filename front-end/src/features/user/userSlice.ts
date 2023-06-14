@@ -4,10 +4,6 @@ import userService from './userService';
 import { toast } from 'react-toastify';
 import { UserInfo } from '../../types/UserInfo';
 
-
-
-
-
 export const signUpUser = createAsyncThunk(
   'user/signup',
   async (userInfo: any, thunkAPI) => {
@@ -19,8 +15,6 @@ export const signUpUser = createAsyncThunk(
   }
 );
 
-
-
 export const loginUser = createAsyncThunk(
   'user/login',
   async (loginData: any, thunkAPI) => {
@@ -30,10 +24,7 @@ export const loginUser = createAsyncThunk(
       return thunkAPI.rejectWithValue(error);
     }
   }
-  );
-
-
-
+);
 
 export const getUserWishlist = createAsyncThunk(
   'user/wishlist',
@@ -44,13 +35,10 @@ export const getUserWishlist = createAsyncThunk(
       return thunkAPI.rejectWithValue(error);
     }
   }
-  );
-
-
-
+);
 
 export const addToCart = createAsyncThunk(
-  'user/cart',
+  'user/add-cart',
   async (prodData: any, thunkAPI) => {
     try {
       return await userService.addToCart(prodData);
@@ -58,34 +46,43 @@ export const addToCart = createAsyncThunk(
       return thunkAPI.rejectWithValue(error);
     }
   }
+);
+
+
+export const getUserCart = createAsyncThunk(
+  'user/cart',
+  async (_, thunkAPI) => {
+    try {
+      return await userService.getUserCart();
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
   );
 
+export interface UserState {
+  userInfo: any;
+  isError: boolean;
+  isLoading: boolean;
+  isSuccess: boolean;
+  message: string;
+  user?: any;
+  wishlist?: any;
+  addCart?: any;
+  cart?: any
+}
 
+const getUserformLocalStorage = localStorage.getItem('userInfo')
+  ? JSON.parse(localStorage.getItem('userInfo')!)
+  : null;
 
-  export interface UserState {
-    userInfo: any
-    isError: boolean,
-    isLoading: boolean,
-    isSuccess: boolean,
-    message: string,
-    user?: any
-    wishlist?: any
-    cart?: any
-  } 
-
-
-
-  const getUserformLocalStorage = localStorage.getItem('userInfo')
-    ? JSON.parse(localStorage.getItem('userInfo')!)
-    : null;
-  
-  const initialState: UserState = {
-    userInfo: getUserformLocalStorage,
-    isError: false,
-    isLoading: false,
-    isSuccess: false,
-    message: '',
-  };
+const initialState: UserState = {
+  userInfo: getUserformLocalStorage,
+  isError: false,
+  isLoading: false,
+  isSuccess: false,
+  message: '',
+};
 
 export const resetState = createAction('Reset_all');
 
@@ -104,8 +101,8 @@ export const userSlice = createSlice({
         state.isError = false;
         state.userInfo = action.payload;
         state.message = 'success';
-        if(state.isSuccess === true) {
-          toast.info("Signed Up successfully")
+        if (state.isSuccess === true) {
+          toast.info('Signed Up successfully');
         }
       })
       .addCase(signUpUser.rejected, (state, action) => {
@@ -113,8 +110,8 @@ export const userSlice = createSlice({
         state.isSuccess = false;
         state.isLoading = false;
         state.message = action.error.message ?? '';
-        if(state.isSuccess === false) {
-          toast.error("Failed to signup")
+        if (state.isSuccess === false) {
+          toast.error('Failed to signup');
         }
       })
       .addCase(loginUser.pending, (state) => {
@@ -126,9 +123,9 @@ export const userSlice = createSlice({
         state.isError = false;
         state.user = action.payload;
         state.message = 'success';
-        if(state.isSuccess === true) {
-          localStorage.setItem("token", action.payload.token)
-          toast.info("Logded in  successfully")
+        if (state.isSuccess === true) {
+          localStorage.setItem('token', action.payload.token);
+          toast.info('Logded in  successfully');
         }
       })
       .addCase(loginUser.rejected, (state, action) => {
@@ -136,8 +133,8 @@ export const userSlice = createSlice({
         state.isSuccess = false;
         state.isLoading = false;
         state.message = action.error.message ?? '';
-        if(state.isSuccess === false) {
-          toast.error("Failed to login")
+        if (state.isSuccess === false) {
+          toast.error('Failed to login');
         }
       })
       .addCase(getUserWishlist.pending, (state) => {
@@ -149,7 +146,6 @@ export const userSlice = createSlice({
         state.isError = false;
         state.wishlist = action.payload;
         state.message = 'success';
-        
       })
       .addCase(getUserWishlist.rejected, (state, action) => {
         state.isError = true;
@@ -164,21 +160,36 @@ export const userSlice = createSlice({
         state.isLoading = false;
         state.isSuccess = true;
         state.isError = false;
-        state.cart = action.payload;
+        state.addCart = action.payload;
         state.message = 'success';
-        if(state.isSuccess === true) {
-          toast.info("Added to cart successfully")
+        if (state.isSuccess === true) {
+          toast.info('Added to cart successfully');
         }
-        
       })
       .addCase(addToCart.rejected, (state, action) => {
         state.isError = true;
         state.isSuccess = false;
         state.isLoading = false;
         state.message = action.error.message ?? '';
-        if(state.isError === true) {
-          toast.error("some thing went wrong")
+        if (state.isError === true) {
+          toast.error('some thing went wrong');
         }
+      })
+      .addCase(getUserCart.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(getUserCart.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.isError = false;
+        state.cart = action.payload;
+        state.message = 'success';
+      })
+      .addCase(getUserCart.rejected, (state, action) => {
+        state.isError = true;
+        state.isSuccess = false;
+        state.isLoading = false;
+        state.message = action.error.message ?? '';
       })
       .addCase(resetState, () => initialState);
   },

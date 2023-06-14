@@ -11,4 +11,5 @@ export type ProductInfo = {
   numReviews: number;
   sold: number;
   tags: string
+  color: any
 };

@@ -33,12 +33,20 @@ const getUserWishlist = async () => {
 
 
 const addToCart = async (prodData: any) => {
-  const response = await axios.post(`${base_url}users/cart`,{ prodId: prodData.id, colors: prodData.colors, quantity: prodData.quantity }, config);
+  const response = await axios.post(`${base_url}users/add-to-cart`,{ prodId: prodData.id, colors: prodData.colors, quantity: prodData.quantity }, config);
   if (response.data) {
     return response.data;
   }
 };
 
+
+
+const getUserCart = async () => {
+  const response = await axios.get(`${base_url}users/cart`, config);
+  if (response.data) {
+    return response.data;
+  }
+};
 
 //  get orders 
 
@@ -48,6 +56,7 @@ const userService = {
   login,
   getUserWishlist,
   addToCart,
+  getUserCart
 };
 
 export default userService;

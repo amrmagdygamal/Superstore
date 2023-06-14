@@ -2,6 +2,7 @@
 import mongoose, { InferSchemaType, model } from 'mongoose';
 import { Product } from './ProductModel';
 import { User } from './UserModel';
+import { Color } from './ColorModel';
 
 const CartModel = new mongoose.Schema(
   {
@@ -11,7 +12,7 @@ const CartModel = new mongoose.Schema(
         quantity: { type: Number, required: true },
         image: { type: String, required: true },
         price: { type: Number, required: true },
-        color: String,
+        color: {type: mongoose.Schema.Types.ObjectId, ref: "Color"},
         product: { type: mongoose.Schema.Types.ObjectId, ref: 'Product' },
       },
     ],

@@ -16,6 +16,7 @@ import { getproduct } from '../features/product/productSlice';
 import { useSelector } from 'react-redux';
 import { ProductInfo } from '../types/ProductInfo';
 import { addToCart } from '../features/user/userSlice';
+import { toast } from 'react-toastify';
 
 const ProductPage = () => {
   const dispatch: AppDispatch = useDispatch();
@@ -24,13 +25,16 @@ const ProductPage = () => {
   const getProductId = location.pathname.split('/')[2];
   const productState = useSelector((state: any) => state.product.product);
   const cartState = useSelector((state: any) => state.user.cart);
-  const [color, setColor] = useState([]);
+  const [color, setColor] = useState({});
   const [colorBorder, setColorBorder] = useState(false);
 
   const colors: any = [];
 
   useEffect(() => {
     colors.push(color);
+    if(colors.length > quantity) {
+      setQuantity(colors.length)
+    }
   }, [color]);
 
   const [quantity, setQuantity] = useState(1);
@@ -38,6 +42,7 @@ const ProductPage = () => {
   const handlerQuant = (e: number) => {
     setQuantity(e);
   };
+
 
   
   useEffect(() => {
@@ -47,7 +52,15 @@ const ProductPage = () => {
   const prodcartData = { getProductId, colors, quantity };
 
   const addProductToCart = (data: any) => {
-    dispatch(addToCart(data));
+    if (colors.length == 0) {
+      if (productState?.color.length == 1) {
+        setColor(productState.color[0])
+      } else{
+        toast.error("Please Choose Color")
+      }
+    } else {
+      dispatch(addToCart(prodcartData))
+    }
   };
 
   const copyToClipboard = (text: string) => {
@@ -145,16 +158,14 @@ const ProductPage = () => {
               <div className="d-flex gap-1 flex-column mt-2 mb-3">
                 <h3 className="type-title">Color :</h3>
                 {productState &&
-                  productState?.color?.map((col: any, index: number) => {
+                  productState?.colors?.map((col: any, index: number) => {
                     return (
                       <ul className="colors">
                         <Color
                           col={col}
                           key={index}
-                          onClick={() => {
-                            setColor(col.title);
-                            setColorBorder(true);
-                          }}
+                            setColor={setColor}
+                            setColorBorder={setColorBorder}
                           border={colorBorder}
                         />
                       </ul>
