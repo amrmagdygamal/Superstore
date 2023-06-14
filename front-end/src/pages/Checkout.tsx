@@ -10,11 +10,6 @@ import Container from '../components/Container';
 const Checkout = () => {
   const navigate = useNavigate();
 
-  const {
-    userInfo,
-    cart: { shippingAddress },
-  } = state;
-
   // useEffect(() => {
   //   if(!userInfo) {
   //     navigate('/login?redirect=/shipping')
@@ -22,36 +17,9 @@ const Checkout = () => {
   //   }
   // }, [userInfo, navigate])
 
-  const [fullName, setFullName] = useState(shippingAddress.fullName || '');
-  const [address, setAddress] = useState(shippingAddress.address || '');
-  const [city, setCity] = useState(shippingAddress.city || '');
-  const [postalCode, setPostalCode] = useState(
-    shippingAddress.postalCode || ''
-  );
-  const [country, setCountry] = useState(shippingAddress.country || '');
 
   const submitHandler = (e: React.SyntheticEvent) => {
     e.preventDefault();
-    dispatch({
-      type: 'SAVE_SHIPPING_ADDRESS',
-      payload: {
-        fullName,
-        address,
-        city,
-        postalCode,
-        country,
-      },
-    });
-    localStorage.setItem(
-      'shippingAddress',
-      JSON.stringify({
-        fullName,
-        address,
-        city,
-        postalCode,
-        country,
-      })
-    );
 
     navigate('/payment');
   };

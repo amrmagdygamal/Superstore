@@ -23,6 +23,19 @@ const login = async (loginData: any) => {
   }
 };
 
+
+
+
+const logout = async () => {
+  const response = await axios.delete(`${base_url}users/logout`);
+  if (response.data) {
+    return response.data;
+  }
+};
+
+
+
+
 const getUserWishlist = async () => {
   const response = await axios.get(`${base_url}users/wishlist`, config);
   if (response.data) {
@@ -64,6 +77,7 @@ const deleteFromCart = async (id: string) => {
 const userService = {
   signUp,
   login,
+  logout,
   getUserWishlist,
   addToCart,
   getUserCart,

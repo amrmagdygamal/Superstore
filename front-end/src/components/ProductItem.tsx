@@ -2,7 +2,6 @@ import { Button, Card } from 'react-bootstrap';
 import { ProductInfo } from '../types/ProductInfo';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useContext, useEffect } from 'react';
-import { toast } from 'react-toastify';
 import Rating from './Rating';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '../app/store';

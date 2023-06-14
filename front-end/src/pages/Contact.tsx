@@ -9,7 +9,6 @@ import * as Yup from 'yup';
 
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useFormik } from 'formik';
-import { Form } from 'react-bootstrap';
 import { postQuery } from '../features/contact/contactSlice';
 
 const signUpSchema = Yup.object().shape({

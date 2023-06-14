@@ -1,10 +1,6 @@
 import { useState, useContext, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
-import { getError } from '../utils';
-import { ApiError } from '../types/ApiErrors';
 import { Form } from 'react-bootstrap';
-import LoadingBox from '../components/LoadingBox';
 import * as Yup from 'yup';
 import Meta from '../components/Meta';
 import BreadCrumb from '../components/BreadCrumb';
@@ -18,9 +14,7 @@ const loginSchema = Yup.object().shape({
 
   email: Yup.string().email("Enter valid Email").required('Email is Required'),
   password: Yup.string()
-    .required('Please enter a password')
-    // check minimum characters
-    .min(8, 'Password must have at least 8 characters'),
+    .required('Please enter a password'),
 });
 
 const LoginPage = () => {

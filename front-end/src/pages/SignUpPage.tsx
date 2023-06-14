@@ -1,39 +1,39 @@
-import { useContext, useEffect, useState } from 'react';
 import { Form } from 'react-bootstrap';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { userSignUpMutation } from '../hooks/userHooks';
-import { toast } from 'react-toastify';
 import { useFormik } from 'formik';
-import { getError } from '../utils';
-import { ApiError } from '../types/ApiErrors';
 
 import Meta from '../components/Meta';
 import * as Yup from 'yup';
 import BreadCrumb from '../components/BreadCrumb';
 import Container from '../components/Container';
-import { resetState, signUpUser } from '../features/user/userSlice';
+import { signUpUser } from '../features/user/userSlice';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '../app/store';
+import { useSelector } from 'react-redux';
 
 const signUpSchema = Yup.object().shape({
-  username: Yup.string().defined().required('UserName is Required'),
+  username: Yup.string().required('UserName is Required'),
 
-  email: Yup.string().email("Enter valid Email").required('Email is Required'),
+  email: Yup.string().email('Enter valid Email').required('Email is Required'),
   password: Yup.string()
     .required('Please enter a password')
     // check minimum characters
     .min(8, 'Password must have at least 8 characters'),
-  confirmPassword: Yup.string().required('Confirm Password is Required').oneOf([Yup.ref('password'), ""], 'Passwords must match'),
+  confirmPassword: Yup.string()
+    .required('Confirm Password is Required')
+    .oneOf([Yup.ref('password'), ''], 'Passwords must match'),
 });
 
 const SignUpPage = () => {
   const dispatch: AppDispatch = useDispatch();
+  const userState = useSelector((state: any) => state.user);
+  const { isLoading, isError, isSuccess, userInfo } = userState;
 
   const navigate = useNavigate();
   const { search } = useLocation();
-  const redirectInUrl = new URLSearchParams(search).get('redirect');
-  const redirect = redirectInUrl ? redirectInUrl : '/';
 
+  
+  
   const formik = useFormik({
     initialValues: {
       username: '',
@@ -44,10 +44,12 @@ const SignUpPage = () => {
     validationSchema: signUpSchema,
     onSubmit: (values) => {
       dispatch(signUpUser(values));
-      formik.resetForm();
-      setTimeout(() => {
-        navigate("/login/")
-      }, 900);
+      if (isSuccess && userInfo) {
+        formik.resetForm();
+        setTimeout(() => {
+          navigate('/login/');
+        }, 900);
+      }
     },
   });
 
@@ -66,7 +68,7 @@ const SignUpPage = () => {
                   className="form-input h-50 py-3"
                   type="text"
                   placeholder="UserName"
-                  onChange={formik.handleChange('uername')}
+                  onChange={formik.handleChange('username')}
                   onBlur={formik.handleBlur('username')}
                   value={formik.values.username}
                 />
@@ -81,7 +83,7 @@ const SignUpPage = () => {
                 <Form.Control
                   name="email"
                   className="form-input h-50 py-3"
-                  type="text"
+                  type="email"
                   placeholder="Email"
                   onChange={formik.handleChange('email')}
                   onBlur={formik.handleBlur('email')}
@@ -98,7 +100,7 @@ const SignUpPage = () => {
                 <Form.Control
                   name="password"
                   className="form-input h-50 py-3"
-                  type="text"
+                  type="password"
                   placeholder="Password"
                   onChange={formik.handleChange('password')}
                   onBlur={formik.handleBlur('password')}
@@ -115,7 +117,7 @@ const SignUpPage = () => {
                 <Form.Control
                   name="password"
                   className="form-input h-50 py-3"
-                  type="text"
+                  type="password"
                   placeholder="Confirm Password"
                   onChange={formik.handleChange('confirmPassword')}
                   onBlur={formik.handleBlur('confirmPassword')}
@@ -135,7 +137,7 @@ const SignUpPage = () => {
                 </button>
                 <Link
                   className="button signup"
-                  to={`/login?redirect=${redirect}`}
+                  to={`/login`}
                 >
                   Sign-In
                 </Link>

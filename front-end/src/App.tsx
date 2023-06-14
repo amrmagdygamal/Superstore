@@ -1,6 +1,4 @@
-import { useContext, useEffect } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import HomePage from './pages/HomePage';
 import ProductPage from './pages/ProductPage';
@@ -34,7 +32,6 @@ function App() {
   return (
     <BrowserRouter>
       <>
-        <ToastContainer position="bottom-center" limit={1} />
         <main>
           <Routes>
             <Route path="/" element={<Layout />}>

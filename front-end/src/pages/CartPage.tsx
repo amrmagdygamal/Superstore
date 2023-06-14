@@ -19,12 +19,10 @@ const CartPage = () => {
     (state: any) => state.user.deletFromCart
   );
 
-  const { isLoading, isError, isSuccess, deletFromCartState } =
-    deleteFromCartState;
 
   useEffect(() => {
     dispatch(getUserCart());
-  }, [deletFromCartState]);
+  }, [cartState | deleteFromCartState]);
 
   const checkoutHandler = () => {
     navigate('/login?redirect=/shipping');

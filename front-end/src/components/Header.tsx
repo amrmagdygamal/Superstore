@@ -1,25 +1,32 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { Badge, Nav, NavDropdown, Navbar, Row } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
-import Rating from './Rating';
 import { BsSearch } from 'react-icons/bs';
 import { Link, NavLink } from 'react-router-dom';
 import Container from './Container';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch } from '../app/store';
+import { getUserCart, logout } from '../features/user/userSlice';
 
 const Header = () => {
   const dispatch: AppDispatch = useDispatch();
+  const cartState = useSelector((state: any) => state.user.cart);
+  const deleteFromCartState = useSelector(
+    (state: any) => state.user.deletFromCart
+  );
+
+  
+  useEffect(() => {
+    dispatch(getUserCart());
+  }, [cartState | deleteFromCartState]);
 
   const userState = useSelector((state: any) => state.user);
 
   const {isLoading, isError, isSuccess, userInfo, user} = userState;
 
   const signOutHandler = () => {
-    
+    dispatch(logout())
     localStorage.removeItem('userInfo');
-    localStorage.removeItem('cartItems');
-    localStorage.removeItem('shippingAddress');
     localStorage.removeItem('paymentMethoud');
     window.location.href = '/';
   };
@@ -121,16 +128,16 @@ const Header = () => {
               to="/cart"
             >
               <img src="/images/cart.svg" alt="cart" />
-              {/* {cart.cartItems.length > 0 && (
+              {cartState?.products.length > 0 && (
                 <div className="d-flex flex-column gap-1">
                   <span>
                     <Badge pill bg="white" text="dark">
-                      {cart.cartItems.reduce((a, c) => a + c.quantity, 0)}
+                      {cartState?.products.reduce((a: any, c: any) => a + c.quantity, 0)}
                     </Badge>
                   </span>
-                  <p className="mb-0">${cart.totalPrice}</p>
+                  <p className="mb-0">${cartState?.cartTotal}</p>
                 </div>
-              )} */}
+              )}
             </Link>
           </Nav>
         </div>

@@ -3,7 +3,6 @@ import BreadCrumb from '../components/BreadCrumb';
 import Meta from '../components/Meta';
 import { Badge } from 'react-bootstrap';
 import ProductItem from '../components/ProductItem';
-import { useGetProductsQuery } from '../hooks/productHooks';
 import { Color } from '../components/Color';
 import Rating from '../components/Rating';
 import Container from '../components/Container';

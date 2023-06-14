@@ -8,38 +8,36 @@ import CheckOutSteps from '../components/CheckOutSteps';
 import { Helmet } from 'react-helmet-async';
 import { Button, Card, Col, ListGroup, Row } from 'react-bootstrap';
 import LoadingBox from '../components/LoadingBox';
+import { AppDispatch } from '../app/store';
+import { useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 const PlaceOrderPage = () => {
   const navigate = useNavigate();
+  const dispatch: AppDispatch = useDispatch();
 
-  const { state, dispatch } = useContext(Store);
-  const { cart, userInfo } = state;
+  const cartState = useSelector((state: any) => state.user.cart);
+
 
   const round2 = (num: number) => Number(num.toFixed(2));
 
-  cart.itemsPrice = round2(
-    cart.cartItems.reduce((a, c) => a + c.quantity * c.price, 0)
-  );
 
-  cart.shippingPrice = cart.itemsPrice > 100 ? round2(0) : round2(10);
-  cart.taxPrice = round2(0.15 * cart.itemsPrice);
-  cart.totalPrice = cart.itemsPrice + cart.shippingPrice + cart.taxPrice;
 
   const { mutateAsync: createOrder, isLoading } = useCreateOrderMutation();
 
   const PlaceOrderHandler = async () => {
     try {
       const data = await createOrder({
-        orderItems: cart.cartItems,
-        shippingAddress: cart.shippingAddress,
-        paymentMethod: cart.paymentMethod,
-        itemsPrice: cart.itemsPrice,
-        shippingPrice: cart.shippingPrice,
-        taxPrice: cart.taxPrice,
-        totalPrice: cart.totalPrice,
+        orderItems: cartState?.products,
+        shippingAddress: cartState?.shippingAddress,
+        paymentMethod: cartState?.paymentMethod,
+        itemsPrice: cartState?.itemsPrice,
+        shippingPrice: cartState?.shippingPrice,
+        taxPrice: cartState?.taxPrice,
+        totalPrice: cartState?.totalPrice,
       });
       dispatch({ type: 'CLEAR_CART' });
-      localStorage.removeItem('cartItems');
+      localStorage.removeItem('products');
       navigate(`/order/${data.order._id}`);
     } catch (error) {
       toast.error(getError(error as ApiError));
@@ -47,10 +45,10 @@ const PlaceOrderPage = () => {
   };
 
   useEffect(() => {
-    if (!cart.paymentMethod) {
+    if (!cartState?.paymentMethod) {
       navigate('/payment');
     }
-  }, [cart, navigate])
+  }, [cartState, navigate])
 
   return (
     <>
@@ -66,11 +64,11 @@ const PlaceOrderPage = () => {
             <Card.Body>
               <Card.Title>Shipping</Card.Title>
               <Card.Text>
-                <strong>Name:</strong> {cart.shippingAddress.fullName} <br />
-                <strong>Address:</strong> {cart.shippingAddress.address}
-                {cart.shippingAddress.city}, {cart.shippingAddress.address},
-                {cart.shippingAddress.country}, {cart.shippingAddress.postalCode},
-                {cart.shippingAddress.country}
+                <strong>Name:</strong> {cartState?.shippingAddress.fullName} <br />
+                <strong>Address:</strong> {cartState?.shippingAddress.address}
+                {cartState?.shippingAddress.city}, {cartState?.shippingAddress.address},
+                {cartState?.shippingAddress.country}, {cartState?.shippingAddress.postalCode},
+                {cartState?.shippingAddress.country}
               </Card.Text>
               <Link to='/shipping'>Edit</Link>
             </Card.Body>
@@ -80,7 +78,7 @@ const PlaceOrderPage = () => {
             <Card.Body>
               <Card.Title>Payment</Card.Title>
               <Card.Text>
-                <strong>Method:</strong> {cart.paymentMethod}
+                <strong>Method:</strong> {cartState?.paymentMethod}
               </Card.Text>
               <Link to="/payment">Edit</Link>
             </Card.Body>
@@ -90,21 +88,21 @@ const PlaceOrderPage = () => {
             <Card.Body>
               <Card.Title>Items</Card.Title>
               <ListGroup variant="flush">
-                {cart.cartItems.map((item) =>(
-                  <ListGroup.Item key={item._id}>
+                {cartState?.products.map((product: any) =>(
+                  <ListGroup.Item key={product?.product_id}>
                     <Row className="align-items-center">
                       <Col md={6}>
                         <img
-                          src={item.image}
-                          alt={item.name}
+                          src={product?.images}
+                          alt={product?.name}
                           className="img-fluid rounded thumbnail"
                         ></img>{' '}
-                        <Link to={`/product/${item.slug}`}>{item.name}</Link>
+                        <Link to={`/product/${product?.slug}`}>{product?.name}</Link>
                       </Col>
                       <Col md={3}>
-                        <span>{item.quantity}</span>
+                        <span>{product?.quantity}</span>
                       </Col>
-                      <Col md={3}>${item.price}</Col>
+                      <Col md={3}>${product?.price}</Col>
                     </Row>
                   </ListGroup.Item>
                 ))}
@@ -121,25 +119,25 @@ const PlaceOrderPage = () => {
                 <ListGroup.Item>
                   <Row>
                     <Col>Items</Col>
-                    <Col>${cart.itemsPrice.toFixed(2)}</Col>
+                    <Col>${cartState?.itemsPrice.toFixed(2)}</Col>
                   </Row>
                 </ListGroup.Item>
                 <ListGroup.Item>
                   <Row>
                     <Col>Shipping</Col>
-                    <Col>${cart.shippingPrice.toFixed(2)}</Col>
+                    <Col>${cartState?.shippingPrice.toFixed(2)}</Col>
                   </Row>
                 </ListGroup.Item>
                 <ListGroup.Item>
                   <Row>
                     <Col>Tax</Col>
-                    <Col>${cart.taxPrice.toFixed(2)}</Col>
+                    <Col>${cartState?.taxPrice.toFixed(2)}</Col>
                   </Row>
                 </ListGroup.Item>
                 <ListGroup.Item>
                   <Row>
                     <Col>Order Total</Col>
-                    <Col>${cart.totalPrice.toFixed(2)}</Col>
+                    <Col>${cartState?.totalPrice.toFixed(2)}</Col>
                   </Row>
                 </ListGroup.Item>
                 <ListGroup.Item>
@@ -147,7 +145,7 @@ const PlaceOrderPage = () => {
                     <Button
                       type='button'
                       onClick={PlaceOrderHandler}
-                      disabled={cart.cartItems.length === 0 || isLoading}
+                      disabled={cartState?.products.length === 0 || isLoading}
                     >
                       Place Order
                     </Button>

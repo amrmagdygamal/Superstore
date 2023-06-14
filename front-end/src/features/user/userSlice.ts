@@ -26,6 +26,17 @@ export const loginUser = createAsyncThunk(
   }
 );
 
+export const logout = createAsyncThunk(
+  'user/logout',
+  async (_, thunkAPI) => {
+    try {
+      return await userService.logout();
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+  );
+
 export const getUserWishlist = createAsyncThunk(
   'user/wishlist',
   async (_, thunkAPI) => {
@@ -74,7 +85,7 @@ export const deleteFromCart = createAsyncThunk(
 
 
 export interface UserState {
-  userInfo: any;
+  userInfor: any;
   isError: boolean;
   isLoading: boolean;
   isSuccess: boolean;
@@ -91,9 +102,9 @@ const getUserformLocalStorage = localStorage.getItem('userInfo')
   : null;
 
 const initialState: UserState = {
-  userInfo: getUserformLocalStorage,
-  isError: false,
+  userInfor: getUserformLocalStorage,
   isLoading: false,
+  isError: false,
   isSuccess: false,
   message: '',
 };
@@ -113,7 +124,7 @@ export const userSlice = createSlice({
         state.isLoading = false;
         state.isSuccess = true;
         state.isError = false;
-        state.userInfo = action.payload;
+        state.userInfor = action.payload;
         state.message = 'success';
         if (state.isSuccess === true) {
           toast.info('Signed Up successfully');
@@ -124,7 +135,7 @@ export const userSlice = createSlice({
         state.isSuccess = false;
         state.isLoading = false;
         state.message = action.error.message ?? '';
-        if (state.isSuccess === false) {
+        if (state.isError === true) {
           toast.error('Failed to signup');
         }
       })
@@ -147,9 +158,26 @@ export const userSlice = createSlice({
         state.isSuccess = false;
         state.isLoading = false;
         state.message = action.error.message ?? '';
-        if (state.isSuccess === false) {
+        if (state.isError === true) {
           toast.error('Failed to login');
         }
+      })
+      .addCase(logout.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(logout.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.isError = false;
+        state.user = action.payload;
+        state.message = 'success';
+
+      })
+      .addCase(logout.rejected, (state, action) => {
+        state.isError = true;
+        state.isSuccess = false;
+        state.isLoading = false;
+        state.message = action.error.message ?? '';
       })
       .addCase(getUserWishlist.pending, (state) => {
         state.isLoading = true;
