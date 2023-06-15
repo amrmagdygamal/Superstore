@@ -1,39 +1,55 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Badge, Nav, NavDropdown, Navbar, Row } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
 import { BsSearch } from 'react-icons/bs';
-import { Link, NavLink } from 'react-router-dom';
+import { Link, NavLink, useNavigate } from 'react-router-dom';
 import Container from './Container';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch } from '../app/store';
 import { getUserCart, logout } from '../features/user/userSlice';
+import { Typeahead } from 'react-bootstrap-typeahead';
+import 'react-bootstrap-typeahead/css/Typeahead.css';
 
 const Header = () => {
   const dispatch: AppDispatch = useDispatch();
+  const navigate = useNavigate();
   const cartState = useSelector((state: any) => state.user.cart);
+  const productState = useSelector((state: any) => state?.product?.products);
   const deleteFromCartState = useSelector(
     (state: any) => state.user.deletFromCart
   );
 
-  
   useEffect(() => {
     dispatch(getUserCart());
   }, [cartState | deleteFromCartState]);
 
   const userState = useSelector((state: any) => state.user);
 
+  const [productOpt, setProductOpt] = useState([]);
+  const [paginate, setPaginate] = useState(true);
 
   const signOutHandler = () => {
-    dispatch(logout())
-    localStorage.clear()
+    dispatch(logout());
+    localStorage.clear();
     window.location.href = '/';
   };
+
+  useEffect(() => {
+    const data: any = [];
+    for (let index = 0; index < productState.length; index++) {
+      const elem = productState[index];
+      data.push({ id: index, prod: elem?._id, name: elem?.name });
+    }
+    setProductOpt(data);
+  }, [productState]);
 
   return (
     <>
       <Container class1="header header-top-strip py-3">
         <div className="col-6">
-          <p className="mb-0 text-white">Free Shipping Over $100 & Free Returns</p>
+          <p className="mb-0 text-white">
+            Free Shipping Over $100 & Free Returns
+          </p>
         </div>
         <div className="col-6">
           <Row>
@@ -67,12 +83,17 @@ const Header = () => {
         </div>
         <div className="col-5">
           <div className="input-group">
-            <input
-              type="text"
-              className="form-control"
-              placeholder="Search Product Here...."
-              aria-label="Search Product Here...."
-              aria-describedby="basic-addon2"
+            <Typeahead
+              id="pagination-example"
+              onPaginate={() => console.log('Result Paginated')}
+              onChange={(selected: any) => {
+                navigate(`/product/${selected[0].prod}`)
+              }}
+              options={productOpt}
+              paginate={paginate}
+              labelKey={"name"}
+              minLength={2}
+              placeholder="Search For Products here..."
             />
             <span className="input-group-text" id="basic-addon2">
               <BsSearch className="fs-5" />
@@ -94,11 +115,10 @@ const Header = () => {
               </p>
             </Link>
 
-            {userState?.userInfor === null || userState?.logoutuser === true  ? (
+            {userState?.userInfor === null || userState?.logoutuser === true ? (
               <Link className="nav-link d-flex text-white gap-2" to="/login">
-              Login <br /> My Account
-            </Link>
-              
+                Login <br /> My Account
+              </Link>
             ) : (
               <NavDropdown
                 title={
@@ -138,7 +158,10 @@ const Header = () => {
                 <div className="d-flex flex-column gap-1">
                   <span>
                     <Badge pill bg="white" text="dark">
-                      {cartState?.products.reduce((a: any, c: any) => a + c.quantity, 0)}
+                      {cartState?.products.reduce(
+                        (a: any, c: any) => a + c.quantity,
+                        0
+                      )}
                     </Badge>
                   </span>
                   <p className="mb-0">${cartState?.cartTotal}</p>

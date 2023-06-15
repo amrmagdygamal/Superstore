@@ -19,6 +19,7 @@ import { getBlogs } from '../features/blog/blogSlice';
 import moment from 'moment';
 import { ProductInfo } from '../types/ProductInfo';
 
+
 const HomePage = () => {
   const dispatch: AppDispatch = useDispatch();
   const navigate = useNavigate();
