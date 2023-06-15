@@ -45,12 +45,12 @@ const SignUpPage = () => {
     onSubmit: async (userinfo) => {
       try {
         await dispatch(signUpUser(userinfo));
-        if (isSuccess && userInfor) {
-          formik.resetForm();
-          setTimeout(() => {
+        setTimeout(() => {
+          if (isSuccess && userInfor) {
+              formik.resetForm();
             navigate('/login/');
-          }, 900);
-        }
+          }
+          }, 800);
       } catch (error) {
         console.error(error);
       }

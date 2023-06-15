@@ -32,7 +32,7 @@ import { validateMongoDbId } from '../Util/validateMongodbId';
 export const createOrder = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
     const orderData = req.body;
-    const { _id } = req.user as { _id: string };
+    const _id  = req.user?._id;
 
     try {
       const user = await UserModel.findById(_id);
@@ -48,9 +48,17 @@ export const createOrder = asyncHandler(
 
       const newOrder = await new OrderModel({
         products: userCart?.products,
+        shippingAddress: {
+          firstName: orderData?.shippingAddress?.firstName,
+          lastName: orderData?.shippingAddress?.lastName,
+          country:orderData?.shippingAddress.country,
+          city:orderData?.shippingAddress.city,
+          address:orderData?.shippingAddress.address ?? "",
+          postalCode:orderData?.shippingAddress.postalCode,
+        },
         paymentResult: {
           paymentId: uniqid(),
-          PaymentMethod: orderData?.paymentResult?.PaymentMethod,
+          PaymentMethod: orderData?.paymentResult?.PaymentMethod ?? "PayPal",
           amount: finalAmount,
           shippingPrice: orderData?.paymentResult?.shippingPrice,
           taxPrice: orderData?.paymentResult?.taxPrice,
@@ -82,8 +90,7 @@ export const createOrder = asyncHandler(
 );
 
 export const getUserOrders = asyncHandler(async (req, res, next) => {
-  const { _id } = req.user as { _id: string };
-  validateMongoDbId(_id);
+  const _id  = req.user?._id;
   try {
     const userorders = await OrderModel.find({ orderby: _id });
 
@@ -143,7 +150,7 @@ export const updateOrderStatus = asyncHandler(async (req, res, next) => {
 });
 
 export const getOrder = asyncHandler(async (req, res, next) => {
-  const { _id } = req.user as { _id: string };
+  const _id  = req.user?._id;
 
   try {
     const findOrder = await OrderModel.findOne({ orderby: _id });

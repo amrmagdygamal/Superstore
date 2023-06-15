@@ -23,9 +23,6 @@ const Header = () => {
   const userState = useSelector((state: any) => state.user);
 
 
-    const information = JSON.parse(localStorage.getItem("userInfo"))
-    console.log(information)
-
   const signOutHandler = () => {
     dispatch(logout())
     localStorage.removeItem('userInfo');
@@ -98,12 +95,17 @@ const Header = () => {
               </p>
             </Link>
 
-            {information ? (
+            {userState?.user === null  ? (
+              <Link className="nav-link d-flex gap-2" to="/login">
+              Login <br /> My Account
+            </Link>
+              
+            ) : (
               <NavDropdown
                 title={
                   <>
                     <img src="/images/user.svg" alt="user" />
-                    {information.username}
+                    {userState?.userInfor?.username}
                   </>
                 }
                 id="basic-nav-dropdown"
@@ -119,10 +121,6 @@ const Header = () => {
                   Sign Out
                 </Link>
               </NavDropdown>
-            ) : (
-              <Link className="nav-link d-flex gap-2" to="/login">
-                Login <br /> My Account
-              </Link>
             )}
 
             <Link

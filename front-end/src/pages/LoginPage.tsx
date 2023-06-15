@@ -18,17 +18,14 @@ const loginSchema = Yup.object().shape({
     .required('Please enter a password'),
 });
 
-const LoginPage = () => {
+  const LoginPage = () => {
   
   
   const dispatch: AppDispatch = useDispatch();
   const userState = useSelector((state: any) => state.user)
-  const {isLoading, isError, isSuccess} = userState;
 
   const navigate = useNavigate();
   const { search } = useLocation();
-  const redirectInUrl = new URLSearchParams(search).get('redirect');
-  const redirect = redirectInUrl ? redirectInUrl : '/';
 
   const formik = useFormik({
     initialValues: {
@@ -38,10 +35,11 @@ const LoginPage = () => {
     validationSchema: loginSchema,
     onSubmit: (values) => {
       dispatch(loginUser(values));
-      if (isSuccess) {
-        formik.resetForm();
-        redirect
-      }
+      setTimeout(() => {
+        if (userState.isSuccess) {
+          navigate("/")
+        }
+      }, 700)
     },
   });
   return (
@@ -51,7 +49,7 @@ const LoginPage = () => {
       <Container class1="auth-wrapper py-5 home-wrapper-2">
         <div className="col-12">
           <div className="auth-card">
-            <h3 className="text-center mb-3">Login</h3>
+            <h3 className="text-center mb-3">Please Login To Continue</h3>
             <Form onSubmit={formik.handleSubmit}>
               <Form.Group className="mb-3" controlId="email">
               <Form.Control
@@ -93,7 +91,7 @@ const LoginPage = () => {
 
                 <Link
                   className="button signup"
-                  to={`/signup?redirect=${redirect}`}
+                  to={`/signup`}
                 >
                   SignUp
                 </Link>
