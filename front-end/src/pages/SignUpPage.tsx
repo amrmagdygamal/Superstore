@@ -27,7 +27,7 @@ const signUpSchema = Yup.object().shape({
 const SignUpPage = () => {
   const dispatch: AppDispatch = useDispatch();
   const userState = useSelector((state: any) => state.user);
-  const { isLoading, isError, isSuccess, userInfo } = userState;
+  const { isLoading, isError, isSuccess, userInfor } = userState;
 
   const navigate = useNavigate();
   const { search } = useLocation();
@@ -42,15 +42,19 @@ const SignUpPage = () => {
       confirmPassword: '',
     },
     validationSchema: signUpSchema,
-    onSubmit: (values) => {
-      dispatch(signUpUser(values));
-      if (isSuccess && userInfo) {
-        formik.resetForm();
-        setTimeout(() => {
-          navigate('/login/');
-        }, 900);
+    onSubmit: async (userinfo) => {
+      try {
+        await dispatch(signUpUser(userinfo));
+        if (isSuccess && userInfor) {
+          formik.resetForm();
+          setTimeout(() => {
+            navigate('/login/');
+          }, 900);
+        }
+      } catch (error) {
+        console.error(error);
       }
-    },
+    }
   });
 
   return (

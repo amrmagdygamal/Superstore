@@ -1,15 +1,15 @@
 import axios from 'axios';
 import { base_url } from '../../utils/base_url';
 import { config } from '../../utils/axiosconfig';
+import { UserInfo } from '../../types/UserInfo';
 
 // Sign Up user
 
-const signUp = async (userInfo: any) => {
-  const response = await axios.post(`${base_url}users/signup`, userInfo);
-  if (response.data) {
-    localStorage.setItem('userInfo', JSON.stringify(response.data));
-    return response.data;
-  }
+const signUp = async (userInfo: UserInfo) => {
+    const response = await axios.post(`${base_url}users/signup`, userInfo);
+    if (response.data) {
+      return response.data;
+   }
 };
 
 
@@ -19,6 +19,7 @@ const signUp = async (userInfo: any) => {
 const login = async (loginData: any) => {
   const response = await axios.post(`${base_url}users/login`, loginData);
   if (response.data) {
+    localStorage.setItem('userInfo', JSON.stringify(response.data));
     return response.data;
   }
 };

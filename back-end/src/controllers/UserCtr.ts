@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import asyncHandler from 'express-async-handler';
 import { generateToken } from '../Util/token';
-import UserModel from '../model/UserModel';
+import {UserModel} from '../model/UserModel';
 import bcrypt from 'bcryptjs';
 import crypto from 'crypto';
 import createHttpError from 'http-errors';
@@ -13,20 +13,20 @@ import { sendEmail } from './emailCtr';
 import CartModel from '../model/CartModel';
 import ProductModel from '../model/ProductModel';
 import couponModel from '../model/couponModel';
+import mongoose from 'mongoose';
 
 // register a user
 export const signup = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
     const { username, email, password } = req.body;
 
+    console.log(req.body)
+
     try {
       if (!username || !email || !password) {
-        res.json({
-          msg: 'Parameters missing',
-          success: false,
-        });
+        throw createHttpError(400, "parameters missing")
       }
-      const existingUsername= await UserModel.findOne({ username }).collation({ locale: "en", strength: 2}).exec();
+      const existingUsername= await UserModel.findOne({ username: username }).exec();
 
       if(existingUsername) {
         throw createHttpError(409, "Username already taken")
@@ -35,13 +35,10 @@ export const signup = asyncHandler(
       const findEmail = await UserModel.findOne({ email: email }).exec();
 
       if (findEmail) {
-        res.json({
-          msg: 'Email already taken. Please choose a different one or log in instead.',
-          success: false,
-        });
+        throw createHttpError(409, "Email is already token try another one or login")
       }
 
-      const newuser = await UserModel.create(req.body);
+      const newuser = await UserModel.create({username: username, email: email, password: password});
       res.json(newuser);
     } catch (error) {
       next(error);
@@ -56,15 +53,10 @@ export const login = asyncHandler(
 
     try {
       if (!email || !password) {
-        res.json({
-          msg: 'Parameters missing',
-          success: false,
-        });
+        throw createHttpError(400, "paramters Missing")
       }
       // check if user exists or not
-      const finduser = await UserModel.findOne({ email: email })
-        .select('+password')
-        .exec();
+      const finduser = await UserModel.findOne({ email: email }).select('+password').exec();
 
       if (!finduser) {
         throw createHttpError(401, 'Invalid credentials');
@@ -75,7 +67,7 @@ export const login = asyncHandler(
       if (!passwordMatch) {
         throw createHttpError(401, 'Invalid credentials');
       }
-      const refreshToken = await generateRefreshToken(finduser?._id.toString());
+      const refreshToken = generateRefreshToken(finduser?._id.toString());
 
       const updateuser = await UserModel.findByIdAndUpdate(
         finduser?._id,

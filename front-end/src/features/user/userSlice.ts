@@ -6,9 +6,9 @@ import { UserInfo } from '../../types/UserInfo';
 
 export const signUpUser = createAsyncThunk(
   'user/signup',
-  async (userInfo: any, thunkAPI) => {
+  async (userInfo: UserInfo, thunkAPI) => {
     try {
-      return await userService.login(userInfo);
+      return await userService.signUp (userInfo);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }
@@ -99,7 +99,7 @@ export interface UserState {
 
 const getUserformLocalStorage = localStorage.getItem('userInfo')
   ? JSON.parse(localStorage.getItem('userInfo')!)
-  : null;
+  : "";
 
 const initialState: UserState = {
   userInfor: getUserformLocalStorage,

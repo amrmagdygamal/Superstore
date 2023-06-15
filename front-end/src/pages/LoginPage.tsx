@@ -9,6 +9,7 @@ import { useFormik } from 'formik';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '../app/store';
 import { loginUser } from '../features/user/userSlice';
+import { useSelector } from 'react-redux';
 
 const loginSchema = Yup.object().shape({
 
@@ -21,6 +22,8 @@ const LoginPage = () => {
   
   
   const dispatch: AppDispatch = useDispatch();
+  const userState = useSelector((state: any) => state.user)
+  const {isLoading, isError, isSuccess} = userState;
 
   const navigate = useNavigate();
   const { search } = useLocation();
@@ -35,7 +38,10 @@ const LoginPage = () => {
     validationSchema: loginSchema,
     onSubmit: (values) => {
       dispatch(loginUser(values));
-      formik.resetForm();
+      if (isSuccess) {
+        formik.resetForm();
+        redirect
+      }
     },
   });
   return (
@@ -51,7 +57,7 @@ const LoginPage = () => {
               <Form.Control
                   name="email"
                   className="form-input h-50 py-3"
-                  type="text"
+                  type="email"
                   placeholder="Email"
                   onChange={formik.handleChange('email')}
                   onBlur={formik.handleBlur('email')}
@@ -67,7 +73,7 @@ const LoginPage = () => {
               <Form.Control
                   name="password"
                   className="form-input h-50 py-3"
-                  type="text"
+                  type="password"
                   placeholder="Password"
                   onChange={formik.handleChange('password')}
                   onBlur={formik.handleBlur('password')}

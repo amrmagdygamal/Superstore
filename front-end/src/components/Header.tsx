@@ -22,7 +22,9 @@ const Header = () => {
 
   const userState = useSelector((state: any) => state.user);
 
-  const {isLoading, isError, isSuccess, userInfo, user} = userState;
+
+    const information = JSON.parse(localStorage.getItem("userInfo"))
+    console.log(information)
 
   const signOutHandler = () => {
     dispatch(logout())
@@ -96,12 +98,12 @@ const Header = () => {
               </p>
             </Link>
 
-            {userInfo ? (
+            {information ? (
               <NavDropdown
                 title={
                   <>
                     <img src="/images/user.svg" alt="user" />
-                    {userInfo.username}
+                    {information.username}
                   </>
                 }
                 id="basic-nav-dropdown"
