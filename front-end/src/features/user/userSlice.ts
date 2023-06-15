@@ -8,7 +8,7 @@ export const signUpUser = createAsyncThunk(
   'user/signup',
   async (userInfo: UserInfo, thunkAPI) => {
     try {
-      return await userService.signUp (userInfo);
+      return await userService.signUp(userInfo);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }
@@ -26,16 +26,13 @@ export const loginUser = createAsyncThunk(
   }
 );
 
-export const logout = createAsyncThunk(
-  'user/logout',
-  async (_, thunkAPI) => {
-    try {
-      return await userService.logout();
-    } catch (error) {
-      return thunkAPI.rejectWithValue(error);
-    }
+export const logout = createAsyncThunk('user/logout', async (_, thunkAPI) => {
+  try {
+    return await userService.logout();
+  } catch (error) {
+    return thunkAPI.rejectWithValue(error);
   }
-  );
+});
 
 export const getUserWishlist = createAsyncThunk(
   'user/wishlist',
@@ -59,7 +56,6 @@ export const addToCart = createAsyncThunk(
   }
 );
 
-
 export const getUserCart = createAsyncThunk(
   'user/cart',
   async (_, thunkAPI) => {
@@ -69,9 +65,8 @@ export const getUserCart = createAsyncThunk(
       return thunkAPI.rejectWithValue(error);
     }
   }
-  );
+);
 
-  
 export const deleteFromCart = createAsyncThunk(
   'user/delete-from-cart',
   async (prodId: string, thunkAPI) => {
@@ -83,6 +78,28 @@ export const deleteFromCart = createAsyncThunk(
   }
 );
 
+export const forgotPass = createAsyncThunk(
+  'user/forgot-pass',
+  async (email: any, thunkAPI) => {
+    try {
+      return await userService.forgotPass(email);
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
+
+
+export const resetPass = createAsyncThunk(
+  'user/reset-pass',
+  async (data: any, thunkAPI) => {
+    try {
+      return await userService.resetPass(data);
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
 
 export interface UserState {
   userInfor: any;
@@ -93,13 +110,16 @@ export interface UserState {
   user?: any;
   wishlist?: any;
   addCart?: any;
-  cart?: any
-  deletFromCart?: any
+  cart?: any;
+  deletFromCart?: any;
+  logoutuser?: boolean;
+  forgotPassuser?: any;
+  resetPassuser?: any;
 }
 
 const getUserformLocalStorage = localStorage.getItem('userInfo')
   ? JSON.parse(localStorage.getItem('userInfo')!)
-  : "";
+  : '';
 
 const initialState: UserState = {
   userInfor: getUserformLocalStorage,
@@ -169,9 +189,8 @@ export const userSlice = createSlice({
         state.isLoading = false;
         state.isSuccess = true;
         state.isError = false;
-        state.user = action.payload;
+        state.logoutuser = true;
         state.message = 'success';
-
       })
       .addCase(logout.rejected, (state, action) => {
         state.isError = true;
@@ -248,6 +267,50 @@ export const userSlice = createSlice({
         state.isSuccess = false;
         state.isLoading = false;
         state.message = action.error.message ?? '';
+      })
+      .addCase(forgotPass.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(forgotPass.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.isError = false;
+        state.forgotPassuser = true;
+        state.message = 'success';
+        if (state.isSuccess === true) {
+          toast.error('Email send successFully');
+        }
+      })
+      .addCase(forgotPass.rejected, (state, action) => {
+        state.isError = true;
+        state.isSuccess = false;
+        state.isLoading = false;
+        state.message = action.error.message ?? '';
+        if (state.isError === true) {
+          toast.error('some thing went wrong');
+        }
+      })
+      .addCase(resetPass.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(resetPass.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.isError = false;
+        state.resetPassuser = true;
+        state.message = 'success';
+        if (state.isSuccess === true) {
+          toast.error('password Updated Successfully');
+        }
+      })
+      .addCase(resetPass.rejected, (state, action) => {
+        state.isError = true;
+        state.isSuccess = false;
+        state.isLoading = false;
+        state.message = action.error.message ?? '';
+        if (state.isError === true) {
+          toast.error('some thing went wrong');
+        }
       })
       .addCase(resetState, () => initialState);
   },

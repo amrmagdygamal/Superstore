@@ -69,6 +69,22 @@ const deleteFromCart = async (id: string) => {
 };
 
 
+const forgotPass = async (email: any) => {
+  const response = await axios.post(`${base_url}users/forgot-password-token`, email);
+  if (response.data) {
+    return response.data;
+  }
+};
+
+
+const resetPass = async (data: any) => {
+  const response = await axios.put(`${base_url}users/reset-password${data.token}`, {password: data.password});
+  if (response.data) {
+    return response.data;
+  }
+};
+
+
 
 
 
@@ -83,6 +99,8 @@ const userService = {
   addToCart,
   getUserCart,
   deleteFromCart,
+  forgotPass,
+  resetPass,
 };
 
 export default userService;

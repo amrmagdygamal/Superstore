@@ -25,10 +25,9 @@ import TermsAndConditions from './pages/TermsAndConditions';
 import RefundPolicy from './pages/RefundPolicy';
 import ShippingPolicy from './pages/ShippingPolicy';
 import Checkout from './pages/Checkout';
+import Profile from './pages/profile';
 
 function App() {
-
-
   return (
     <BrowserRouter>
       <>
@@ -40,11 +39,10 @@ function App() {
               <Route path="contact" element={<Contact />} />
               <Route path="blogs" element={<Blog />} />
               <Route path="compare" element={<CompareProduct />} />
-              <Route path="wishlist" element={<WishList />} />
               <Route path="login" element={<LoginPage />} />
               <Route path="signup" element={<SignUpPage />} />
               <Route path="forgot-password" element={<ForgotPassword />} />
-              <Route path="reset-password" element={<ResetPassword />} />
+              <Route path="reset-password/:token" element={<ResetPassword />} />
               <Route path="product/:id" element={<ProductPage />} />
               <Route path="blog/:id" element={<BlogPage />} />
               <Route path="store" element={<OurStore />} />
@@ -52,8 +50,10 @@ function App() {
               <Route path="refund-policy" element={<RefundPolicy />} />
               <Route path="term-conditions" element={<TermsAndConditions />} />
               <Route path="shipping-policy" element={<ShippingPolicy />} />
-              <Route path="cart" element={<CartPage />} />
               <Route path="" element={<ProtectedRoute />}>
+                <Route path='profile-page' element={<Profile />} />
+                <Route path="wishlist" element={<WishList />} />
+                <Route path="cart" element={<CartPage />} />
                 <Route path="checkout" element={<Checkout />} />
                 <Route path="payment" element={<PaymentPage />} />
                 <Route path="placeorder" element={<PlaceOrderPage />} />

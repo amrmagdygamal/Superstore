@@ -12,10 +12,10 @@ const Forgotpassword = () => {
           <h3 className="text-center title">Forgot Password</h3>
           <p className="text-center">Please Enter your register email to get reset password mail.</p>
           <form action="">
-            <CustomInput type="email" label="Email Address" id="email" name="email" />
+            <CustomInput type="email" label="Email Address"   name="email" />
             
             <button
-              className='border-0 px-3 py-2 text-white fw-bold w-100'
+              className='border-0 px-3 mt-4 py-2 text-white fw-bold w-100'
               style={{ "backgroundColor": "#ffd333"}}
               type='submit'
             >

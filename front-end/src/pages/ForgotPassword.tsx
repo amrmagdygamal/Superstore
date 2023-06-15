@@ -6,11 +6,40 @@ import LoadingBox from '../components/LoadingBox';
 import { Form } from 'react-bootstrap';
 import Container from '../components/Container';
 import { useDispatch } from 'react-redux';
+import { AppDispatch } from '../app/store';
+import { useFormik } from 'formik';
+import { useSelector } from 'react-redux';
+import { forgotPass } from '../features/user/userSlice';
+import * as Yup from 'yup';
+
+
+const loginSchema = Yup.object().shape({
+
+  email: Yup.string().email("Enter valid Email").required('Email is Required'),
+
+});
 
 const ForgotPassword = () => {
 
 
   const dispatch: AppDispatch = useDispatch();
+  const userState = useSelector((state: any) => state.user)
+
+
+  const formik = useFormik({
+    initialValues: {
+      email: '',
+    },
+    validationSchema: loginSchema,
+    onSubmit: (values) => {
+      dispatch(forgotPass(values));
+      // setTimeout(() => {
+      //   if (userState.isSuccess) {
+      //     navigate("/")
+      //   }
+      // }, 700)
+    },
+  });
 
 
   return (
@@ -24,24 +53,29 @@ const ForgotPassword = () => {
             <p className="mt-2 mb-3 text-center">
               We will send send you an email to reset your password
             </p>
-            <Form onSubmit={isLoading}>
+            <Form onSubmit={formik.handleSubmit}>
               <Form.Group className="mb-3" controlId="email">
-                <Form.Control
-                  type="email"
+              <Form.Control
                   name="email"
+                  className="form-input h-50 py-3"
+                  type="email"
                   placeholder="Email"
-                  className="form-input"
-                  required
-                  
+                  onChange={formik.handleChange('email')}
+                  onBlur={formik.handleBlur('email')}
+                  value={formik.values.email}
                 />
+                <div className="error mb-4">
+                  {formik.touched.email && formik.errors.email ? (
+                    <div>{formik.errors.email}</div>
+                  ) : null}
+                </div>
               </Form.Group>
               <div className="flex-column d-flex align-items-center gap-3">
-                <button className="button" disabled={isLoading} type="submit">
-                  Submit
+                <button className="button" type="submit">
+                Send Email
                 </button>
 
                 <Link to="/login">Cancel</Link>
-                {isLoading && <LoadingBox />}
               </div>
             </Form>
           </div>

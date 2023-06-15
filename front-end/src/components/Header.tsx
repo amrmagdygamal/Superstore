@@ -25,8 +25,7 @@ const Header = () => {
 
   const signOutHandler = () => {
     dispatch(logout())
-    localStorage.removeItem('userInfo');
-    localStorage.removeItem('paymentMethoud');
+    localStorage.clear()
     window.location.href = '/';
   };
 
@@ -34,14 +33,14 @@ const Header = () => {
     <>
       <Container class1="header header-top-strip py-3">
         <div className="col-6">
-          <p className="mb-0">Free Shipping Over $100 & Free Returns</p>
+          <p className="mb-0 text-white">Free Shipping Over $100 & Free Returns</p>
         </div>
         <div className="col-6">
           <Row>
             <div className="col-6">
-              <p className="mb-0">
-                Hotline:{' '}
-                <a className="text-white" href="tel:+20 01095330155">
+              <p className="mb-0 text-white">
+                Hotline :{' '}
+                <a className="text-white ms-1" href="tel:+20 01095330155">
                   +20 01095330155
                 </a>
               </p>
@@ -84,19 +83,19 @@ const Header = () => {
           <Nav className="align-items-center justify-content-between">
             <Link className="nav-link d-flex gap-2" to="/compare">
               <img src="/images/compare.svg" alt="compare" />
-              <p className="mb-0">
+              <p className="mb-0 text-white">
                 Compare <br /> Products
               </p>
             </Link>
             <Link className="nav-link d-flex gap-2" to="/wishlist">
               <img src="/images/wishlist.svg" alt="wishlist" />
-              <p className="mb-0">
+              <p className="mb-0 text-white">
                 Favourite <br /> Wishlist
               </p>
             </Link>
 
-            {userState?.user === null  ? (
-              <Link className="nav-link d-flex gap-2" to="/login">
+            {userState?.userInfor === null || userState?.logoutuser === true  ? (
+              <Link className="nav-link d-flex text-white gap-2" to="/login">
               Login <br /> My Account
             </Link>
               
@@ -110,12 +109,19 @@ const Header = () => {
                 }
                 id="basic-nav-dropdown"
               >
+                <Link
+                  className="dropdown-item"
+                  to="/profile-page"
+                  onClick={signOutHandler}
+                >
+                  My Profile
+                </Link>
                 <LinkContainer to="/orderhistory">
                   <NavDropdown.Item>Order History</NavDropdown.Item>
                 </LinkContainer>
                 <Link
                   className="dropdown-item"
-                  to="#signout"
+                  to="/signout"
                   onClick={signOutHandler}
                 >
                   Sign Out
@@ -143,7 +149,7 @@ const Header = () => {
         </div>
       </Container>
       <Container class1="header-bottom py-2" class2="align-items-center">
-        <div className="col-12 d-flex justify-content-between">
+        <div className="col-12 d-flex gap-5">
           <NavDropdown
             className="shop-categories-menu bg-transparent"
             title={
@@ -159,7 +165,7 @@ const Header = () => {
             <NavDropdown.Item>;lka;lk;l</NavDropdown.Item>
             <NavDropdown.Item>;lka;lk;l</NavDropdown.Item>
           </NavDropdown>
-          <Nav className="align-items-center gap-2">
+          <Nav className="align-items-center gap-3">
             <NavLink to="/">Home</NavLink>
             <NavLink to="/store">Our Store</NavLink>
             <NavLink to="/blogs">Blogs</NavLink>

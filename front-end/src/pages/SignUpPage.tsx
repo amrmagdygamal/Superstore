@@ -30,7 +30,6 @@ const SignUpPage = () => {
   const { isLoading, isError, isSuccess, userInfor } = userState;
 
   const navigate = useNavigate();
-  const { search } = useLocation();
 
   
   

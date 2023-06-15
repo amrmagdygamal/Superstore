@@ -244,7 +244,7 @@ export const deleteUser = asyncHandler(async (req, res, next) => {
 
 // updating  user
 export const updateUser = asyncHandler(async (req, res, next) => {
-  const { _id } = req.user;
+  const _id = req.user?._id;
   validateMongoDbId(_id);
   try {
     const updateuser = await UserModel.findByIdAndUpdate(
@@ -267,8 +267,7 @@ export const updateUser = asyncHandler(async (req, res, next) => {
 // save user address
 
 export const saveAddress = asyncHandler(async (req, res, next) => {
-  const  _id  = req.user;
-  validateMongoDbId(_id);
+  const  _id  = req.user?._id;
 
   try {
     const updateuser = await UserModel.findByIdAndUpdate(
@@ -382,7 +381,7 @@ export const forgotPasswordToken = asyncHandler(async (req, res, next) => {
     await user.save();
 
     // Construct the password reset URL and send the reset link to the user's email
-    const resetURL = `Hi, Please follow this link to reset Your Password. This link is valid till 10 minutes from now. <a href='http://localhost:5000/api/user/reset-password/${token}'>Click here</a>`;
+    const resetURL = `Hi, Please follow this link to reset Your Password. This link is valid till 10 minutes from now. <a href='http://localhost:5173/reset-password/${token}'>Click here</a>`;
     const data = {
       to: email,
       text: 'Hey User',
