@@ -31,20 +31,16 @@ import { validateMongoDbId } from '../Util/validateMongodbId';
 
 export const createOrder = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
-    const { COD, couponApplied } = req.body;
+    const orderData = req.body;
     const { _id } = req.user as { _id: string };
 
     try {
-      if (!COD) {
-        throw new Error('create chash order failed');
-      }
-
       const user = await UserModel.findById(_id);
       const userCart = await CartModel.findOne({ customer: user?._id });
 
       let finalAmount = 0;
 
-      if (couponApplied && userCart?.totalAfterDiscount) {
+      if (userCart?.totalAfterDiscount) {
         finalAmount = userCart.totalAfterDiscount;
       } else {
         finalAmount = userCart?.cartTotal ?? 0;
@@ -54,25 +50,29 @@ export const createOrder = asyncHandler(
         products: userCart?.products,
         paymentResult: {
           paymentId: uniqid(),
-          paymentMethod: 'COD',
+          PaymentMethod: orderData?.paymentResult?.PaymentMethod,
           amount: finalAmount,
-          status: 'Cash on Delivery',
+          shippingPrice: orderData?.paymentResult?.shippingPrice,
+          taxPrice: orderData?.paymentResult?.taxPrice,
+          totalPriceAfterDiscount: orderData?.paymentResult?.totalAfterDiscount,
+          status: 'Not Processed',
           created: Date.now(),
           currency: 'usd',
         },
         orderby: user?._id,
-        status: 'Cash on Delivery',
       }).save();
       const update = userCart?.products.map((item) => {
         return {
-          updataOne: {
+          updateOne: {
             filter: { _id: item.product?._id },
-            update: { $inc: { quantity: item.quantity } },
+            update: { $inc: { quantity: -item.quantity } },
           },
         };
       });
 
-      const updated = await ProductModel.bulkWrite(update, {});
+      if (update) {
+        const updated = await ProductModel.bulkWrite(update, {});
+      }
 
       res.status(201).json({ message: 'success' });
     } catch (error) {
@@ -82,7 +82,7 @@ export const createOrder = asyncHandler(
 );
 
 export const getUserOrders = asyncHandler(async (req, res, next) => {
-  const { _id } = req.user;
+  const { _id } = req.user as { _id: string };
   validateMongoDbId(_id);
   try {
     const userorders = await OrderModel.find({ orderby: _id });
@@ -143,29 +143,31 @@ export const updateOrderStatus = asyncHandler(async (req, res, next) => {
 });
 
 export const getOrder = asyncHandler(async (req, res, next) => {
-  const { _id } = req.user;
+  const { _id } = req.user as { _id: string };
 
   try {
-    const findOrder = await OrderModel.findOne({orderby: _id});
+    const findOrder = await OrderModel.findOne({ orderby: _id });
     res.json(findOrder);
   } catch (error) {
     next(error);
   }
 });
 
-
-export const payOrder =   asyncHandler(async (req: Request, res: Response) => {
+export const payOrder = asyncHandler(async (req: Request, res: Response) => {
   const order = await OrderModel.findById(req.params._id);
 
   if (order) {
-    order.isPaid = true;
     order.paidAt = new Date(Date.now());
     order.paymentResult = {
-      paymentId: req.body.id,
-      status: req.body.status,
+      PaymentMethod: req.body.paymentMethod, // assuming the payment method is sent in the request body
+      paymentId: order?.paymentResult?.paymentId, // assuming the payment ID is sent in the request body
+      amount: order?.paymentResult!.amount,
+      shippingPrice: order?.paymentResult!.shippingPrice,
+      taxPrice: order?.paymentResult!.taxPrice,
+      totalPriceAfterDiscount: order?.paymentResult!.totalPriceAfterDiscount,
+      status: 'Cash On Delivery',
     };
     const updatedOrder = await order.save();
-
     res.json({ order: updatedOrder, message: 'Order Paid Successfully' });
   } else {
     res.status(404).json({ message: 'Order Not found' });
