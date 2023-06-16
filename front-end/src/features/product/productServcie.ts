@@ -40,11 +40,20 @@ const deleteFromCart = async (id: string) => {
 
 
 
+const rateProduct = async (data: any) => {
+  const response = await axios.put(`${base_url}pruducts/rating/`,data, config);
+  if(response.data) {
+    return response.data;
+  }
+};
+
+
 
 const productService = {
   getProducts,
   getProduct,
   addToWishList,
+  rateProduct
 };
 
 export default productService;

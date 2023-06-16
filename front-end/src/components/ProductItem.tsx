@@ -67,14 +67,11 @@ const ProductItem = (props: ProductItemProps)=> {
         </Card.Body>
         <div className="action-bar position-absolute">
           <div className="d-flex gap-2 flex-column">
-            <Link to="">
+            <Link to="/compare">
               <img src="/images/prodcompare.svg" alt="compare" />
             </Link>
             <Link to={`/product/${product?._id}`}>
               <img onClick={() => navigate(`/product/${product?._id}`)} src="/images/view.svg" alt="view" />
-            </Link>
-            <Link to="">
-              <img src="/images/add-cart.svg" alt="addcart" />
             </Link>
           </div>
         </div>

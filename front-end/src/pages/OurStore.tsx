@@ -14,11 +14,12 @@ import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
 import { AppDispatch } from '../app/store';
 import { getproducts } from '../features/product/productSlice';
+import { ProductInfo } from '../types/ProductInfo';
 
 const OurStore = () => {
   const dispatch: AppDispatch = useDispatch();
 
-  const [grid, setGrid] = useState(4)
+  const [grid, setGrid] = useState(4);
 
   const brandState = useSelector((state: any) => state.brand.brands);
   const colorState = useSelector((state: any) => state.color.colors);
@@ -34,10 +35,8 @@ const OurStore = () => {
     dispatch(getproducts());
   };
 
-
   useEffect(() => {
     getAllProducts();
-
   }, []);
   return isLoading ? (
     <LoadingBox />
@@ -287,7 +286,12 @@ const OurStore = () => {
           </div>
           <div className="products-list pb-5">
             <div className="d-flex flex-wrap gap-2">
-              <ProductItem data={productState ? productState : []} grid={grid} />
+              {productState &&
+                productState?.map((product: ProductInfo, index: number) => {
+                  if (product.tags === 'popular') {
+                    return <ProductItem product={product} key={index} />;
+                  }
+                })}
             </div>
           </div>
         </div>

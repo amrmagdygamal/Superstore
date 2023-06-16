@@ -12,7 +12,7 @@ import { MdFavorite } from 'react-icons/md';
 import Container from '../components/Container';
 import { AppDispatch } from '../app/store';
 import { useDispatch } from 'react-redux';
-import { getproduct } from '../features/product/productSlice';
+import { getproduct, rateProduct } from '../features/product/productSlice';
 import { useSelector } from 'react-redux';
 import { ProductInfo } from '../types/ProductInfo';
 import { addToCart, getUserCart } from '../features/user/userSlice';
@@ -29,8 +29,10 @@ const ProductPage = () => {
   const [color, setColor] = useState({});
   const [colorBorder, setColorBorder] = useState(false);
   const [alreadyAdded, setAlreadyAdded] = useState(true);
+  const [star, setStar] = useState(0);
+  const [comment, setComment] = useState('');
 
-  const {isLoading, isError, isSuccess, addCart} = addCartState;
+  const { isLoading, isError, isSuccess, addCart } = addCartState;
   const colors: any = [];
 
   useEffect(() => {
@@ -50,11 +52,9 @@ const ProductPage = () => {
     dispatch(getproduct(getProductId));
   }, []);
 
-  
   useEffect(() => {
     dispatch(getUserCart());
   }, [addCart, isSuccess]);
-  
 
   useEffect(() => {
     for (let index = 0; index < cartState?.products?.length; index++) {
@@ -78,6 +78,23 @@ const ProductPage = () => {
     }
   };
 
+  const addRatingToProd = () => {
+    if (star === 0) {
+      toast.warning("You can't give zero star");
+      return false;
+    } else if (comment == '') {
+      toast.warning('Please Write Review About the Product');
+      return false;
+    } else {
+      dispatch(
+        rateProduct({ star: star, prodId: getProductId, comment: comment })
+      );
+      setTimeout(() => {
+        dispatch(getproduct(getProductId));
+      }, 400);
+    }
+  };
+
   const copyToClipboard = (text: string) => {
     console.log('text', text);
     const textField = document.createElement('textarea');
@@ -92,8 +109,8 @@ const ProductPage = () => {
 
   return (
     <>
-      <Meta title="Product Name" />
-      <BreadCrumb title="Product Name" />
+      <Meta title="Product Page" />
+      <BreadCrumb title={productState?.name} />
       <Container class1="product-page py-5 home-wrapper-2">
         <div className="col-6">
           <div className="product-image-section">
@@ -126,7 +143,9 @@ const ProductPage = () => {
                   edit={true}
                   activeColor="#ffd700"
                 />
-                <p className="mb-0">(2 Reviews)</p>
+                <p className="mb-0">
+                  ({productState?.ratings?.length} Reviews)
+                </p>
               </div>
               <a href="#review" className="rev-btn">
                 Write A Review
@@ -151,10 +170,12 @@ const ProductPage = () => {
               </div>
               <div className="d-flex gap-2 align-items-center my-2">
                 <h3 className="type-title">Availabilty:</h3>
-                <p className="type-detail">In Stock</p>
+                <p className="type-detail">
+                  {productState?.countInStock > 0 ? 'In Stock' : 'Out Of Stock'}
+                </p>
               </div>
               <div className="d-flex gap-2 flex-column mt-2 mb-3">
-                <h3 className="type-title">Availabilty:</h3>
+                <h3 className="type-title">Availabilty: </h3>
                 <div className="d-flex flex-wrap gap-2">
                   <span className="bade border bg-white text-dark border-secondary px-1 border-1">
                     S
@@ -236,7 +257,9 @@ const ProductPage = () => {
                   </>
                 ) : (
                   <>
-                  <h3 className="title text-success mb-0">Already Added to Cart :</h3>
+                    <h3 className="title text-success mb-0">
+                      Already Added to Cart :
+                    </h3>
                   </>
                 )}
 
@@ -254,7 +277,7 @@ const ProductPage = () => {
                   ) : (
                     <>
                       <button
-                        onClick={() => navigate("/cart")}
+                        onClick={() => navigate('/cart')}
                         className="button m-2 py-3 px-4"
                         type="submit"
                       >
@@ -327,7 +350,9 @@ const ProductPage = () => {
                 <h4 className="mb-2">Customer Reviews</h4>
                 <div className="d-flex align-items-center gap-2">
                   <Rating rating={productState?.totalrating} />
-                  <p className="mb-0">Based on 2 Reviews</p>
+                  <p className="mb-0">
+                    Based on {productState?.ratings?.length} Reviews
+                  </p>
                 </div>
               </div>
               {orderedProduct && (
@@ -340,50 +365,54 @@ const ProductPage = () => {
             </div>
             <div className="review-form py-4">
               <h4>Write A Review</h4>
-              <form action="" className="d-flex flex-column gap-2">
-                <div>
-                  <ReactStars
-                    count={5}
-                    size={24}
-                    value={4}
-                    edit={true}
-                    activeColor="#ffd700"
-                  />
-                </div>
-                <div>
-                  <textarea
-                    name=""
-                    id=""
-                    className="w-100 form-control"
-                    cols={30}
-                    rows={4}
-                    placeholder="Comments"
-                  />
-                </div>
-                <div className="d-flex justify-content-end">
-                  <button className="button mt-2">Submit Review</button>
-                </div>
-              </form>
-            </div>
-            <div className="reviews-comments mt-4">
-              <div className="review-item">
-                <div className="d-flex gap-1 align-items-center">
-                  <h5 className="mb-0">Amr Magdy</h5>
-                </div>
+              <div>
                 <ReactStars
                   count={5}
                   size={24}
-                  value={productState?.totalrating}
+                  value={4}
                   edit={true}
+                  onChange={(e: number) => setStar(e)}
                   activeColor="#ffd700"
                 />
-                <p>
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Quo,
-                  similique autem optio unde facilis necessitatibus, porro illo
-                  dolorem aperiam accusamus aut doloribus ut? Facilis vero earum
-                  culpa quasi, nesciunt ullam.
-                </p>
               </div>
+              <div>
+                <textarea
+                  name=""
+                  id=""
+                  className="w-100 form-control"
+                  cols={30}
+                  rows={4}
+                  placeholder="Comments"
+                  onChange={(e) => {
+                    setComment(e.target.value);
+                  }}
+                />
+              </div>
+              <div className="d-flex justify-content-end">
+                <button onClick={addRatingToProd} className="button mt-2">
+                  Submit Review
+                </button>
+              </div>
+            </div>
+            <div className="reviews-comments mt-4">
+              {productState &&
+                productState?.ratings?.map((item: any, index: number) => {
+                  <div key={index} className="review-item">
+                    <div className="d-flex gap-1 align-items-center">
+                      <h5 className="mb-0">{item?.postedBy}</h5>
+                    </div>
+                    <ReactStars
+                      count={5}
+                      size={24}
+                      value={item?.star}
+                      edit={false}
+                      activeColor="#ffd700"
+                    />
+                    <p>
+                    {item?.comment}
+                    </p>
+                  </div>
+                })}
             </div>
           </div>
         </div>

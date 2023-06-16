@@ -9,6 +9,7 @@ import { AppDispatch } from '../app/store';
 import { getUserCart, logout } from '../features/user/userSlice';
 import { Typeahead } from 'react-bootstrap-typeahead';
 import 'react-bootstrap-typeahead/css/Typeahead.css';
+import { getproduct } from '../features/product/productSlice';
 
 const Header = () => {
   const dispatch: AppDispatch = useDispatch();
@@ -87,7 +88,8 @@ const Header = () => {
               id="pagination-example"
               onPaginate={() => console.log('Result Paginated')}
               onChange={(selected: any) => {
-                navigate(`/product/${selected[0].prod}`)
+                navigate(`/product/${selected[0]?.prod}`)
+                dispatch(getproduct(selected[0]?.prod))
               }}
               options={productOpt}
               paginate={paginate}

@@ -10,6 +10,7 @@ export interface productState {
   message: string;
   product?: any;
   addToWishlist?: any;
+  rateProd?: any
 }
 
 const initialState: productState = {
@@ -47,6 +48,17 @@ export const addToWishList = createAsyncThunk(
   async (id: string, thunkAPI) => {
     try {
       return await productService.addToWishList(id);
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
+
+export const rateProduct = createAsyncThunk(
+  'product/rate-product',
+  async (data: any, thunkAPI) => {
+    try {
+      return await productService.rateProduct(data);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }
@@ -112,7 +124,29 @@ export const productSlice = createSlice({
         if(state.isError === true) {
           toast.error("Some thing went Wrong!!")
         }
-      });
+      })
+      .addCase(rateProduct.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(rateProduct.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.isError = false;
+        state.rateProd = action.payload;
+        state.message = 'Product Added To Wishlist';
+        if(state.isSuccess === true) {
+          toast.info("Rating Added Successfully!")
+        }
+      })
+      .addCase(rateProduct.rejected, (state, action) => {
+        state.isError = true;
+        state.isSuccess = false;
+        state.isLoading = false;
+        state.message = action.error.message ?? '';
+        if(state.isError === true) {
+          toast.error("Some thing went Wrong!!")
+        }
+      })
   },
 });
 
