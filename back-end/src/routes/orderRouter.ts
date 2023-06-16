@@ -14,6 +14,8 @@ orderRouter.get('/ordershistory', auhtMiddleware, OrderControllers.getUserOrders
 orderRouter.get('/getallorders', auhtMiddleware,isAdmin,  OrderControllers.getAllOrders);
 
 orderRouter.get('/getorderbyuserid/:id', auhtMiddleware, isAdmin ,OrderControllers.getOrderByUserId);
+orderRouter.get('/getMonthWiseOrderIncome', auhtMiddleware,OrderControllers.getMonthWiseOrderIncome);
+orderRouter.get('/getyearlyorders', auhtMiddleware,OrderControllers.getYearlyTotalOrders);
 
 orderRouter.put(
   '/updateorder/:id',

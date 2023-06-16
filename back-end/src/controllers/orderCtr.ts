@@ -160,6 +160,99 @@ export const getOrder = asyncHandler(async (req, res, next) => {
   }
 });
 
+
+
+
+export const getMonthWiseOrderIncome = asyncHandler(async(req: Request, res: Response, next: NextFunction) => {
+  const monthNames = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December"
+  ];
+  const date = new Date()
+  let endDate = "";
+  date.setDate(1)
+
+  for (let index = 0; index < 11; index++) {
+    date.setMonth(date.getMonth() - 1);
+    endDate = monthNames[date.getMonth()] + " " + date.getFullYear();
+
+  }
+
+  const data = await OrderModel.aggregate([
+    {
+      $match: {
+        createdAt: {
+          $lte: new Date(),
+          $gte: new Date(endDate)
+        }
+      }
+    }, {
+      $group: {
+        _id: {
+          month: "$month"
+        }, amount : {$sum: "$totalPriceAfterDiscount"}, count : {$sum: 1}
+      }
+    }
+  ])
+  res.json(data)
+})
+
+
+
+export const getYearlyTotalOrders = asyncHandler(async(req: Request, res: Response, next: NextFunction) => {
+  const monthNames = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December"
+  ];
+  const date = new Date()
+  let endDate = "";
+  date.setDate(1)
+
+  for (let index = 0; index < 11; index++) {
+    date.setMonth(date.getMonth() - 1);
+    endDate = monthNames[date.getMonth()] + " " + date.getFullYear();
+
+  }
+
+  const data = await OrderModel.aggregate([
+    {
+      $match: {
+        createdAt: {
+          $lte: new Date(),
+          $gte: new Date(endDate)
+        }
+      }
+    }, {
+      $group: {
+        _id: null,  count : {$sum: 1},
+        amount: {$sum: "$totalPriceAfterDiscount"}
+      }
+    }
+  ])
+  res.json(data)
+})
+
+
 export const payOrder = asyncHandler(async (req: Request, res: Response) => {
   const order = await OrderModel.findById(req.params._id);
 

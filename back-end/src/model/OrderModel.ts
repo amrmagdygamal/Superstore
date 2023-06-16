@@ -25,6 +25,10 @@ const OrderModel = new mongoose.Schema(
       lng: { type: Number },
     },
     orderby: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+    month: {
+      type: String,
+      default: new Date().getMonth()
+    },
     paymentResult: {
       PaymentMethod: {type: String, required: true},
       paymentId: { type: String },
