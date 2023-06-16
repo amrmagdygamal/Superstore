@@ -9,7 +9,7 @@ import { AnyObjectSchema } from 'yup';
 const login = async (userInfo: AnyObjectSchema) => {
   const response = await axios.post(`${base_url}users/admin-login`, userInfo);
   if (response.data) {
-    localStorage.setItem('userInfo', JSON.stringify(response.data));
+    localStorage.setItem('admin', JSON.stringify(response.data));
   }
   return response.data;
 };

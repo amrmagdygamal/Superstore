@@ -24,16 +24,16 @@ import AddProduct from './pages/AddProduct'
 import AddCoupon from './pages/AddCoupon'
 import ShowEnquiry from './pages/ShowEnquiry'
 import ViewOrder from './pages/ViewOrder'
+import { OpenRoutes } from './components/OpenRouter'
+import { PrivateRoutes } from './components/PrivateRoutes'
 
 function App() {
 
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Login />}/>
-        <Route path="/reset-password" element={<Resetpasword />}/>
-        <Route path="/forgot-password" element={<Forgotpassword />}/>
-        <Route path="/admin" element={<MainLayout />}>
+        <Route path="/" element={<OpenRoutes><Login /></OpenRoutes>}/>
+        <Route path="/admin" element={<PrivateRoutes><MainLayout /></PrivateRoutes>}>
           <Route index element={<Dashboard />}/>
           <Route path='enquiries' element={<Enquiries />}/>
           <Route path='enquiries/:id' element={<ShowEnquiry />}/>
