@@ -162,6 +162,19 @@ export const getOrder = asyncHandler(async (req, res, next) => {
 
 
 
+export const getAnOrder = asyncHandler(async (req, res, next) => {
+  const {id} = req.params;
+
+  try {
+    const findOrder = await OrderModel.findOne({ _id: id });
+    res.json(findOrder);
+  } catch (error) {
+    next(error);
+  }
+});
+
+
+
 
 export const getMonthWiseOrderIncome = asyncHandler(async(req: Request, res: Response, next: NextFunction) => {
   const monthNames = [

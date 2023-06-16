@@ -2,6 +2,7 @@
 import { createAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import OrderService from './orderService';
 import { User } from '../../types/User';
+import { toast } from 'react-toastify';
 
 export const getAllOrders = createAsyncThunk(
   'order/get-orders',
@@ -50,6 +51,33 @@ export const getYearlyStats = createAsyncThunk(
   }
 );
 
+
+export const getAnOrder = createAsyncThunk(
+  'order/order',
+  async (id: string, thunkAPI) => {
+    try {
+      return await OrderService.getAnOrder(id);
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
+
+
+
+export const updateOrder = createAsyncThunk(
+  'order/update-order',
+  async (data: any, thunkAPI) => {
+    try {
+      return await OrderService.updateOrder(data);
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
+
+
+
 export type orderState = {
   orders: [];
   isError: boolean;
@@ -57,6 +85,8 @@ export type orderState = {
   isSuccess: boolean;
   message: string;
   order?: any
+  AnOrder?: any
+  updateOrder?: any
   orderMonthlyData?: any
   orderYearlyStats?: any
 
@@ -143,6 +173,44 @@ export const OrderSlice = createSlice({
         state.isSuccess = false;
         state.isLoading = false;
         state.message = action.error.message ?? '';
+      })
+      .addCase(getAnOrder.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(getAnOrder.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.isError = false;
+        state.AnOrder = action.payload;
+        state.message = 'success';
+      })
+      .addCase(getAnOrder.rejected, (state, action) => {
+        state.isError = true;
+        state.isSuccess = false;
+        state.isLoading = false;
+        state.message = action.error.message ?? '';
+      })
+      .addCase(updateOrder.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(updateOrder.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.isError = false;
+        state.updateOrder = action.payload;
+        state.message = 'success';
+        if(state.isSuccess === true) {
+          toast.success("Order Updated Successfully!")
+        }
+      })
+      .addCase(updateOrder.rejected, (state, action) => {
+        state.isError = true;
+        state.isSuccess = false;
+        state.isLoading = false;
+        state.message = action.error.message ?? '';
+        if(state.isError === true) {
+          toast.success("some Thing went wrong!")
+        }
       })
       .addCase(resetState, () => initialState)
   },

@@ -25,6 +25,7 @@ orderRouter.put(
 );
 
 orderRouter.get('/:id', auhtMiddleware, OrderControllers.getOrder);
+orderRouter.get('/getOrder/:id', auhtMiddleware, isAdmin,  OrderControllers.getAnOrder);
 
 
 orderRouter.put('/:id/pay', auhtMiddleware, OrderControllers.payOrder);
