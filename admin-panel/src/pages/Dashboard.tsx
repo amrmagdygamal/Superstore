@@ -53,6 +53,20 @@ const columns: ColumnsType<DataType> = [
 
 const Dashboard = () => {
   const dispatch: AppDispatch = useDispatch();
+  const monthNames = [
+    'January',
+    'February',
+    'March',
+    'April',
+    'May',
+    'June',
+    'July',
+    'August',
+    'September',
+    'October',
+    'November',
+    'December',
+  ];
   const orderMonthState = useSelector(
     (state: any) => state.order.orderMonthlyData
   );
@@ -72,20 +86,6 @@ const Dashboard = () => {
   }, []);
 
   useEffect(() => {
-    const monthNames = [
-      'January',
-      'February',
-      'March',
-      'April',
-      'May',
-      'June',
-      'July',
-      'August',
-      'September',
-      'October',
-      'November',
-      'December',
-    ];
 
     const data: any = [];
     const monthOrderCount: any = [];
@@ -113,7 +113,7 @@ const Dashboard = () => {
       });
     }
     setOrderData(data1)
-  }, [orderMonthState, orderyearState]);
+  }, [orderMonthState | allOrdersState | orderyearState]);
 
   const config = {
     data: dataMonthly,

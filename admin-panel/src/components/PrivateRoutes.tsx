@@ -8,5 +8,5 @@ type OpenRouterProps = {
 export const PrivateRoutes = ({ children }: OpenRouterProps) => {
   const getTokenFromLocalStorage = JSON.parse(localStorage.getItem('admin')!);
 
-  return getTokenFromLocalStorage?.token !== undefined ? children : (<Navigate to="/login" replace={true} />)
+  return getTokenFromLocalStorage?.token !== undefined ? children : (<Navigate to="/" replace={true} />)
 };
