@@ -1,7 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 import asyncHandler from 'express-async-handler';
 import blogModel from '../model/blogModel';
-import { validateMongoDbId } from '../Util/validateMongodbId';
 
 export const createBlog = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -13,10 +12,9 @@ export const createBlog = asyncHandler(async (req: Request, res: Response, next:
 });
 
 export const updateBlog = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
-  const { _id } = req.params;
-  validateMongoDbId(_id);
+  const { id } = req.params;
   try {
-    const updateBlog = await blogModel.findByIdAndUpdate(_id, req.body, {
+    const updateBlog = await blogModel.findByIdAndUpdate(id, req.body, {
       new: true,
     });
 
@@ -27,12 +25,11 @@ export const updateBlog = asyncHandler(async (req: Request, res: Response, next:
 });
 
 export const getBlog = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
-  const { _id } = req.params;
-  validateMongoDbId(_id);
+  const { id } = req.params;
   try {
-    const getblog = await blogModel.findById(_id).populate("likes").populate("dislikes");
+    const getblog = await blogModel.findById(id).populate("likes").populate("dislikes");
     const updateViews = await blogModel.findByIdAndUpdate(
-      _id,
+      id,
       {
         $inc: { numViews: 1 },
       },
@@ -54,10 +51,9 @@ export const getAllBloggs = asyncHandler(async (req: Request, res: Response, nex
 });
 
 export const deleteBlog = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
-  const { _id } = req.params;
-  validateMongoDbId(_id);
+  const { id } = req.params;
   try {
-    const deleteblog = await blogModel.findByIdAndDelete(_id);
+    const deleteblog = await blogModel.findByIdAndDelete(id);
 
     res.json(deleteblog);
   } catch (error) {
@@ -69,7 +65,6 @@ export const deleteBlog = asyncHandler(async (req: Request, res: Response, next:
 export const likeTheBlog = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
 
   const { blogId } = req.body;
-  validateMongoDbId(blogId);
   try {
     // Find The blog which you want to like
     const blog = await blogModel.findById(blogId);
@@ -121,7 +116,6 @@ export const likeTheBlog = asyncHandler(async (req: Request, res: Response, next
 
 export const disLikeTheBlog = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
   const { blogId } = req.body;
-  validateMongoDbId(blogId);
   try {
     // Find The blog which you want to like
     const blog = await blogModel.findById(blogId);
@@ -174,8 +168,8 @@ export const disLikeTheBlog = asyncHandler(async (req: Request, res: Response, n
 
 export const uploadImages = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
-    const { _id } = req.params;
-    validateMongoDbId(_id);
+    const { id } = req.params;
+
     try {
       const uploader = (path: string) => cloudinaryUploadImg(path);
 
@@ -189,7 +183,7 @@ export const uploadImages = asyncHandler(
         }
       }
       const findBlog = await blogModel.findByIdAndUpdate(
-        _id,
+        id,
         {
           images: urls.map((file) => {
             return file;

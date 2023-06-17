@@ -16,7 +16,7 @@ export const uploadImages = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
 
     try {
-      const uploader = (path: string) => cloudinaryUploadImg(path);
+      const uploader = (path: any) => cloudinaryUploadImg(path, "images");
 
       const urls = [];
       const files = req.files;
@@ -41,9 +41,9 @@ export const uploadImages = asyncHandler(
 
 export const deleteImages = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
-    const {_id} = req.params;
+    const {id} = req.params;
     try {
-      const deleted = cloudinaryDeleteImg(_id);
+      const deleted = cloudinaryDeleteImg(id, "imgages");
 
       res.json({ message: "Deleted"});
     } catch (error) {

@@ -15,14 +15,7 @@ const createBlog = async (blog: BlogInfo) => {
 
 const updateBlog = async (blog: BlogInfo) => {
   const response = await axios.put(
-    `${base_url}blog/${blog._id}`,
-    {
-      title: blog.blogData.title,
-      description: blog.blogData.description,
-      category: blog.blogData.category,
-      author: blog.blogData.author,
-      images: blog.blogData.images,
-    },
+    `${base_url}blog/${blog._id}`,blog,
     config
   );
 

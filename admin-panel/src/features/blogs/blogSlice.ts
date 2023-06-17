@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { createAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import blogService from './blogService';
+import { toast } from 'react-toastify';
 
 export const getBlogs = createAsyncThunk(
   'blog/get-blogs',
@@ -15,7 +16,7 @@ export const getBlogs = createAsyncThunk(
 
 export const createBlog = createAsyncThunk(
   'blog/create-Blogs',
-  async (BlogData: any, thunkAPI) => {
+  async (BlogData: BlogInfo, thunkAPI) => {
     try {
       return await blogService.createBlog(BlogData);
     } catch (error) {
@@ -63,13 +64,11 @@ interface Image {
 }
 export interface BlogInfo {
   _id?: string,
-  blogData: {
     title: string;
     description: string;
     category: string;
     author: string;
     images: any;
-  };
 }
 
 interface BlogState {
@@ -127,12 +126,18 @@ export const blogSlice = createSlice({
         state.isError = false;
         state.isSuccess = true;
         state.createdBlog = action.payload;
+        if (state.isSuccess === true) {
+          toast.success('Blog Added Successfullly!');
+        }
       })
       .addCase(createBlog.rejected, (state, action) => {
         state.isError = true;
         state.isSuccess = false;
         state.isLoading = false;
         state.message = action.error.message ?? '';
+        if (state.isError === true) {
+          toast.error('Some Thing went wrong!');
+        }
       })
       .addCase(getBlog.pending, (state) => {
         state.isLoading = true;
@@ -152,6 +157,9 @@ export const blogSlice = createSlice({
         state.isError = true;
         state.isSuccess = false;
         state.message = action.error.message ?? "Some Thing went wrong";
+        if (state.isError === true) {
+          toast.error('Some Thing went wrong!');
+        }
       })
       .addCase(updateBlog.pending, (state) => {
         state.isLoading = true;
@@ -161,12 +169,18 @@ export const blogSlice = createSlice({
         state.isError = false;
         state.isSuccess = true;
         state.updatedBlog = action.payload;
+        if (state.isSuccess === true) {
+          toast.success('Blog Updated Successfullly!');
+        }
       })
       .addCase(updateBlog.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.isSuccess = false;
         state.message = action.error.message ?? "Some Thing went wrong";
+        if (state.isError === true) {
+          toast.error('Some Thing went wrong!');
+        }
       })
       .addCase(deleteBlog.pending, (state) => {
         state.isLoading = true;
@@ -176,12 +190,18 @@ export const blogSlice = createSlice({
         state.isError = false;
         state.isSuccess = true;
         state.deletedBlog = action.payload;
+        if (state.isSuccess === true) {
+          toast.success('Blog Deleted Successfullly!');
+        }
       })
       .addCase(deleteBlog.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.isSuccess = false;
         state.message = action.error.message ?? "Some Thing went wrong";
+        if (state.isError === true) {
+          toast.error('Some Thing went wrong!');
+        }
       })
       .addCase(resetState, () => initialState);
   },

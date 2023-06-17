@@ -51,7 +51,7 @@ export const productImgResize = async (
   req: Request,
   res: Response,
   next: NextFunction
-): Promise<void> => {
+): Promise<any> => {
   // Check if any files were uploaded
   if (!req.files || !Array.isArray(req.files)) {
     // If no files were uploaded or req.files is not an array, move on to the next middleware in the chain
@@ -64,12 +64,12 @@ export const productImgResize = async (
     req.files.map(async (file) => {
       // Use Sharp to resize the image to 300x300 pixels and convert it to JPEG format with a quality of 90%
       await sharp(file.path)
-        .resize(300, 300)
+        .resize(500, 600)
         .toFormat('jpeg')
         .jpeg({ quality: 90 })
         // Save the resized image to a separate folder called "products" that is located in the "public/images" folder
-        .toFile(`public/images/products/${file.fieldname}.jpeg`);
-      fs.unlinkSync(`public/images/products/${file.fieldname}.jpeg`)
+        .toFile(`public/images/products/${file.fieldname}`);
+      fs.unlinkSync(`public/images/products/${file.fieldname}`)
     })
   );
 
@@ -78,7 +78,7 @@ export const productImgResize = async (
 };
 
 
-export const blogImgResize = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+export const blogImgResize = async (req: Request, res: Response, next: NextFunction): Promise<any> => {
 
   if (!req.files || !Array.isArray(req.files)) {
     return next();
@@ -87,11 +87,11 @@ export const blogImgResize = async (req: Request, res: Response, next: NextFunct
   await Promise.all(
     req.files.map(async (file) => {
       await sharp(file.path)
-      .resize(200, 200)
+      .resize(300, 200)
       .toFormat('jpeg')
       .jpeg({ quality: 90 })
-      .toFile(`public/images/blogs/${file.fieldname}.jpeg`);
-    fs.unlinkSync(`public/images/blogs/${file.fieldname}.jpeg`)
+      .toFile(`public/images/blogs/${file.fieldname}`);
+    fs.unlinkSync(`public/images/blogs/${file.fieldname}`)
     })
   )
 

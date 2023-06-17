@@ -44,7 +44,8 @@ const Bloglist = () => {
 
   const [open, setOpen] = useState(false);
   const [blogId, setBlogId] = useState('');
-
+  const blogState = useSelector((state: any) => state.blog.blogs);
+  
   const showModel = (e: string) => {
     setOpen(true);
     setBlogId(e);
@@ -57,9 +58,14 @@ const Bloglist = () => {
   useEffect(() => {
     dispatch(resetState());
     dispatch(getBlogs());
-  }, [])
+  }, []);
 
-  const blogState = useSelector((state: any) => state.blog.blogs);
+
+  useEffect(() => {
+    dispatch(getBlogs());
+  }, [blogState]);
+
+
 
   const data1: any = [];
   for (let i = 0; i < blogState.length; i++) {

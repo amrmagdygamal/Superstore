@@ -15,8 +15,8 @@ blogRouter.put(
   blogImgResize,
   BlogControllers.uploadImages
 )
-blogRouter.put('/likes', auhtMiddleware, isAdmin, BlogControllers.likeTheBlog);
-blogRouter.put('/dislikes', auhtMiddleware, isAdmin, BlogControllers.disLikeTheBlog);
+blogRouter.put('/likes', auhtMiddleware, BlogControllers.likeTheBlog);
+blogRouter.put('/dislikes', auhtMiddleware, BlogControllers.disLikeTheBlog);
 blogRouter.put('/:id', auhtMiddleware, isAdmin, BlogControllers.updateBlog);
 blogRouter.get('/:id', BlogControllers.getBlog);
 blogRouter.get('/', BlogControllers.getAllBloggs);

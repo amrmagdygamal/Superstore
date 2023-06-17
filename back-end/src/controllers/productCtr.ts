@@ -1,9 +1,8 @@
 import { NextFunction, Request, Response } from 'express';
 import asyncHandler from 'express-async-handler';
-import { validateMongoDbId } from '../Util/validateMongodbId';
 import slugify from 'slugify';
 import ProductModel from '../model/ProductModel';
-import UserModel from '../model/UserModel';
+import {UserModel} from '../model/UserModel';
 
 
 export const createProduct = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
@@ -18,14 +17,14 @@ export const createProduct = asyncHandler(async (req: Request, res: Response, ne
   }
 });
 export const updateProduct = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
-  const { _id } = req.params;
+  const { id } = req.params;
   try {
     if (req.body.title) {
       req.body.slug = slugify(req.body.title);
     }
 
     const updateProduct = await ProductModel.findOneAndUpdate(
-      { _id },
+      { id },
       req.body,
       { new: true }
     );
@@ -36,9 +35,9 @@ export const updateProduct = asyncHandler(async (req: Request, res: Response, ne
   }
 });
 export const deleteProduct = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
-  const { _id } = req.params;
+  const { id } = req.params;
   try {
-    const deleteProduct = await ProductModel.findOneAndDelete({ _id });
+    const deleteProduct = await ProductModel.findOneAndDelete({ id });
 
     res.json(deleteProduct);
   } catch (error) {
@@ -48,8 +47,8 @@ export const deleteProduct = asyncHandler(async (req: Request, res: Response, ne
 
 export const getProduct = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const { _id } = req.params;
-    const findProduct = await ProductModel.findById(_id).populate("color").exec();
+    const { id } = req.params;
+    const findProduct = await ProductModel.findById(id).populate("color").exec();
 
     res.json(findProduct);
   } catch (error) {
@@ -110,19 +109,19 @@ export const getAllProducts = asyncHandler(async (req: Request, res: Response, n
 });
 
 export const addToWishList = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
-  const _id = req.user?._id;
+  const id = req.user?._id;
 
   const { prodId } = req.body;
 
   try {
-    const user = await UserModel.findById(_id);
+    const user = await UserModel.findById(id);
     const alreadyadded = user?.wishlist.find(
-      (id) => id.toString() === prodId.toString()
+      (id: string) => id.toString() === prodId.toString()
     );
 
     if (alreadyadded) {
       const user = await UserModel.findByIdAndUpdate(
-        _id,
+        id,
         {
           $pull: { wishlist: prodId },
         },
@@ -133,7 +132,7 @@ export const addToWishList = asyncHandler(async (req: Request, res: Response, ne
       res.json(user);
     } else {
       const user = await UserModel.findByIdAndUpdate(
-        _id,
+        id,
         {
           $push: { wishlist: prodId },
         },
@@ -149,7 +148,7 @@ export const addToWishList = asyncHandler(async (req: Request, res: Response, ne
 });
 
 export const rating = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
-  const { _id } = req.user;
+  const _id = req.user?._id;
 
   const { star, prodId, comment } = req.body;
 
@@ -157,7 +156,7 @@ export const rating = asyncHandler(async (req: Request, res: Response, next: Nex
     const product = await ProductModel.findById(prodId);
 
     const alreadyRated = product?.ratings.find(
-      (userId) => userId.postedBy?.toString() === _id.toString()
+      (userId) => userId.postedBy?.toString() === _id?.toString()
     );
 
     if (alreadyRated) {

@@ -9,14 +9,18 @@ cloudinary.config({
 
 
 
-export const cloudinaryUploadImg = async (fileToUploads: string) => {
-  return new Promise((resolve) => {
-    cloudinary.uploader.upload(fileToUploads, (result) => {
+export const cloudinaryUploadImg = async (fileToUploads: any,folderName: string) => {
+  return new Promise((resolve: any) => {
+    cloudinary.uploader.upload(fileToUploads, (result:any) => {
       resolve(
         {
           url: result?.secure_url,
           asset_id: result?._id,
           public_id: result?.public_id
+        },
+        {
+          resource_type: "auto",
+          folder: folderName,
         }
       );
     });
@@ -24,14 +28,18 @@ export const cloudinaryUploadImg = async (fileToUploads: string) => {
 };
 
 
-export const cloudinaryDeleteImg = async (fileToDelete: string) => {
-  return new Promise((resolve) => {
-    cloudinary.uploader.destroy(fileToDelete, (result) => {
+export const cloudinaryDeleteImg = async (fileToDelete: any,folderName: string) => {
+  return new Promise((resolve: any) => {
+    cloudinary.uploader.destroy(fileToDelete, (result: any) => {
       resolve(
         {
           url: result?.secure_url,
           asset_id: result?._id,
           public_id: result?.public_id
+        },
+        {
+          resource_type: "auto",
+          folder: folderName,
         }
       );
     });

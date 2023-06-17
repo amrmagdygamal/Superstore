@@ -14,7 +14,6 @@ import Dropzone from 'react-dropzone';
 import { deleteImg, uploadImg } from '../features/upload/uploadSlice';
 import { BlogInfo, createBlog, getBlog, resetState, updateBlog } from '../features/blogs/blogSlice';
 import CustomInput from '../components/CustomInput';
-import { getBlogCategories } from '../features/blogcategory/blogCategorySlice';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 
@@ -86,22 +85,6 @@ const AddBlogPage = () => {
       }, [images]);
       
   
-  useEffect(() => {
-    if (isSuccess && createdBlog) {
-      toast.success('Blog Added Successfullly!');
-    }
-    if (isSuccess && updatedBlog) {
-      toast.success('Blog Updated Successfully!');
-      navigate('/admin/list-blog');
-    }
-    if (isError) {
-      toast.error('Something Went Wrong!');
-    }
-  }, [isSuccess, isError, isLoading]);
-
-
-
-
 
 
 
@@ -118,14 +101,14 @@ const AddBlogPage = () => {
     validationSchema: schema,
     onSubmit: (values) => {
       if (getBlogId !== undefined) {
-        const data: any = { _id: getBlogId, blogData: values };
+        const data: BlogInfo = { _id: getBlogId, title: values.title, description: values.description, category: values.blogCategory, author: values.author, images: values.images };
         dispatch(updateBlog(data));
-      } else {
-        dispatch(createBlog(values));
-        formik.resetForm();
         setTimeout(() => {
-          dispatch(resetState());
-        }, 300);
+          navigate("/admin/blog-list")
+        }, 400);
+      } else {
+        dispatch(createBlog({ title: values.title, description: values.description, category: values.blogCategory, author: values.author, images: values.images}));
+        formik.resetForm();
       }
     },
   });
