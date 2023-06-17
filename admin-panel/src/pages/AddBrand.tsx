@@ -4,57 +4,64 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';
 import * as yup from 'yup';
 import { useFormik } from 'formik';
-import {  createBrand, getBrand, resetState, updateBrand } from '../features/brand/brandSlice';
+import {
+  createBrand,
+  getBrand,
+  resetState,
+  updateBrand,
+} from '../features/brand/brandSlice';
 import { AppDispatch } from '../app/store';
-
 
 const schema = yup.object().shape({
   title: yup.string().required('Brand Name is Required'),
 });
 const Addbrand = () => {
-
-
   const dispatch: AppDispatch = useDispatch();
 
   const location = useLocation();
-  const navigate = useNavigate()
   const getBrandId = location.pathname.split('/')[3];
+  console.log(getBrandId);
 
-  const { isSuccess, isError, isLoading, createdBrand, brandName, updatedBrand } = useSelector((state: any) => state.brand);
-  
+  const {
+    isSuccess,
+    isError,
+    isLoading,
+    createdBrand,
+    brandName,
+    updatedBrand,
+  } = useSelector((state: any) => state.brand);
+
   useEffect(() => {
-    if(getBrandId !== undefined) {
-      dispatch(getBrand(getBrandId))
+    if (getBrandId !== undefined) {
+      dispatch(getBrand(getBrandId));
     } else {
-      dispatch(resetState())
+      dispatch(resetState());
     }
-  }, [getBrandId])
-
-
+  }, [getBrandId]);
 
   const formik = useFormik({
     enableReinitialize: true,
     initialValues: {
-      title: brandName || "",
+      title: brandName || '',
     },
     validationSchema: schema,
     onSubmit: (values) => {
-      if(getBrandId !== undefined) {
-        const data: any = {_id: getBrandId, brandData: values}
-        dispatch(updateBrand(data))
-
+      if (getBrandId !== undefined) {
+        const data: any = { _id: getBrandId, title: values.title };
+        dispatch(updateBrand(data));
+        formik.resetForm();
       } else {
-
         dispatch(createBrand(values));
         formik.resetForm();
       }
-
     },
   });
-  
+
   return (
     <div>
-      <h3 className="mb-4 title">{getBrandId !== undefined ? "Edit" : "Add"} Brand</h3>
+      <h3 className="mb-4 title">
+        {getBrandId !== undefined ? 'Edit' : 'Add'} Brand
+      </h3>
       <div>
         <form action="" onSubmit={formik.handleSubmit}>
           <CustomInput
@@ -68,14 +75,16 @@ const Addbrand = () => {
           />
           <div className="error">
             {formik.touched.title && formik.errors.title ? (
-              <div><p>{formik.errors.title as React.ReactNode}</p></div>
+              <div>
+                <p>{formik.errors.title as React.ReactNode}</p>
+              </div>
             ) : null}
           </div>
           <button
             className="btn btn-success border-0 rounded-3 my-5"
             type="submit"
           >
-            {getBrandId !== undefined ? "Edit" : "Add"} Brand
+            {getBrandId !== undefined ? 'Edit' : 'Add'} Brand
           </button>
         </form>
       </div>

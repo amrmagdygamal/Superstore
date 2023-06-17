@@ -36,6 +36,7 @@ const Brandlist = () => {
 
   const [open, setOpen] = useState(false);
   const [brandId, setBrandId] = useState('');
+  const brandState = useSelector((state: any) => state.brand.brands);
 
   const showModel = (e: string) => {
     setOpen(true);
@@ -51,13 +52,16 @@ const Brandlist = () => {
     dispatch(getBrands());
   }, []);
 
-  const brandState = useSelector((state: any) => state.brand.brands);
+  useEffect(() => {
+    dispatch(getBrands());
+  }, [brandState]);
+
 
   const data1: any = [];
   for (let i = 0; i < brandState.length; i++) {
     data1.push({
       key: i + 1,
-      name: brandState[i].name,
+      name: brandState[i].title,
       action: (
         <>
           <Link

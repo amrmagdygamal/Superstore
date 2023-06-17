@@ -2,6 +2,8 @@ import { NextFunction, Request, Response } from 'express';
 import asyncHandler from 'express-async-handler';
 import { validateMongoDbId } from '../Util/validateMongodbId';
 import brandModel from '../model/brandModel';
+import mongoose from 'mongoose';
+import createHttpError from 'http-errors';
 
 export const createBrand = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -12,13 +14,25 @@ export const createBrand = asyncHandler(async (req: Request, res: Response, next
     next(error);
   }
 });
+export const getBrand = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+  const { id } = req.params;
+  validateMongoDbId(id)
+  try {
+    
+    const getBrand = await brandModel.findById(id);
+
+    res.json(getBrand);
+    console.log(getBrand)
+  } catch (error) {
+    next(error);
+  }
+});
 
 export const updateBrand = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
-  const { _id } = req.params;
-  validateMongoDbId(_id);
+  const { id } = req.params;
   try {
     const updatedBrand = await brandModel.findByIdAndUpdate(
-      _id,
+      id,
       req.body,
       { new: true }
     );
@@ -30,10 +44,9 @@ export const updateBrand = asyncHandler(async (req: Request, res: Response, next
 });
 
 export const deletBrand = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
-  const { _id } = req.params;
-  validateMongoDbId(_id);
+  const { id } = req.params;
   try {
-    const deletedBrand = await brandModel.findByIdAndDelete(_id);
+    const deletedBrand = await brandModel.findByIdAndDelete(id);
 
     res.json(deletedBrand);
   } catch (error) {
@@ -41,19 +54,6 @@ export const deletBrand = asyncHandler(async (req: Request, res: Response, next:
   }
 });
 
-export const getBrand = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
-  const { _id } = req.params;
-  validateMongoDbId(_id);
-  try {
-    const getBrand = await brandModel.findById(
-      _id
-    );
-
-    res.json(getBrand);
-  } catch (error) {
-    next(error);
-  }
-});
 
 export const getAllBrands = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
   try {

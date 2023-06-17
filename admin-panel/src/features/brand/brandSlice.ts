@@ -14,6 +14,16 @@ export const getBrands = createAsyncThunk(
   }
 );
 
+export const getBrand = createAsyncThunk(
+  'brand/get-brand',
+  async (id: string, thunkAPI) => {
+    try {
+      return await BrandService.getBrand(id);
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
 
 
 export const createBrand = createAsyncThunk(
@@ -28,22 +38,12 @@ export const createBrand = createAsyncThunk(
 );
 
 
-export const getBrand = createAsyncThunk(
-  'brand/get-brand',
-  async (id: string, thunkAPI) => {
-    try {
-      return await BrandService.getBrand(id);
-    } catch (error) {
-      return thunkAPI.rejectWithValue(error);
-    }
-  }
-);
 
 export const updateBrand = createAsyncThunk(
   'brand/update-brand',
-  async (brand: BrandInfo, thunkAPI) => {
+  async (brandData: BrandInfo, thunkAPI) => {
     try {
-      return await BrandService.updateBrand(brand);
+      return await BrandService.updateBrand(brandData);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }
@@ -52,7 +52,7 @@ export const updateBrand = createAsyncThunk(
 
 export const deleteBrand = createAsyncThunk(
   'brand/delete-brand',
-  async (id: string, thunkAPI) => {
+  async (id: any, thunkAPI) => {
     try {
       return await BrandService.deleteBrand(id);
     } catch (error) {
@@ -110,6 +110,22 @@ export const brandSlice = createSlice({
         state.isLoading = false;
         state.message = action.error.message ?? '';
       })
+      .addCase(getBrand.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(getBrand.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isError = false;
+        state.isSuccess = true;
+        state.brandName = action.payload?.title;
+        
+      })
+      .addCase(getBrand.rejected, (state, action) => {
+        state.isError = true;
+        state.isSuccess = false;
+        state.isLoading = false;
+        state.message = action.error.message ?? '';
+      })
       .addCase(createBrand.pending, (state) => {
         state.isLoading = true;
       })
@@ -131,21 +147,6 @@ export const brandSlice = createSlice({
           toast.error('Some Thing went wrong!');
         }
       })
-      .addCase(getBrand.pending, (state) => {
-        state.isLoading = true;
-      })
-      .addCase(getBrand.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.isError = false;
-        state.isSuccess = true;
-        state.brandName = action.payload.title;
-      })
-      .addCase(getBrand.rejected, (state, action) => {
-        state.isError = true;
-        state.isSuccess = false;
-        state.isLoading = false;
-        state.message = action.error.message ?? '';
-      })
       .addCase(updateBrand.pending, (state) => {
         state.isLoading = true;
       })
@@ -154,12 +155,18 @@ export const brandSlice = createSlice({
         state.isError = false;
         state.isSuccess = true;
         state.updatedBrand = action.payload;
+        if (state.isSuccess === true) {
+          toast.success('Brand Updated Successfullly!');
+        }
       })
       .addCase(updateBrand.rejected, (state, action) => {
         state.isError = true;
         state.isSuccess = false;
         state.isLoading = false;
         state.message = action.error.message ?? '';
+        if (state.isError === true) {
+          toast.error('Some Thing went wrong!');
+        }
       })
       .addCase(deleteBrand.pending, (state) => {
         state.isLoading = true;
@@ -169,12 +176,18 @@ export const brandSlice = createSlice({
         state.isError = false;
         state.isSuccess = true;
         state.deletedBrand = action.payload;
+        if (state.isSuccess === true) {
+          toast.success('Brand Deleted Successfullly!');
+        }
       })
       .addCase(deleteBrand.rejected, (state, action) => {
         state.isError = true;
         state.isSuccess = false;
         state.isLoading = false;
         state.message = action.error.message ?? '';
+        if (state.isError === true) {
+          toast.error('Some Thing went wrong!');
+        }
       })
       .addCase(resetState, () => initialState)
   },

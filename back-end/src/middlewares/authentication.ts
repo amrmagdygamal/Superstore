@@ -18,7 +18,6 @@ export const auhtMiddleware = asyncHandler(async (req: Request, res: Response, n
       }
     
       req.user = user;
-      console.log(user)
       next();
   }
   } catch (error) {
