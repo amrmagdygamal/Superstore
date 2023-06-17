@@ -13,47 +13,47 @@ export const createCategory = asyncHandler(async (req: Request, res: Response, n
   }
 });
 
-export const updateCategory = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
-  const { _id } = req.params;
-  validateMongoDbId(_id);
-  try {
-    const updatedCategory = await ProdCategoryModel.findByIdAndUpdate(
-      _id,
-      req.body,
-      { new: true }
-    );
 
-    res.json(updatedCategory);
-  } catch (error) {
-    next(error);
-  }
-});
-
-export const deletCategory = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
-  const { _id } = req.params;
-  validateMongoDbId(_id);
-  try {
-    const deletedcategory = await ProdCategoryModel.findByIdAndDelete(_id);
-
-    res.json(deletedcategory);
-  } catch (error) {
-    next(error);
-  }
-});
 
 export const getCategory = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
-  const { _id } = req.params;
-  validateMongoDbId(_id);
+  const { id } = req.params;
   try {
     const getcategory = await ProdCategoryModel.findById(
-      _id
-    );
+      id
+      );
+      
+      res.json(getcategory);
+    } catch (error) {
+      next(error);
+    }
+  });
 
-    res.json(getcategory);
-  } catch (error) {
-    next(error);
-  }
-});
+  export const updateCategory = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+    const { id } = req.params;
+    try {
+      const updatedCategory = await ProdCategoryModel.findByIdAndUpdate(
+        id,
+        req.body,
+        { new: true }
+      );
+      
+  
+      res.json(updatedCategory);
+    } catch (error) {
+      next(error);
+    }
+  });
+
+  export const deletCategory = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+    const { id } = req.params;
+    try {
+      const deletedcategory = await ProdCategoryModel.findByIdAndDelete(id);
+  
+      res.json(deletedcategory);
+    } catch (error) {
+      next(error);
+    }
+  });
 
 export const getAllCategoies = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
   try {

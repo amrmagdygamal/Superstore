@@ -2,6 +2,7 @@
 import { createAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import ProdCategoryService from './prodCategoryService';
 import prodCategoryService from './prodCategoryService';
+import { toast } from 'react-toastify';
 
 export const getprodCategories = createAsyncThunk(
   'prodCategory/get-prodCategories',
@@ -16,7 +17,7 @@ export const getprodCategories = createAsyncThunk(
 
 export const createProdCategory = createAsyncThunk(
   'prodcategory/create-prodcategory',
-  async (prodCategoryData: any, thunkAPI) => {
+  async (prodCategoryData: CategoryInfo, thunkAPI) => {
     try {
       return await prodCategoryService.createCategory(prodCategoryData);
     } catch (error) {
@@ -74,7 +75,7 @@ interface ProdCategorieState {
   isLoading: boolean;
   isSuccess: boolean;
   message: string;
-  createdProdCategory?: any;
+  createdProdCategory?: CategoryInfo;
   categoryName?: string
   updatedCategory?: CategoryInfo
   deletedCategory?: CategoryInfo
@@ -111,21 +112,6 @@ export const prodCategorieSlice = createSlice({
         state.isLoading = false;
         state.message = action.error.message ?? '';
       })
-      .addCase(createProdCategory.pending, (state) => {
-        state.isLoading = true;
-      })
-      .addCase(createProdCategory.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.isSuccess = true;
-        state.isError = false;
-        state.createdProdCategory = action.payload;
-      })
-      .addCase(createProdCategory.rejected, (state, action) => {
-        state.isError = true;
-        state.isSuccess = false;
-        state.isLoading = false;
-        state.message = action.error.message ?? '';
-      })
       .addCase(getCategory.pending, (state) => {
         state.isLoading = true;
       })
@@ -141,6 +127,27 @@ export const prodCategorieSlice = createSlice({
         state.isLoading = false;
         state.message = action.error.message ?? '';
       })
+      .addCase(createProdCategory.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(createProdCategory.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.isError = false;
+        state.createdProdCategory = action.payload;
+        if (state.isSuccess === true) {
+          toast.success('Category Added Successfullly!');
+        }
+      })
+      .addCase(createProdCategory.rejected, (state, action) => {
+        state.isError = true;
+        state.isSuccess = false;
+        state.isLoading = false;
+        state.message = action.error.message ?? '';
+        if (state.isError === true) {
+          toast.error('Some Thing went wrong!');
+        }
+      })
       .addCase(updateCategory.pending, (state) => {
         state.isLoading = true;
       })
@@ -149,12 +156,18 @@ export const prodCategorieSlice = createSlice({
         state.isError = false;
         state.isSuccess = true;
         state.updatedCategory = action.payload;
+        if (state.isSuccess === true) {
+          toast.success('Category Updated Successfullly!');
+        }
       })
       .addCase(updateCategory.rejected, (state, action) => {
         state.isError = true;
         state.isSuccess = false;
         state.isLoading = false;
         state.message = action.error.message ?? '';
+        if (state.isError === true) {
+          toast.error('Some Thing went wrong!');
+        }
       })
       .addCase(deleteCategory.pending, (state) => {
         state.isLoading = true;
@@ -164,12 +177,18 @@ export const prodCategorieSlice = createSlice({
         state.isError = false;
         state.isSuccess = true;
         state.deletedCategory = action.payload;
+        if (state.isSuccess === true) {
+          toast.success('Category Deleted Successfullly!');
+        }
       })
       .addCase(deleteCategory.rejected, (state, action) => {
         state.isError = true;
         state.isSuccess = false;
         state.isLoading = false;
         state.message = action.error.message ?? '';
+        if (state.isError === true) {
+          toast.error('Some Thing went wrong!');
+        }
       })
       .addCase(resetState, () => initialState);
   },

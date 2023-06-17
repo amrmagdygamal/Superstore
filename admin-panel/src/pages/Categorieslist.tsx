@@ -36,6 +36,9 @@ const Categorieslist = () => {
 
   const [open, setOpen] = useState(false);
   const [categoryId, setCategoryId] = useState('');
+  const prodCategoryState = useSelector(
+    (state: any) => state.prodCategory.prodCategories
+  );
 
   const showModel = (e: string) => {
     setOpen(true);
@@ -51,9 +54,10 @@ const Categorieslist = () => {
     dispatch(getprodCategories());
   }, []);
 
-  const prodCategoryState = useSelector(
-    (state: any) => state.prodCategory.prodCategories
-  );
+  useEffect(() => {
+    dispatch(getprodCategories());
+  }, [prodCategoryState]);
+
 
   const data1: any = [];
   for (let i = 0; i < prodCategoryState.length; i++) {
@@ -83,7 +87,7 @@ const Categorieslist = () => {
     dispatch(deleteCategory(e));
     setTimeout(() => {
       dispatch(getprodCategories());
-    }, 100);
+    }, 300);
     setOpen(false);
   };
 

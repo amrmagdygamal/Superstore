@@ -5,6 +5,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import * as yup from 'yup';
 import { useFormik } from 'formik';
 import {
+  BrandInfo,
   createBrand,
   getBrand,
   resetState,
@@ -47,7 +48,7 @@ const Addbrand = () => {
     validationSchema: schema,
     onSubmit: (values) => {
       if (getBrandId !== undefined) {
-        const data: any = { _id: getBrandId, title: values.title };
+        const data: BrandInfo = { _id: getBrandId, title: values.title };
         dispatch(updateBrand(data));
         formik.resetForm();
       } else {

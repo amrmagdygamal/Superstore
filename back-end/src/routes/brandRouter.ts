@@ -3,7 +3,6 @@ import * as BrandControllers from '../controllers/brandCtr';
 import { auhtMiddleware, isAdmin } from '../middlewares/authentication';
 const brandRouter = express.Router();
 
-
 brandRouter.get('/', BrandControllers.getAllBrands);
 
 // Get a specific brand
@@ -16,7 +15,11 @@ brandRouter.post('/', auhtMiddleware, isAdmin, BrandControllers.createBrand);
 brandRouter.put('/:id', auhtMiddleware, isAdmin, BrandControllers.updateBrand);
 
 // Delete a brand (requires authentication and admin privileges)
-brandRouter.delete('/:id', auhtMiddleware, isAdmin, BrandControllers.deletBrand);
+brandRouter.delete(
+  '/:id',
+  auhtMiddleware,
+  isAdmin,
+  BrandControllers.deletBrand
+);
 
-
-export default brandRouter
+export default brandRouter;
