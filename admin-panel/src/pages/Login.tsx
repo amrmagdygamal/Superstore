@@ -5,6 +5,7 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../app/store';
+import { login } from '../features/auth/authSlice';
 
 
 const Login = () => {
@@ -39,7 +40,7 @@ const Login = () => {
       password: '',
     },
     validationSchema: schema,
-    onSubmit: (values : LoginData) => {
+    onSubmit: (values) => {
       dispatch(login(values));
     },
   });
@@ -78,7 +79,7 @@ const Login = () => {
               onBlur={formik.handleBlur('password')}
               val={formik.values.password}
             />
-            <div className="error">
+            <div className="error mb-3">
             {formik.touched.password && formik.errors.password ? (
               <div>{formik.errors.password}</div>
             ) : null}

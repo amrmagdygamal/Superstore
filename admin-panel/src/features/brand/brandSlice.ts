@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { createAction, createAsyncThunk, createSlice, isPending } from '@reduxjs/toolkit';
 import BrandService from './brandService';
+import { toast } from 'react-toastify';
 
 export const getBrands = createAsyncThunk(
   'brand/get-brands',
@@ -62,9 +63,7 @@ export const deleteBrand = createAsyncThunk(
 
 export interface BrandInfo  {
   _id?: string,
-  brandData:  {
-    title: string
-  },
+  title: string
 } 
 
 interface BrandState {
@@ -119,12 +118,18 @@ export const brandSlice = createSlice({
         state.isError = false;
         state.isSuccess = true;
         state.createdBrand = action.payload;
+        if (state.isSuccess === true) {
+          toast.success('Brand Added Successfullly!');
+        }
       })
       .addCase(createBrand.rejected, (state, action) => {
         state.isError = true;
         state.isSuccess = false;
         state.isLoading = false;
         state.message = action.error.message ?? '';
+        if (state.isError === true) {
+          toast.error('Some Thing went wrong!');
+        }
       })
       .addCase(getBrand.pending, (state) => {
         state.isLoading = true;

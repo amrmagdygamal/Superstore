@@ -2,10 +2,9 @@ import { useEffect } from 'react';
 import CustomInput from '../components/CustomInput';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
 import * as yup from 'yup';
 import { useFormik } from 'formik';
-import { BrandInfo, createBrand, getBrand, resetState, updateBrand } from '../features/brand/brandSlice';
+import {  createBrand, getBrand, resetState, updateBrand } from '../features/brand/brandSlice';
 import { AppDispatch } from '../app/store';
 
 
@@ -33,18 +32,6 @@ const Addbrand = () => {
 
 
 
-  useEffect(() => {
-    if (isSuccess && createdBrand) {
-      toast.success('Brand Added Successfullly!');
-    }
-    if(isSuccess && updatedBrand) {
-      toast.success("Brand Updated Successfully!")
-        navigate("/admin/list-brand")
-    }
-    if (isError) {
-      toast.error('Something Went Wrong!');
-    }
-  }, [isSuccess, isError, isLoading]);
   const formik = useFormik({
     enableReinitialize: true,
     initialValues: {
@@ -60,9 +47,6 @@ const Addbrand = () => {
 
         dispatch(createBrand(values));
         formik.resetForm();
-        setTimeout(() => {
-          dispatch(resetState());
-        }, 300)
       }
 
     },

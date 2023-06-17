@@ -1,4 +1,4 @@
-import { NextFunction, Request, Response } from 'express';
+import e, { NextFunction, Request, Response } from 'express';
 import   {User, UserModel}  from '../model/UserModel';
 import asyncHandler from 'express-async-handler';
 import validateEnv from '../Util/validateEnv';
@@ -10,14 +10,15 @@ export const auhtMiddleware = asyncHandler(async (req: Request, res: Response, n
   try {
   if(token) {
   
-      const decoded = jwt.verify(token, validateEnv.JWEBT_SECRET) as jwt.JwtPayload;
-      const user = await UserModel.findById(decoded._id);
+      const decoded: any = jwt.verify(token, validateEnv.JWEBT_SECRET);
+      const user = await UserModel.findOne({_id: decoded.id}).select("+email").exec();
     
       if (!user) {
         throw new Error('User not found');
       }
     
       req.user = user;
+      console.log(user)
       next();
   }
   } catch (error) {
@@ -28,9 +29,9 @@ export const auhtMiddleware = asyncHandler(async (req: Request, res: Response, n
 
 export const isAdmin = asyncHandler(async(req: Request, _res: Response, next: NextFunction) => {
   const email  = req.user?.email;
-  const adminUser = await UserModel.findOne({ email });
+  const adminUser = await UserModel.findOne({ email: email }).select("+email").exec();
 
-  if(adminUser?.role !== "admin"){
+  if(adminUser?.role !="admin"){
     throw new Error("You are not admin")
   } else {
     next()
