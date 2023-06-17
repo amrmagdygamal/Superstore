@@ -35,6 +35,7 @@ const Header = () => {
     window.location.href = '/';
   };
 
+
   useEffect(() => {
     const data: any = [];
     for (let index = 0; index < productState.length; index++) {
@@ -117,7 +118,7 @@ const Header = () => {
               </p>
             </Link>
 
-            {userState?.userInfor === null || userState?.logoutuser === true ? (
+            {userState?.user === undefined  ? (
               <Link className="nav-link d-flex text-white gap-2" to="/login">
                 Login <br /> My Account
               </Link>
@@ -126,7 +127,7 @@ const Header = () => {
                 title={
                   <>
                     <img src="/images/user.svg" alt="user" />
-                    {userState?.userInfor?.username}
+                    {userState?.user?.username}
                   </>
                 }
                 id="basic-nav-dropdown"
@@ -141,13 +142,13 @@ const Header = () => {
                 <LinkContainer to="/orderhistory">
                   <NavDropdown.Item>Order History</NavDropdown.Item>
                 </LinkContainer>
-                <Link
+                <button
                   className="dropdown-item"
-                  to="/signout"
+                  
                   onClick={signOutHandler}
                 >
                   Sign Out
-                </Link>
+                </button>
               </NavDropdown>
             )}
 

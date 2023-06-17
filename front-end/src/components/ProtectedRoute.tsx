@@ -1,12 +1,10 @@
 import { ReactNode } from 'react';
 import { Navigate} from 'react-router-dom';
 
-type OpenRouterProps = {
-  children: ReactNode;
-};
 
-export const PrivateRoutes = ({ children }: OpenRouterProps) => {
+
+export const ProtectedRoute = ({ children }: any) => {
   const getTokenFromLocalStorage = JSON.parse(localStorage.getItem('userInfo')!);
 
-  return getTokenFromLocalStorage?.token === undefined ? children : (<Navigate to="/" replace={true} />)
+  return getTokenFromLocalStorage?.token !== undefined ? children : (<Navigate to="/login" replace={true} />)
 };

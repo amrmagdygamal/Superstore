@@ -35,13 +35,14 @@ const loginSchema = Yup.object().shape({
     validationSchema: loginSchema,
     onSubmit: (values) => {
       dispatch(loginUser(values));
-      setTimeout(() => {
-        if (userState.isSuccess) {
-          navigate("/")
-        }
-      }, 700)
     },
   });
+
+  useEffect(() => {
+    if(userState?.user !== undefined) {
+      navigate("/")
+    }
+  }, [userState])
   return (
     <>
       <Meta title="Login Page" />

@@ -5,18 +5,18 @@ import { auhtMiddleware, isAdmin } from '../middlewares/authentication';
 export const userRouter = express.Router();
 
 userRouter.post('/signup', UserControllers.signup);
-userRouter.post('/login', UserControllers.login);
+userRouter.put('/login', UserControllers.login);
 userRouter.post('/forgot-password-token', UserControllers.forgotPasswordToken);
 userRouter.post('/reset-password/:token', UserControllers.resetPassword);
 userRouter.post('/admin-login', UserControllers.AdminLogin);
-userRouter.delete('/logout', UserControllers.logout);   
 userRouter.put('/:id', auhtMiddleware, UserControllers.updatePassword);
 userRouter.post('/add-to-cart', auhtMiddleware, UserControllers.addToCart);
 userRouter.put(
   '/delete-from-cart',
   auhtMiddleware,
   UserControllers.deleteFromCart
-);
+  );
+  userRouter.put('/logout',auhtMiddleware, UserControllers.logout);   
 userRouter.post(
   '/cart/applycoupon',
   auhtMiddleware,

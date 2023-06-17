@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import asyncHandler from 'express-async-handler';
 import { generateToken } from '../Util/token';
-import {UserModel} from '../model/UserModel';
+import { UserModel, User } from '../model/UserModel';
 import bcrypt from 'bcryptjs';
 import crypto from 'crypto';
 import createHttpError from 'http-errors';
@@ -20,25 +20,34 @@ export const signup = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
     const { username, email, password } = req.body;
 
-    console.log(req.body)
+    console.log(req.body);
 
     try {
       if (!username || !email || !password) {
-        throw createHttpError(400, "parameters missing")
+        const error = createHttpError(409, "Parameter Missing!");
+        throw error;
       }
-      const existingUsername= await UserModel.findOne({ username: username }).exec();
+      const existingUsername = await UserModel.findOne({
+        username: username,
+      }).exec();
 
-      if(existingUsername) {
-        throw createHttpError(409, "Username already taken")
+      if (existingUsername) {
+        const error = createHttpError(409, "Username already taken. Please choose a different one.");
+        throw error;
       }
 
       const findEmail = await UserModel.findOne({ email: email }).exec();
 
       if (findEmail) {
-        throw createHttpError(409, "Email is already token try another one or login")
+        const error = createHttpError(409, "A user with this email address already exists. Please log in instead.");
+        throw error;
       }
 
-      const newuser = await UserModel.create({username: username, email: email, password: password});
+      const newuser = await UserModel.create({
+        username: username,
+        email: email,
+        password: password,
+      });
       res.json(newuser);
     } catch (error) {
       next(error);
@@ -53,39 +62,44 @@ export const login = asyncHandler(
 
     try {
       if (!email || !password) {
-        throw createHttpError(400, "paramters Missing")
+        const error = createHttpError(400, 'Parameters Missing');
+        throw error;
       }
       // check if user exists or not
-      const finduser = await UserModel.findOne({ email: email }).select('+password').exec();
+      const user = await UserModel.findOne({ email: email })
+        .select('+password')
+        .exec();
 
-      if (!finduser) {
-        throw createHttpError(401, 'Invalid credentials');
+        if (!user) {
+        
+          const error =  createHttpError(401, 'Invalid credentials');
+        throw error;
       }
 
-      const passwordMatch = await bcrypt.compare(password, finduser.password);
+      const passwordMatch = await bcrypt.compare(password, user.password);
 
       if (!passwordMatch) {
-        throw createHttpError(401, 'Invalid credentials');
+        
+        const error =  createHttpError(401, 'Invalid credentials');
+        throw error;
       }
-      const refreshToken = generateRefreshToken(finduser?._id.toString());
 
-      const updateuser = await UserModel.findByIdAndUpdate(
-        finduser?._id,
-        {
-          refreshToken: refreshToken,
-        },
-        { new: true }
-      );
+      const refreshToken = generateRefreshToken(user._id.toString());
+
+      user.refreshToken = refreshToken;
+
+      await user.save();
 
       res.cookie('refreshToken', refreshToken, {
         httpOnly: true,
         maxAge: 24 * 60 * 60 * 1000,
       });
+
       res.json({
-        _id: finduser?._id,
-        username: finduser?.username,
-        email: finduser?.email,
-        token: generateToken(finduser?._id.toString()),
+        _id: user._id,
+        username: user.username,
+        email: user.email,
+        token: generateToken(user._id.toString()),
       });
     } catch (error) {
       next(error);
@@ -101,25 +115,31 @@ export const AdminLogin = asyncHandler(
 
     try {
       if (!email || !password) {
-        res.json({
-          msg: 'Parameters missing',
-          success: false,
-        });
+        const error = createHttpError(400, 'Parameters Missing');
+        throw error;
       }
       // check if user exists or not
       const findAdmin = await UserModel.findOne({ email: email })
         .select('+password')
         .exec();
 
-      if (!findAdmin) {
-        throw createHttpError(401, 'Invalid credentials');
+        if (!findAdmin) {
+        
+          const error =  createHttpError(401, 'Invalid credentials');
+        throw error;
       }
-      if (findAdmin.role !== 'admin') throw new Error('Not Authorised');
+      if (findAdmin.role !== 'admin') {
+
+        const error =  createHttpError(401, 'Not Authorised');
+        throw error;
+      }
 
       const passwordMatch = await bcrypt.compare(password, findAdmin.password);
 
       if (!passwordMatch) {
-        throw createHttpError(401, 'Invalid credentials');
+        
+        const error =  createHttpError(401, 'Invalid credentials');
+        throw error;
       }
       const refreshToken = await generateRefreshToken(
         findAdmin?._id.toString()
@@ -155,15 +175,21 @@ export const handleRefreshToken = asyncHandler(
   async (req: Request, res: Response) => {
     const cookie = req.cookies;
     // console.log(cookie)
+    
+    if (!cookie?.refreshToken) {
 
-    if (!cookie?.refreshToken) throw new Error('No Refresh Token in Cookies');
+      const error =   createHttpError(400,'No Refresh Token in Cookies');
+      throw error;
+    }
 
     const refreshToken = cookie.refreshToken;
 
     const user = await UserModel.findOne({ refreshToken });
 
     if (!user) {
-      throw new Error('No Refresh Token Present in db or not mathced');
+      
+      const error =   createHttpError(400,'No Refresh Token Present in db or not mathced');
+      throw error;
     }
 
     jwt.verify(
@@ -171,7 +197,9 @@ export const handleRefreshToken = asyncHandler(
       validateEnv.JWEBT_SECRET,
       (err: jwt.VerifyErrors | null, decoded: any) => {
         if (err || user._id.toString() !== decoded?._id) {
-          throw new Error('There is something wrong with refresh token');
+          
+          const error =   createHttpError(409,'There is something wrong with refresh token');
+          throw error;
         }
         const accessToken = generateToken(user._id.toString());
         res.json({ accessToken });
@@ -186,8 +214,8 @@ export const logout = asyncHandler(
     const { refreshToken } = req.cookies;
 
     if (!refreshToken) {
-      res.status(400).json({ message: 'No Refresh Token in Cookies' });
-      return;
+      const error =   createHttpError(400,'No Refresh Token in Cookies');
+      throw error;
     }
 
     try {
@@ -245,7 +273,6 @@ export const deleteUser = asyncHandler(async (req, res, next) => {
 // updating  user
 export const updateUser = asyncHandler(async (req, res, next) => {
   const _id = req.user?._id;
-  validateMongoDbId(_id);
   try {
     const updateuser = await UserModel.findByIdAndUpdate(
       _id,
@@ -267,7 +294,7 @@ export const updateUser = asyncHandler(async (req, res, next) => {
 // save user address
 
 export const saveAddress = asyncHandler(async (req, res, next) => {
-  const  _id  = req.user?._id;
+  const _id = req.user?._id;
 
   try {
     const updateuser = await UserModel.findByIdAndUpdate(
@@ -344,35 +371,37 @@ export const unBlockUser = asyncHandler(async (req, res, next) => {
   }
 });
 
-export const updatePassword = asyncHandler(async (req, res) => {
-  const { _id } = req.user;
+export const updatePassword = asyncHandler(
+  async (req: Request, res: Response) => {
+    const _id = req.user?._id;
 
-  const { password } = req.body;
+    const { password } = req.body;
 
-  validateMongoDbId(_id);
+    const user = await UserModel.findById(_id).select('+password');
 
-  const user = await UserModel.findById(_id);
-
-  if (user) {
-    if (password) {
-      user.password = password;
-      const updatedPassword = await user.save();
-      res.json(updatedPassword);
-    } else {
-      res.json(user);
+    if (user) {
+      if (password) {
+        user.password = password;
+        const updatedPassword = await user.save();
+        res.json(updatedPassword);
+      } else {
+        res.json(user);
+      }
     }
   }
-});
+);
 
 export const forgotPasswordToken = asyncHandler(async (req, res, next) => {
   const { email } = req.body;
 
   // Find the user associated with the email address
   const user = await UserModel.findOne({ email });
+  
 
-  // Throw an error if the user is not found
   if (!user) {
-    throw new Error('User not found with this email');
+    
+    const error =   createHttpError(400, 'User not found with this email');
+    throw error;
   }
 
   try {
@@ -410,10 +439,11 @@ export const resetPassword = asyncHandler(async (req, res) => {
     passwordResetToken: hashedToken,
     passwordResetExpires: { $gt: Date.now() },
   });
-
-  // Throw an error if the user is not found
+  
   if (!user) {
-    throw new Error('Token Expired, Please try again later.');
+    
+    const error =  new Error('Token Expired, Please try again later.');
+    throw error;
   }
 
   // Reset the user's password and remove the reset token and expiry date
@@ -428,22 +458,24 @@ export const resetPassword = asyncHandler(async (req, res) => {
   res.json(user);
 });
 
-export const getWishList = asyncHandler(async (req: Request, res: Response, next) => {
-  const userId = req.user?._id;
+export const getWishList = asyncHandler(
+  async (req: Request, res: Response, next) => {
+    const userId = req.user?._id;
 
-  try {
-    const findUser = await UserModel.findById(userId).populate('wishlist');
+    try {
+      const findUser = await UserModel.findById(userId).populate('wishlist');
 
-    res.json(findUser);
-  } catch (error) {
-    next(error);
+      res.json(findUser);
+    } catch (error) {
+      next(error);
+    }
   }
-});
+);
 
 // Add to Cart Function
 
 export const addToCart = asyncHandler(async (req, res, next) => {
-  const _id  = req.user?._id;
+  const _id = req.user?._id;
   const { prodId, colors, quantity } = req.body;
 
   try {
@@ -485,7 +517,7 @@ export const addToCart = asyncHandler(async (req, res, next) => {
         price: product?.price ?? 0,
         color: colors ?? undefined,
         product: product?._id,
-        image: product?.images[0]?.url ?? '' // ensure image is always a string
+        image: product?.images[0]?.url ?? '', // ensure image is always a string
       };
       cart.products.push(newProduct);
     }
@@ -627,5 +659,3 @@ export const applyCoupon = asyncHandler(async (req, res, next) => {
     next(error);
   }
 });
-
-

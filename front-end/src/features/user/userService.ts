@@ -7,9 +7,7 @@ import { UserInfo } from '../../types/UserInfo';
 
 const signUp = async (userInfo: UserInfo) => {
     const response = await axios.post(`${base_url}users/signup`, userInfo);
-    if (response.data) {
       return response.data;
-   }
 };
 
 
@@ -17,7 +15,7 @@ const signUp = async (userInfo: UserInfo) => {
 
 
 const login = async (loginData: any) => {
-  const response = await axios.post(`${base_url}users/login`, loginData);
+  const response = await axios.put(`${base_url}users/login`, {email: loginData.email, password: loginData.password});
   if (response.data) {
     localStorage.setItem('userInfo', JSON.stringify(response.data));
     return response.data;
@@ -28,7 +26,7 @@ const login = async (loginData: any) => {
 
 
 const logout = async () => {
-  const response = await axios.delete(`${base_url}users/logout`);
+  const response = await axios.put(`${base_url}users/logout`);
   if (response.data) {
     return response.data;
   }

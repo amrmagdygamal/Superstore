@@ -1,6 +1,10 @@
+import { Request, Response, NextFunction } from 'express';
+import asyncHandler from 'express-async-handler';
 import mongoose, { Document, InferSchemaType, Model, model, Schema } from "mongoose";
 import bcrypt from "bcryptjs";
+import crypto from "crypto";
 
+// Define the User schema
 const userSchema = new Schema({
   _id: {type: mongoose.Schema.Types.ObjectId, default: () => new mongoose.Types.ObjectId(),},
   username: {
@@ -45,31 +49,39 @@ const userSchema = new Schema({
   passwordResetExpires: Date,
 });
 
-
 userSchema.pre("save", async function (next) {
   if (!this.isModified("password")) {
     next();
   }
-  const salt = await bcrypt.genSaltSync(10);
+  const salt = bcrypt.genSaltSync(10);
   this.password = await bcrypt.hash(this.password, salt);
   next();
 });
 
 
-userSchema.methods.createPasswordResetToken = async function () {
+// Define the User model
+export interface UserDocument extends Document {
+  createPasswordResetToken(): string;
+  // other custom methods or properties can be defined here
+}
+
+
+export type User = InferSchemaType<typeof userSchema>;
+export const UserModel: any= model<UserDocument>('User', userSchema);
+
+// Define the createPasswordResetToken method on the User schema
+userSchema.methods.createPasswordResetToken = function () {
   const resetTokenBuffer = Buffer.alloc(32);
   crypto.randomFillSync(resetTokenBuffer);
   const resetToken = resetTokenBuffer.toString("hex");
-  
+
   this.passwordResetToken = crypto
-  .createHash("sha256")
-  .update(resetToken)
+    .createHash("sha256")
+    .update(resetToken)
     .digest("hex");
 
-  this.passwordResetExpires = Date.now() + 30 * 60 * 1000;
+  this.passwordResetExpires = new Date(Date.now() + 30 * 60 * 1000);
 
   return resetToken;
 };
 
-export type User = InferSchemaType<typeof userSchema>;
-export const UserModel = mongoose.model('User', userSchema);

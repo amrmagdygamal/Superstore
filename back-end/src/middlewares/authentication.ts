@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
-import   User  from '../model/UserModel';
+import   {User, UserModel}  from '../model/UserModel';
 import asyncHandler from 'express-async-handler';
 import validateEnv from '../Util/validateEnv';
 import jwt from 'jsonwebtoken'
@@ -11,7 +11,7 @@ export const auhtMiddleware = asyncHandler(async (req: Request, res: Response, n
   if(token) {
   
       const decoded = jwt.verify(token, validateEnv.JWEBT_SECRET) as jwt.JwtPayload;
-      const user = await User.findById(decoded._id);
+      const user = await UserModel.findById(decoded._id);
     
       if (!user) {
         throw new Error('User not found');
@@ -28,7 +28,7 @@ export const auhtMiddleware = asyncHandler(async (req: Request, res: Response, n
 
 export const isAdmin = asyncHandler(async(req: Request, _res: Response, next: NextFunction) => {
   const email  = req.user?.email;
-  const adminUser = await User.findOne({ email });
+  const adminUser = await UserModel.findOne({ email });
 
   if(adminUser?.role !== "admin"){
     throw new Error("You are not admin")

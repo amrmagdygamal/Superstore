@@ -6,7 +6,6 @@ import CartPage from './pages/CartPage';
 import LoginPage from './pages/LoginPage';
 import SignUpPage from './pages/SignUpPage';
 import PaymentPage from './pages/PaymentPage';
-import ProtectedRoute from './components/ProtectedRoute';
 import PlaceOrderPage from './pages/PlaceOrderPage';
 import OrderPage from './pages/OrderPage';
 import OrdersHistory from './pages/OrdersHistory';
@@ -25,7 +24,9 @@ import TermsAndConditions from './pages/TermsAndConditions';
 import RefundPolicy from './pages/RefundPolicy';
 import ShippingPolicy from './pages/ShippingPolicy';
 import Checkout from './pages/Checkout';
-import Profile from './pages/profile';
+
+import Profile from './pages/Profile';
+import { ProtectedRoute } from './components/ProtectedRoute';
 
 function App() {
   return (
@@ -39,8 +40,8 @@ function App() {
               <Route path="contact" element={<Contact />} />
               <Route path="blogs" element={<Blog />} />
               <Route path="compare" element={<CompareProduct />} />
-              <Route path="login" element={<LoginPage />} />
               <Route path="signup" element={<SignUpPage />} />
+              <Route path="login" element={<LoginPage />} />
               <Route path="forgot-password" element={<ForgotPassword />} />
               <Route path="reset-password/:token" element={<ResetPassword />} />
               <Route path="product/:id" element={<ProductPage />} />

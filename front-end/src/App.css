@@ -55,6 +55,10 @@ a {
   border-color: inherit;
 }
 
+.Toastify__toast-container {
+  width: 800px;
+}
+
 
 .box-shadow {
   box-shadow: 0 0 .7rem #0000001a;

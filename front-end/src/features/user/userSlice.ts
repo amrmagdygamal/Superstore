@@ -1,12 +1,17 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import { createAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import {
+  PayloadAction,
+  createAction,
+  createAsyncThunk,
+  createSlice,
+} from '@reduxjs/toolkit';
 import userService from './userService';
 import { toast } from 'react-toastify';
 import { UserInfo } from '../../types/UserInfo';
 
 export const signUpUser = createAsyncThunk(
   'user/signup',
-  async (userInfo: UserInfo, thunkAPI) => {
+  async (userInfo: any, thunkAPI) => {
     try {
       return await userService.signUp(userInfo);
     } catch (error) {
@@ -26,13 +31,16 @@ export const loginUser = createAsyncThunk(
   }
 );
 
-export const logout = createAsyncThunk('user/logout', async (_, thunkAPI) => {
-  try {
-    return await userService.logout();
-  } catch (error) {
-    return thunkAPI.rejectWithValue(error);
+export const logout = createAsyncThunk(
+  'user/logout-user',
+  async (_, thunkAPI) => {
+    try {
+      return await userService.logout();
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
   }
-});
+);
 
 export const getUserWishlist = createAsyncThunk(
   'user/wishlist',
@@ -89,7 +97,6 @@ export const forgotPass = createAsyncThunk(
   }
 );
 
-
 export const resetPass = createAsyncThunk(
   'user/reset-pass',
   async (data: any, thunkAPI) => {
@@ -102,17 +109,17 @@ export const resetPass = createAsyncThunk(
 );
 
 export interface UserState {
-  userInfor: any;
+  userInfor: UserInfo;
   isError: boolean;
   isLoading: boolean;
   isSuccess: boolean;
-  message: string;
-  user?: any;
+  message: any;
+  user?: UserInfo;
   wishlist?: any;
   addCart?: any;
   cart?: any;
   deletFromCart?: any;
-  logoutuser?: boolean;
+  logoutuser?: any;
   forgotPassuser?: any;
   resetPassuser?: any;
 }
@@ -146,17 +153,19 @@ export const userSlice = createSlice({
         state.isError = false;
         state.userInfor = action.payload;
         state.message = 'success';
-        if (state.isSuccess === true) {
-          toast.info('Signed Up successfully');
-        }
       })
-      .addCase(signUpUser.rejected, (state, action) => {
+      .addCase(signUpUser.rejected, (state, action: any) => {
         state.isError = true;
         state.isSuccess = false;
         state.isLoading = false;
         state.message = action.error.message ?? '';
+        state.message =
+          action.payload?.response?.data?.message ?? action.error.message;
         if (state.isError === true) {
-          toast.error('Failed to signup');
+          toast.error(action.payload.response.data.error, {
+            containerId: 'custom-container',
+            style: { width: '500px', alignSelf: "center" }
+          });
         }
       })
       .addCase(loginUser.pending, (state) => {
@@ -173,13 +182,16 @@ export const userSlice = createSlice({
           toast.info('Logded in  successfully');
         }
       })
-      .addCase(loginUser.rejected, (state, action) => {
+      .addCase(loginUser.rejected, (state, action: any) => {
         state.isError = true;
         state.isSuccess = false;
         state.isLoading = false;
         state.message = action.error.message ?? '';
         if (state.isError === true) {
-          toast.error('Failed to login');
+          toast.error(action.payload.response.data.error, {
+            containerId: 'custom-container',
+            style: { width: '500px', alignSelf: "center" }
+          });
         }
       })
       .addCase(logout.pending, (state) => {
@@ -189,7 +201,7 @@ export const userSlice = createSlice({
         state.isLoading = false;
         state.isSuccess = true;
         state.isError = false;
-        state.logoutuser = true;
+        state.logoutuser = action.payload;
         state.message = 'success';
       })
       .addCase(logout.rejected, (state, action) => {

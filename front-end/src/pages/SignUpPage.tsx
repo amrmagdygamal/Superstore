@@ -10,6 +10,7 @@ import { signUpUser } from '../features/user/userSlice';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '../app/store';
 import { useSelector } from 'react-redux';
+import { useEffect } from 'react';
 
 const signUpSchema = Yup.object().shape({
   username: Yup.string().required('UserName is Required'),
@@ -18,17 +19,17 @@ const signUpSchema = Yup.object().shape({
   password: Yup.string()
     .required('Please enter a password')
     // check minimum characters
-    .min(8, 'Password must have at least 8 characters'),
+    ,
   confirmPassword: Yup.string()
     .required('Confirm Password is Required')
     .oneOf([Yup.ref('password'), ''], 'Passwords must match'),
 });
 
+// .min(8, 'Password must have at least 8 characters')
+
 const SignUpPage = () => {
   const dispatch: AppDispatch = useDispatch();
   const userState = useSelector((state: any) => state.user);
-  const { isLoading, isError, isSuccess, userInfor } = userState;
-
   const navigate = useNavigate();
 
   
@@ -42,19 +43,15 @@ const SignUpPage = () => {
     },
     validationSchema: signUpSchema,
     onSubmit: async (userinfo) => {
-      try {
-        await dispatch(signUpUser(userinfo));
-        setTimeout(() => {
-          if (isSuccess && userInfor) {
-              formik.resetForm();
-            navigate('/login/');
-          }
-          }, 800);
-      } catch (error) {
-        console.error(error);
-      }
+        await dispatch(signUpUser(userinfo));    
     }
   });
+
+  // useEffect(() => {
+  //   if(userState.userInfor !== null && userState.isError === false) {
+  //     navigate("/login")
+  //   }
+  // }, [userState])
 
   return (
     <>
