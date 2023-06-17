@@ -1,6 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
 import asyncHandler from 'express-async-handler';
-import { validateMongoDbId } from '../Util/validateMongodbId';
 import blogCategModel from '../model/blogCategModel';
 
 
@@ -13,13 +12,24 @@ export const createCategory = asyncHandler(async (req: Request, res: Response, n
     next(error);
   }
 });
+export const getCategory = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+  const { id } = req.params;
+  try {
+    const getcategory = await blogCategModel.findById(
+      id
+    );
+
+    res.json(getcategory);
+  } catch (error) {
+    next(error);
+  }
+});
 
 export const updateCategory = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
-  const { _id } = req.params;
-  validateMongoDbId(_id)
+  const { id } = req.params;
   try {
     const updatedCategory = await blogCategModel.findByIdAndUpdate(
-      _id,
+      id,
       req.body,
       { new: true }
     );
@@ -31,10 +41,9 @@ export const updateCategory = asyncHandler(async (req: Request, res: Response, n
 });
 
 export const deletCategory = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
-  const { _id } = req.params;
-  validateMongoDbId(_id)
+  const { id } = req.params;
   try {
-    const deletedcategory = await blogCategModel.findByIdAndDelete(_id);
+    const deletedcategory = await blogCategModel.findByIdAndDelete(id);
 
     res.json(deletedcategory);
   } catch (error) {
@@ -42,19 +51,6 @@ export const deletCategory = asyncHandler(async (req: Request, res: Response, ne
   }
 });
 
-export const getCategory = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
-  const { _id } = req.params;
-  validateMongoDbId(_id)
-  try {
-    const getcategory = await blogCategModel.findById(
-      _id
-    );
-
-    res.json(getcategory);
-  } catch (error) {
-    next(error);
-  }
-});
 
 export const getAllCategoies = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
   try {

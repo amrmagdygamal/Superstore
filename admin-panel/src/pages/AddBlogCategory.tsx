@@ -8,6 +8,7 @@ import { useFormik } from 'formik';
 
 import { AppDispatch } from '../app/store';
 import {
+  BlogcategInfo,
   createBlogCategory,
   getBlogcateg,
   resetState,
@@ -43,18 +44,7 @@ const AddBlogCategory = () => {
   }
   }, [getBlogCategId]);
 
-  useEffect(() => {
-    if (isSuccess && createdblogCategory) {
-      toast.success('Blog Category Added Successfullly!');
-    }
-    if (isSuccess && updatedBlogcateg) {
-      toast.success('Category Updated Successfully!');
-      navigate('/admin/list-category');
-    }
-    if (isError) {
-      toast.error('Something Went Wrong!');
-    }
-  }, [isSuccess, isError, isLoading]);
+
   const formik = useFormik({
     enableReinitialize: true,
     initialValues: {
@@ -63,14 +53,14 @@ const AddBlogCategory = () => {
     validationSchema: schema,
     onSubmit: (values) => {
       if (getBlogCategId !== undefined) {
-        const data: any = { _id: getBlogCategId, blogCategData: values };
+        const data: BlogcategInfo = { _id: getBlogCategId, title: values.title };
         dispatch(updateBlogcateg(data));
+        setTimeout(() => {
+          navigate("/admin/blog-category-list")
+        }, 300);
       } else {
         dispatch(createBlogCategory(values));
         formik.resetForm();
-        setTimeout(() => {
-          dispatch(resetState());
-        }, 300);
       }
     },
   });

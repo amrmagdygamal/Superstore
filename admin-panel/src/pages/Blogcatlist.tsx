@@ -32,8 +32,14 @@ const columns: any = [
 ];
 
 const Blogcatlist = () => {
+  const dispatch: AppDispatch = useDispatch();
   const [open, setOpen] = useState(false);
   const [blogCategId, setBlogCategId] = useState('');
+
+  const blogCategoryState = useSelector(
+    (state: any) => state.blogCategory.blogCategories
+  );
+
 
   const showModel = (e: string) => {
     setOpen(true);
@@ -44,19 +50,19 @@ const Blogcatlist = () => {
     setOpen(false);
   };
 
-  const dispatch: AppDispatch = useDispatch();
 
   useEffect(() => {
     dispatch(resetState());
     dispatch(getBlogCategories());
   }, []);
 
-  const blogCategoryState = useSelector(
-    (state: any) => state.blogCategory.blogCategories
-  );
+  useEffect(() => {
+    dispatch(getBlogCategories());
+  }, [blogCategoryState]);
+
 
   const data1: any = [];
-  for (let i = 0; i < blogCategoryState.length; i++) {
+  for (let i = 0; i < blogCategoryState?.length; i++) {
     data1.push({
       key: i + 1,
       title: blogCategoryState[i].title,

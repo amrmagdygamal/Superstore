@@ -58,6 +58,9 @@ const AddCategory = () => {
       if (getCategoryId !== undefined) {
         const data: CategoryInfo = { _id: getCategoryId, title: values.title };
         dispatch(updateCategory(data));
+        setTimeout(() => {
+          navigate("/admin/list-category")
+        }, 300);
       } else {
         dispatch(createProdCategory(values));
         formik.resetForm();

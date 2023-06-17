@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import CustomInput from '../components/CustomInput';
 import { useDispatch, useSelector } from 'react-redux';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation} from 'react-router-dom';
 import * as yup from 'yup';
 import { useFormik } from 'formik';
 import {
@@ -20,6 +20,7 @@ const Addbrand = () => {
   const dispatch: AppDispatch = useDispatch();
 
   const location = useLocation();
+  const navigate = useNavigate();
   const getBrandId = location.pathname.split('/')[3];
   console.log(getBrandId);
 
@@ -50,7 +51,9 @@ const Addbrand = () => {
       if (getBrandId !== undefined) {
         const data: BrandInfo = { _id: getBrandId, title: values.title };
         dispatch(updateBrand(data));
-        formik.resetForm();
+        setTimeout(() => {
+          navigate("/admin/list-brand")
+        }, 300);
       } else {
         dispatch(createBrand(values));
         formik.resetForm();

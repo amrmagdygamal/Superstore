@@ -52,7 +52,7 @@ export const updateBrand = createAsyncThunk(
 
 export const deleteBrand = createAsyncThunk(
   'brand/delete-brand',
-  async (id: any, thunkAPI) => {
+  async (id: string, thunkAPI) => {
     try {
       return await BrandService.deleteBrand(id);
     } catch (error) {

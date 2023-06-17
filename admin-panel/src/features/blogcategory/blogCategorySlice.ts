@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { createAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import blogCategoryService from './blogCategoryService';
+import { toast } from 'react-toastify';
 
 export const getBlogCategories = createAsyncThunk(
   'blogcategory/get-blogcategories',
@@ -13,23 +14,23 @@ export const getBlogCategories = createAsyncThunk(
   }
 );
 
-export const createBlogCategory = createAsyncThunk(
-  'blogcategory/create-blogcategory',
-  async (BlogCategoryData: any, thunkAPI) => {
+
+export const getBlogcateg = createAsyncThunk(
+  'blogcategory/get-blogcategory',
+  async (id: string, thunkAPI) => {
     try {
-      return await blogCategoryService.createBlogCategory(BlogCategoryData);
+      return await blogCategoryService.getBlogcategory(id);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }
   }
 );
 
-
-export const getBlogcateg = createAsyncThunk(
-  'blogcategory/get-blogcategory',
-  async (_id: string, thunkAPI) => {
+export const createBlogCategory = createAsyncThunk(
+  'blogcategory/create-blogcategory',
+  async (BlogCategoryData: any, thunkAPI) => {
     try {
-      return await blogCategoryService.getBlogcategory(_id);
+      return await blogCategoryService.createBlogCategory(BlogCategoryData);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }
@@ -108,21 +109,6 @@ export const blogCategorieSlice = createSlice({
         state.isLoading = false;
         state.message = action.error.message ?? '';
       })
-      .addCase(createBlogCategory.pending, (state) => {
-        state.isLoading = true;
-      })
-      .addCase(createBlogCategory.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.isSuccess = true;
-        state.isError = false;
-        state.createdBlogCategory = action.payload;
-      })
-      .addCase(createBlogCategory.rejected, (state, action) => {
-        state.isError = true;
-        state.isSuccess = false;
-        state.isLoading = false;
-        state.message = action.error.message ?? '';
-      })
       .addCase(getBlogcateg.pending, (state) => {
         state.isLoading = true;
       })
@@ -138,6 +124,27 @@ export const blogCategorieSlice = createSlice({
         state.isLoading = false;
         state.message = action.error.message ?? '';
       })
+      .addCase(createBlogCategory.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(createBlogCategory.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.isError = false;
+        state.createdBlogCategory = action.payload;
+        if (state.isSuccess === true) {
+          toast.success('Category Added Successfullly!');
+        }
+      })
+      .addCase(createBlogCategory.rejected, (state, action) => {
+        state.isError = true;
+        state.isSuccess = false;
+        state.isLoading = false;
+        state.message = action.error.message ?? '';
+        if (state.isError === true) {
+          toast.error('Some Thing went wrong!');
+        }
+      })
       .addCase(updateBlogcateg.pending, (state) => {
         state.isLoading = true;
       })
@@ -146,12 +153,18 @@ export const blogCategorieSlice = createSlice({
         state.isError = false;
         state.isSuccess = true;
         state.updatedBlogcateg = action.payload;
+        if (state.isSuccess === true) {
+          toast.success('Category Updated Successfullly!');
+        }
       })
       .addCase(updateBlogcateg.rejected, (state, action) => {
         state.isError = true;
         state.isSuccess = false;
         state.isLoading = false;
         state.message = action.error.message ?? '';
+        if (state.isError === true) {
+          toast.error('Some Thing went wrong!');
+        }
       })
       .addCase(deleteBlogcateg.pending, (state) => {
         state.isLoading = true;
@@ -161,12 +174,18 @@ export const blogCategorieSlice = createSlice({
         state.isError = false;
         state.isSuccess = true;
         state.deletedBlogcateg = action.payload;
+        if (state.isSuccess === true) {
+          toast.success('Category Deleted Successfullly!');
+        }
       })
       .addCase(deleteBlogcateg.rejected, (state, action) => {
         state.isError = true;
         state.isSuccess = false;
         state.isLoading = false;
         state.message = action.error.message ?? '';
+        if (state.isError === true) {
+          toast.error('Some Thing went wrong!');
+        }
       })
       .addCase(resetState, () => initialState);
   },
