@@ -5,7 +5,7 @@ const blogCategRouter = express.Router();
 
 
 blogCategRouter.get('/', BlogCategoriesControllers.getAllCategoies)
-blogCategRouter.get('/:id', BlogCategoriesControllers.getCategory)
+blogCategRouter.get('/:id', auhtMiddleware, isAdmin , BlogCategoriesControllers.getCategory)
 blogCategRouter.post('/', auhtMiddleware, isAdmin, BlogCategoriesControllers.createCategory)
 blogCategRouter.put('/:id', auhtMiddleware, isAdmin, BlogCategoriesControllers.updateCategory)
 blogCategRouter.delete('/:id', auhtMiddleware, isAdmin, BlogCategoriesControllers.deletCategory)

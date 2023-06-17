@@ -1,6 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
 import asyncHandler from 'express-async-handler';
-import { validateMongoDbId } from '../Util/validateMongodbId';
 import ColorModel from '../model/ColorModel';
 
 export const createColor = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
@@ -13,12 +12,24 @@ export const createColor = asyncHandler(async (req: Request, res: Response, next
   }
 });
 
+export const getColor = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+  const { id } = req.params;
+  try {
+    const getColor = await ColorModel.findById(
+      id
+    );
+
+    res.json(getColor);
+  } catch (error) {
+    next(error);
+  }
+});
+
 export const updateColor = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
-  const { _id } = req.params;
-  validateMongoDbId(_id);
+  const { id } = req.params;
   try {
     const updatedColor = await ColorModel.findByIdAndUpdate(
-      _id,
+      id,
       req.body,
       { new: true }
     );
@@ -30,26 +41,11 @@ export const updateColor = asyncHandler(async (req: Request, res: Response, next
 });
 
 export const deletColor = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
-  const { _id } = req.params;
-  validateMongoDbId(_id);
+  const { id } = req.params;
   try {
-    const deletedColor = await ColorModel.findByIdAndDelete(_id);
+    const deletedColor = await ColorModel.findByIdAndDelete(id);
 
     res.json(deletedColor);
-  } catch (error) {
-    next(error);
-  }
-});
-
-export const getColor = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
-  const { _id } = req.params;
-  validateMongoDbId(_id);
-  try {
-    const getColor = await ColorModel.findById(
-      _id
-    );
-
-    res.json(getColor);
   } catch (error) {
     next(error);
   }

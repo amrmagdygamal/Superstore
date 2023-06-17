@@ -41,18 +41,6 @@ const AddColor = () => {
     }
   }, [getColorId]);
 
-  useEffect(() => {
-    if (isSuccess && createdColor) {
-      toast.success('Color Added Successfullly!');
-    }
-    if (isSuccess && updatedColor) {
-      toast.success('Color Updated Successfully!');
-      navigate('/admin/list-color');
-    }
-    if (isError) {
-      toast.error('Something Went Wrong!');
-    }
-  }, [isSuccess, isError, isLoading]);
 
   const formik = useFormik({
     enableReinitialize: true,
@@ -62,14 +50,14 @@ const AddColor = () => {
     validationSchema: schema,
     onSubmit: (values) => {
       if (getColorId !== undefined) {
-        const data: any = { _id: getColorId, colorData: values };
+        const data: any = { _id: getColorId, title: values.title };
         dispatch(updateColor(data));
+        setTimeout(() => {
+          navigate("/admin/list-color")
+        }, 300);
       } else {
         dispatch(createColor(values));
         formik.resetForm();
-        setTimeout(() => {
-          dispatch(resetState());
-        }, 3000);
       }
     },
   });

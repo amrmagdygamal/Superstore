@@ -1,9 +1,13 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import  { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Table } from 'antd';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '../app/store';
-import { deleteColor, getColors, resetState } from '../features/color/colorSlice';
+import {
+  deleteColor,
+  getColors,
+  resetState,
+} from '../features/color/colorSlice';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { BiEdit } from 'react-icons/bi';
@@ -31,6 +35,7 @@ const Colorlist = () => {
   const dispatch: AppDispatch = useDispatch();
 
   const [open, setOpen] = useState(false);
+  const colorState = useSelector((state: any) => state.color.colors);
   const [colorId, setColorId] = useState('');
 
   const showModel = (e: string) => {
@@ -47,20 +52,31 @@ const Colorlist = () => {
     dispatch(getColors());
   }, []);
 
-  const colorState = useSelector((state: any) => state.color.colors);
-
   const data1: any = [];
   for (let i = 0; i < colorState.length; i++) {
     data1.push({
       key: i + 1,
-      title: colorState[i].title,
+      title: (
+        <div className='d-flex align-items-center gap-3'>
+          <p
+            className="rounded-circle p-3 mb-0"
+            style={{ backgroundColor: colorState[i].title }}
+          ></p>
+          {colorState[i].title}
+        </div>
+      ),
       action: (
         <>
-          <Link to={`/admin/Color/${colorState[i]._id}`}
-            className="fs-3 text-dark">
+          <Link
+            to={`/admin/Color/${colorState[i]._id}`}
+            className="fs-3 text-dark"
+          >
             <BiEdit />
           </Link>
-          <button className="ms-3 fs-3 text-danger bg-transparent border-0" onClick={() => showModel(colorState[i]._id)}>
+          <button
+            className="ms-3 fs-3 text-danger bg-transparent border-0"
+            onClick={() => showModel(colorState[i]._id)}
+          >
             <AiFillDelete />
           </button>
         </>
@@ -71,12 +87,10 @@ const Colorlist = () => {
   const handleDelete = (e: string) => {
     dispatch(deleteColor(e));
     setTimeout(() => {
-      dispatch(getColors())
-    }, 100);
+      dispatch(getColors());
+    }, 400);
     setOpen(false);
-  }
-
-
+  };
 
   return (
     <div>

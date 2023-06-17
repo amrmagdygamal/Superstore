@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { createAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import colorService from './colorService';
+import { toast } from 'react-toastify';
 
 export const getColors = createAsyncThunk(
   'color/get-colors',
@@ -13,22 +14,22 @@ export const getColors = createAsyncThunk(
   }
 );
 
-export const createColor = createAsyncThunk(
-  'color/create-color',
-  async (colorData: any, thunkAPI) => {
+export const getColor = createAsyncThunk(
+  'color/get-color',
+  async (id: string, thunkAPI) => {
     try {
-      return await colorService.createColor(colorData);
+      return await colorService.getColor(id);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }
   }
 );
 
-export const getColor = createAsyncThunk(
-  'color/get-color',
-  async (id: string, thunkAPI) => {
+export const createColor = createAsyncThunk(
+  'color/create-color',
+  async (colorData: ColorInfo, thunkAPI) => {
     try {
-      return await colorService.getColor(id);
+      return await colorService.createColor(colorData);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }
@@ -72,7 +73,7 @@ interface ColorState {
   isLoading: boolean;
   isSuccess: boolean;
   message: string;
-  createdcolor?: any;
+  createdcolor?: ColorInfo;
   colorName?: string
   updatedColor?: ColorInfo
   deletedColor?: ColorInfo
@@ -109,21 +110,6 @@ export const colorSlice = createSlice({
         state.isLoading = false;
         state.message = action.error.message ?? '';
       })
-      .addCase(createColor.pending, (state) => {
-        state.isLoading = true;
-      })
-      .addCase(createColor.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.isSuccess = true;
-        state.isError = false;
-        state.createdcolor = action.payload;
-      })
-      .addCase(createColor.rejected, (state, action) => {
-        state.isError = true;
-        state.isSuccess = false;
-        state.isLoading = false;
-        state.message = action.error.message ?? '';
-      })
       .addCase(getColor.pending, (state) => {
         state.isLoading = true;
       })
@@ -139,6 +125,27 @@ export const colorSlice = createSlice({
         state.isLoading = false;
         state.message = action.error.message ?? '';
       })
+      .addCase(createColor.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(createColor.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.isError = false;
+        state.createdcolor = action.payload;
+        if (state.isSuccess === true) {
+          toast.success('Color Added Successfullly!');
+        }
+      })
+      .addCase(createColor.rejected, (state, action) => {
+        state.isError = true;
+        state.isSuccess = false;
+        state.isLoading = false;
+        state.message = action.error.message ?? '';
+        if (state.isError === true) {
+          toast.error('Some Thing went wrong!');
+        }
+      })
       .addCase(updateColor.pending, (state) => {
         state.isLoading = true;
       })
@@ -147,12 +154,18 @@ export const colorSlice = createSlice({
         state.isError = false;
         state.isSuccess = true;
         state.updatedColor = action.payload;
+        if (state.isSuccess === true) {
+          toast.success('Color Updated Successfullly!');
+        }
       })
       .addCase(updateColor.rejected, (state, action) => {
         state.isError = true;
         state.isSuccess = false;
         state.isLoading = false;
         state.message = action.error.message ?? '';
+        if (state.isError === true) {
+          toast.error('Some Thing went wrong!');
+        }
       })
       .addCase(deleteColor.pending, (state) => {
         state.isLoading = true;
@@ -162,12 +175,18 @@ export const colorSlice = createSlice({
         state.isError = false;
         state.isSuccess = true;
         state.deletedColor = action.payload;
+        if (state.isSuccess === true) {
+          toast.success('Color Deleted Successfullly!');
+        }
       })
       .addCase(deleteColor.rejected, (state, action) => {
         state.isError = true;
         state.isSuccess = false;
         state.isLoading = false;
         state.message = action.error.message ?? '';
+        if (state.isError === true) {
+          toast.error('Some Thing went wrong!');
+        }
       })
       .addCase(resetState, () => initialState);
   },
