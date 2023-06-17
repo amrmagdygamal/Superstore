@@ -68,7 +68,7 @@ const ViewOrder = () => {
       amount: orderState?.products[i].price,
       color: orderState?.products[i].color?.title,
       date: orderState?.products[i].createdAt,
-      action: 
+
     });
   }
 

@@ -3,7 +3,7 @@ import asyncHandler from 'express-async-handler';
 import { validateMongoDbId } from '../Util/validateMongodbId';
 import ColorModel from '../model/ColorModel';
 
-export const createColor = asyncHandler(async (req, res, next) => {
+export const createColor = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
   try {
     const newColor = await ColorModel.create(req.body);
 
@@ -13,7 +13,7 @@ export const createColor = asyncHandler(async (req, res, next) => {
   }
 });
 
-export const updateColor = asyncHandler(async (req, res, next) => {
+export const updateColor = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
   const { _id } = req.params;
   validateMongoDbId(_id);
   try {
@@ -29,7 +29,7 @@ export const updateColor = asyncHandler(async (req, res, next) => {
   }
 });
 
-export const deletColor = asyncHandler(async (req, res, next) => {
+export const deletColor = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
   const { _id } = req.params;
   validateMongoDbId(_id);
   try {
@@ -41,7 +41,7 @@ export const deletColor = asyncHandler(async (req, res, next) => {
   }
 });
 
-export const getColor = asyncHandler(async (req, res, next) => {
+export const getColor = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
   const { _id } = req.params;
   validateMongoDbId(_id);
   try {
@@ -55,7 +55,7 @@ export const getColor = asyncHandler(async (req, res, next) => {
   }
 });
 
-export const getAllColors = asyncHandler(async (req, res, next) => {
+export const getAllColors = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
   try {
     const allColors = await ColorModel.find();
 

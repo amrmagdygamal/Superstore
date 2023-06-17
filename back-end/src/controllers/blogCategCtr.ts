@@ -4,7 +4,7 @@ import { validateMongoDbId } from '../Util/validateMongodbId';
 import blogCategModel from '../model/blogCategModel';
 
 
-export const createCategory = asyncHandler(async (req, res, next) => {
+export const createCategory = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
   try {
     const newCategory = await blogCategModel.create(req.body);
 
@@ -14,7 +14,7 @@ export const createCategory = asyncHandler(async (req, res, next) => {
   }
 });
 
-export const updateCategory = asyncHandler(async (req, res, next) => {
+export const updateCategory = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
   const { _id } = req.params;
   validateMongoDbId(_id)
   try {
@@ -30,7 +30,7 @@ export const updateCategory = asyncHandler(async (req, res, next) => {
   }
 });
 
-export const deletCategory = asyncHandler(async (req, res, next) => {
+export const deletCategory = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
   const { _id } = req.params;
   validateMongoDbId(_id)
   try {
@@ -42,7 +42,7 @@ export const deletCategory = asyncHandler(async (req, res, next) => {
   }
 });
 
-export const getCategory = asyncHandler(async (req, res, next) => {
+export const getCategory = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
   const { _id } = req.params;
   validateMongoDbId(_id)
   try {
@@ -56,7 +56,7 @@ export const getCategory = asyncHandler(async (req, res, next) => {
   }
 });
 
-export const getAllCategoies = asyncHandler(async (req, res, next) => {
+export const getAllCategoies = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
   try {
     const allcategories = await blogCategModel.find();
 

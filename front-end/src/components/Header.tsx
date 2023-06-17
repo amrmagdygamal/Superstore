@@ -104,7 +104,7 @@ const Header = () => {
           </div>
         </div>
         <div className="col-5">
-          <Nav className="align-items-center justify-content-between">
+          <Nav className="d-flex flex-row flex-nowrap align-items-center gap-1">
             <Link className="nav-link d-flex gap-2" to="/compare">
               <img src="/images/compare.svg" alt="compare" />
               <p className="mb-0 text-white">
@@ -123,11 +123,11 @@ const Header = () => {
                 Login <br /> My Account
               </Link>
             ) : (
-              <NavDropdown
+              <NavDropdown style={{color: "white !important"}}
                 title={
                   <>
                     <img src="/images/user.svg" alt="user" />
-                    {userState?.user?.username}
+                    Welcome {userState?.user?.username}
                   </>
                 }
                 id="basic-nav-dropdown"

@@ -1,11 +1,9 @@
 import { NextFunction, Request, Response } from 'express';
 import asyncHandler from 'express-async-handler';
-import UserModel from '../model/UserModel';
 import blogModel from '../model/blogModel';
 import { validateMongoDbId } from '../Util/validateMongodbId';
-import cloudinaryUploadImg from '../Util/cloudinary';
 
-export const createBlog = asyncHandler(async (req, res, next) => {
+export const createBlog = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
   try {
     const newBlog = await blogModel.create(req.body);
     res.json(newBlog);
@@ -14,7 +12,7 @@ export const createBlog = asyncHandler(async (req, res, next) => {
   }
 });
 
-export const updateBlog = asyncHandler(async (req, res, next) => {
+export const updateBlog = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
   const { _id } = req.params;
   validateMongoDbId(_id);
   try {
@@ -28,7 +26,7 @@ export const updateBlog = asyncHandler(async (req, res, next) => {
   }
 });
 
-export const getBlog = asyncHandler(async (req, res, next) => {
+export const getBlog = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
   const { _id } = req.params;
   validateMongoDbId(_id);
   try {
@@ -46,7 +44,7 @@ export const getBlog = asyncHandler(async (req, res, next) => {
   }
 });
 
-export const getAllBloggs = asyncHandler(async (req, res, next) => {
+export const getAllBloggs = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
   try {
     const getBlogs = await blogModel.find();
     res.json(getBlogs);
@@ -55,7 +53,7 @@ export const getAllBloggs = asyncHandler(async (req, res, next) => {
   }
 });
 
-export const deleteBlog = asyncHandler(async (req, res, next) => {
+export const deleteBlog = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
   const { _id } = req.params;
   validateMongoDbId(_id);
   try {
@@ -68,7 +66,7 @@ export const deleteBlog = asyncHandler(async (req, res, next) => {
 });
 
 
-export const likeTheBlog = asyncHandler(async (req, res, next) => {
+export const likeTheBlog = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
 
   const { blogId } = req.body;
   validateMongoDbId(blogId);
@@ -121,7 +119,7 @@ export const likeTheBlog = asyncHandler(async (req, res, next) => {
 });
 
 
-export const disLikeTheBlog = asyncHandler(async (req, res, next) => {
+export const disLikeTheBlog = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
   const { blogId } = req.body;
   validateMongoDbId(blogId);
   try {

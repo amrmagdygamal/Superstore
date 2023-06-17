@@ -3,7 +3,7 @@ import asyncHandler from 'express-async-handler';
 import { validateMongoDbId } from '../Util/validateMongodbId';
 import brandModel from '../model/brandModel';
 
-export const createBrand = asyncHandler(async (req, res, next) => {
+export const createBrand = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
   try {
     const newBrand = await brandModel.create(req.body);
 
@@ -13,7 +13,7 @@ export const createBrand = asyncHandler(async (req, res, next) => {
   }
 });
 
-export const updateBrand = asyncHandler(async (req, res, next) => {
+export const updateBrand = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
   const { _id } = req.params;
   validateMongoDbId(_id);
   try {
@@ -29,7 +29,7 @@ export const updateBrand = asyncHandler(async (req, res, next) => {
   }
 });
 
-export const deletBrand = asyncHandler(async (req, res, next) => {
+export const deletBrand = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
   const { _id } = req.params;
   validateMongoDbId(_id);
   try {
@@ -41,7 +41,7 @@ export const deletBrand = asyncHandler(async (req, res, next) => {
   }
 });
 
-export const getBrand = asyncHandler(async (req, res, next) => {
+export const getBrand = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
   const { _id } = req.params;
   validateMongoDbId(_id);
   try {
@@ -55,7 +55,7 @@ export const getBrand = asyncHandler(async (req, res, next) => {
   }
 });
 
-export const getAllBrands = asyncHandler(async (req, res, next) => {
+export const getAllBrands = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
   try {
     const allbrands = await brandModel.find();
 

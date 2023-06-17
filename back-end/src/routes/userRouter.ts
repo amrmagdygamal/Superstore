@@ -6,6 +6,7 @@ export const userRouter = express.Router();
 
 userRouter.post('/signup', UserControllers.signup);
 userRouter.put('/login', UserControllers.login);
+userRouter.put('/refresh', UserControllers.handleRefreshToken); 
 userRouter.post('/forgot-password-token', UserControllers.forgotPasswordToken);
 userRouter.post('/reset-password/:token', UserControllers.resetPassword);
 userRouter.post('/admin-login', UserControllers.AdminLogin);
@@ -25,7 +26,6 @@ userRouter.post(
 userRouter.get('/cart', auhtMiddleware, UserControllers.getUserCart);
 userRouter.get('/:id', auhtMiddleware, isAdmin, UserControllers.getuser);
 userRouter.get('/all-users', auhtMiddleware, isAdmin, UserControllers.allUsers);
-userRouter.get('/refresh', UserControllers.handleRefreshToken);
 
 userRouter.delete('/empty-cart', auhtMiddleware, UserControllers.emptyCart);
 userRouter.get('/wishlist', auhtMiddleware, UserControllers.getWishList);

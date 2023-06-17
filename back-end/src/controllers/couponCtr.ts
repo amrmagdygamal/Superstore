@@ -3,7 +3,7 @@ import asyncHandler from 'express-async-handler';
 import couponModel from '../model/couponModel';
 import { validateMongoDbId } from '../Util/validateMongodbId';
 
-export const createCoupon = asyncHandler ( async (req, res, next) => {
+export const createCoupon = asyncHandler ( async (req: Request, res: Response, next: NextFunction) => {
   try {
     const newcoupon = await couponModel.create(req.body);
     res.json(newcoupon)
@@ -12,7 +12,7 @@ export const createCoupon = asyncHandler ( async (req, res, next) => {
   }
 })
 
-export const getAllCoupons = asyncHandler ( async (req, res, next) => {
+export const getAllCoupons = asyncHandler ( async (req: Request, res: Response, next: NextFunction) => {
   try {
     const coupons = await couponModel.find();
     res.json(coupons)
@@ -23,7 +23,7 @@ export const getAllCoupons = asyncHandler ( async (req, res, next) => {
 
 
 
-export const updateCoupon = asyncHandler ( async (req, res, next) => {
+export const updateCoupon = asyncHandler ( async (req: Request, res: Response, next: NextFunction) => {
   const { _id } = req.params;
   validateMongoDbId(_id);
 
@@ -39,7 +39,7 @@ export const updateCoupon = asyncHandler ( async (req, res, next) => {
 })
 
 
-export const deleteCoupon = asyncHandler ( async (req, res, next) => {
+export const deleteCoupon = asyncHandler ( async (req: Request, res: Response, next: NextFunction) => {
   const { _id } = req.params;
   validateMongoDbId(_id);
 

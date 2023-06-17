@@ -24,7 +24,7 @@ export const signup = asyncHandler(
 
     try {
       if (!username || !email || !password) {
-        const error = createHttpError(409, "Parameter Missing!");
+        const error = createHttpError(409, 'Parameter Missing!');
         throw error;
       }
       const existingUsername = await UserModel.findOne({
@@ -32,14 +32,20 @@ export const signup = asyncHandler(
       }).exec();
 
       if (existingUsername) {
-        const error = createHttpError(409, "Username already taken. Please choose a different one.");
+        const error = createHttpError(
+          409,
+          'Username already taken. Please choose a different one.'
+        );
         throw error;
       }
 
       const findEmail = await UserModel.findOne({ email: email }).exec();
 
       if (findEmail) {
-        const error = createHttpError(409, "A user with this email address already exists. Please log in instead.");
+        const error = createHttpError(
+          409,
+          'A user with this email address already exists. Please log in instead.'
+        );
         throw error;
       }
 
@@ -70,17 +76,15 @@ export const login = asyncHandler(
         .select('+password')
         .exec();
 
-        if (!user) {
-        
-          const error =  createHttpError(401, 'Invalid credentials');
+      if (!user) {
+        const error = createHttpError(401, 'Invalid credentials');
         throw error;
       }
 
       const passwordMatch = await bcrypt.compare(password, user.password);
 
       if (!passwordMatch) {
-        
-        const error =  createHttpError(401, 'Invalid credentials');
+        const error = createHttpError(401, 'Invalid credentials');
         throw error;
       }
 
@@ -123,25 +127,22 @@ export const AdminLogin = asyncHandler(
         .select('+password')
         .exec();
 
-        if (!findAdmin) {
-        
-          const error =  createHttpError(401, 'Invalid credentials');
+      if (!findAdmin) {
+        const error = createHttpError(401, 'Invalid credentials');
         throw error;
       }
       if (findAdmin.role !== 'admin') {
-
-        const error =  createHttpError(401, 'Not Authorised');
+        const error = createHttpError(401, 'Not Authorised');
         throw error;
       }
 
       const passwordMatch = await bcrypt.compare(password, findAdmin.password);
 
       if (!passwordMatch) {
-        
-        const error =  createHttpError(401, 'Invalid credentials');
+        const error = createHttpError(401, 'Invalid credentials');
         throw error;
       }
-      const refreshToken = await generateRefreshToken(
+      const refreshToken =  generateRefreshToken(
         findAdmin?._id.toString()
       );
 
@@ -174,11 +175,10 @@ export const AdminLogin = asyncHandler(
 export const handleRefreshToken = asyncHandler(
   async (req: Request, res: Response) => {
     const cookie = req.cookies;
-    // console.log(cookie)
-    
-    if (!cookie?.refreshToken) {
+    console.log(cookie)
 
-      const error =   createHttpError(400,'No Refresh Token in Cookies');
+    if (!cookie?.refreshToken) {
+      const error = createHttpError(400, 'No Refresh Token in Cookies');
       throw error;
     }
 
@@ -187,8 +187,10 @@ export const handleRefreshToken = asyncHandler(
     const user = await UserModel.findOne({ refreshToken });
 
     if (!user) {
-      
-      const error =   createHttpError(400,'No Refresh Token Present in db or not mathced');
+      const error = createHttpError(
+        400,
+        'No Refresh Token Present in db or not mathced'
+      );
       throw error;
     }
 
@@ -197,8 +199,10 @@ export const handleRefreshToken = asyncHandler(
       validateEnv.JWEBT_SECRET,
       (err: jwt.VerifyErrors | null, decoded: any) => {
         if (err || user._id.toString() !== decoded?._id) {
-          
-          const error =   createHttpError(409,'There is something wrong with refresh token');
+          const error = createHttpError(
+            409,
+            'There is something wrong with refresh token'
+          );
           throw error;
         }
         const accessToken = generateToken(user._id.toString());
@@ -214,7 +218,7 @@ export const logout = asyncHandler(
     const { refreshToken } = req.cookies;
 
     if (!refreshToken) {
-      const error =   createHttpError(400,'No Refresh Token in Cookies');
+      const error = createHttpError(400, 'No Refresh Token in Cookies');
       throw error;
     }
 
@@ -244,132 +248,146 @@ export const logout = asyncHandler(
 );
 
 // fetching specific user
-export const getuser = asyncHandler(async (req, res, next) => {
-  const { _id } = req.params;
-  validateMongoDbId(_id);
+export const getuser = asyncHandler(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const { _id } = req.params;
+    validateMongoDbId(_id);
 
-  try {
-    const getuser = await UserModel.findById(_id).select('-password');
-    res.json(getuser);
-  } catch (error) {
-    next(error);
+    try {
+      const getuser = await UserModel.findById(_id).select('-password');
+      res.json(getuser);
+    } catch (error) {
+      next(error);
+    }
   }
-});
+);
 
 // deleting specific user
-export const deleteUser = asyncHandler(async (req, res, next) => {
-  const { _id } = req.params;
-  validateMongoDbId(_id);
+export const deleteUser = asyncHandler(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const { _id } = req.params;
+    validateMongoDbId(_id);
 
-  try {
-    const deleteuser = await UserModel.findByIdAndDelete(_id);
+    try {
+      const deleteuser = await UserModel.findByIdAndDelete(_id);
 
-    res.json(deleteuser);
-  } catch (error) {
-    next(error);
+      res.json(deleteuser);
+    } catch (error) {
+      next(error);
+    }
   }
-});
+);
 
 // updating  user
-export const updateUser = asyncHandler(async (req, res, next) => {
-  const _id = req.user?._id;
-  try {
-    const updateuser = await UserModel.findByIdAndUpdate(
-      _id,
-      {
-        username: req.body.username,
-        email: req.body.firstname,
-      },
-      {
-        new: true,
-        runValidators: true,
-      }
-    );
-    res.json(updateuser);
-  } catch (error) {
-    next(error);
+export const updateUser = asyncHandler(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const _id = req.user?._id;
+    try {
+      const updateuser = await UserModel.findByIdAndUpdate(
+        _id,
+        {
+          username: req.body.username,
+          email: req.body.firstname,
+        },
+        {
+          new: true,
+          runValidators: true,
+        }
+      );
+      res.json(updateuser);
+    } catch (error) {
+      next(error);
+    }
   }
-});
+);
 
 // save user address
 
-export const saveAddress = asyncHandler(async (req, res, next) => {
-  const _id = req.user?._id;
+export const saveAddress = asyncHandler(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const _id = req.user?._id;
 
-  try {
-    const updateuser = await UserModel.findByIdAndUpdate(
-      _id,
-      {
-        address: req.body.username,
-      },
-      {
-        new: true,
-        runValidators: true,
-      }
-    );
-    res.json(updateuser);
-  } catch (error) {
-    next(error);
+    try {
+      const updateuser = await UserModel.findByIdAndUpdate(
+        _id,
+        {
+          address: req.body.username,
+        },
+        {
+          new: true,
+          runValidators: true,
+        }
+      );
+      res.json(updateuser);
+    } catch (error) {
+      next(error);
+    }
   }
-});
+);
 
 // FETCHING all users
 
-export const allUsers = asyncHandler(async (req, res, next) => {
-  try {
-    const getusers = await UserModel.find().select('-password');
-    res.json(getusers);
-  } catch (error) {
-    next(error);
+export const allUsers = asyncHandler(
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const getusers = await UserModel.find().select('-password');
+      res.json(getusers);
+    } catch (error) {
+      next(error);
+    }
   }
-});
+);
 
 // Block User
-export const blockUser = asyncHandler(async (req, res, next) => {
-  const { _id } = req.params;
-  validateMongoDbId(_id);
+export const blockUser = asyncHandler(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const { _id } = req.params;
+    validateMongoDbId(_id);
 
-  try {
-    const blockuser = await UserModel.findByIdAndUpdate(
-      _id,
-      {
-        isBlocked: true,
-      },
-      {
-        new: true,
-      }
-    );
+    try {
+      const blockuser = await UserModel.findByIdAndUpdate(
+        _id,
+        {
+          isBlocked: true,
+        },
+        {
+          new: true,
+        }
+      );
 
-    res.json({
-      message: 'User Blocked',
-    });
-  } catch (error) {
-    next(error);
+      res.json({
+        message: 'User Blocked',
+      });
+    } catch (error) {
+      next(error);
+    }
   }
-});
+);
 
-export const unBlockUser = asyncHandler(async (req, res, next) => {
-  const { _id } = req.params;
-  validateMongoDbId(_id);
+export const unBlockUser = asyncHandler(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const { _id } = req.params;
+    validateMongoDbId(_id);
 
-  try {
-    const unblocked = await UserModel.findByIdAndUpdate(
-      _id,
-      {
-        isBlocked: false,
-      },
-      {
-        new: true,
-      }
-    );
+    try {
+      const unblocked = await UserModel.findByIdAndUpdate(
+        _id,
+        {
+          isBlocked: false,
+        },
+        {
+          new: true,
+        }
+      );
 
-    res.json({
-      message: 'User UnBlocked',
-    });
-  } catch (error) {
-    next(error);
+      res.json({
+        message: 'User UnBlocked',
+      });
+    } catch (error) {
+      next(error);
+    }
   }
-});
+);
 
 export const updatePassword = asyncHandler(
   async (req: Request, res: Response) => {
@@ -391,41 +409,41 @@ export const updatePassword = asyncHandler(
   }
 );
 
-export const forgotPasswordToken = asyncHandler(async (req, res, next) => {
-  const { email } = req.body;
+export const forgotPasswordToken = asyncHandler(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const { email } = req.body;
 
-  // Find the user associated with the email address
-  const user = await UserModel.findOne({ email });
-  
+    // Find the user associated with the email address
+    const user = await UserModel.findOne({ email });
 
-  if (!user) {
-    
-    const error =   createHttpError(400, 'User not found with this email');
-    throw error;
+    if (!user) {
+      const error = createHttpError(400, 'User not found with this email');
+      throw error;
+    }
+
+    try {
+      // Generate a password reset token for the user
+      const token = await user.createPasswordResetToken();
+      await user.save();
+
+      // Construct the password reset URL and send the reset link to the user's email
+      const resetURL = `Hi, Please follow this link to reset Your Password. This link is valid till 10 minutes from now. <a href='http://localhost:5173/reset-password/${token}'>Click here</a>`;
+      const data = {
+        to: email,
+        text: 'Hey User',
+        subject: 'Forgot Password Link',
+        html: resetURL,
+      };
+      await sendEmail(data);
+
+      // Send the password reset token back to the client
+      res.json(token);
+    } catch (error) {
+      // Handle any errors that occur during the password reset process
+      next(error);
+    }
   }
-
-  try {
-    // Generate a password reset token for the user
-    const token = await user.createPasswordResetToken();
-    await user.save();
-
-    // Construct the password reset URL and send the reset link to the user's email
-    const resetURL = `Hi, Please follow this link to reset Your Password. This link is valid till 10 minutes from now. <a href='http://localhost:5173/reset-password/${token}'>Click here</a>`;
-    const data = {
-      to: email,
-      text: 'Hey User',
-      subject: 'Forgot Password Link',
-      html: resetURL,
-    };
-    await sendEmail(data);
-
-    // Send the password reset token back to the client
-    res.json(token);
-  } catch (error) {
-    // Handle any errors that occur during the password reset process
-    next(error);
-  }
-});
+);
 
 export const resetPassword = asyncHandler(async (req, res) => {
   const { password } = req.body;
@@ -439,10 +457,9 @@ export const resetPassword = asyncHandler(async (req, res) => {
     passwordResetToken: hashedToken,
     passwordResetExpires: { $gt: Date.now() },
   });
-  
+
   if (!user) {
-    
-    const error =  new Error('Token Expired, Please try again later.');
+    const error = new Error('Token Expired, Please try again later.');
     throw error;
   }
 
@@ -474,138 +491,144 @@ export const getWishList = asyncHandler(
 
 // Add to Cart Function
 
-export const addToCart = asyncHandler(async (req, res, next) => {
-  const _id = req.user?._id;
-  const { prodId, colors, quantity } = req.body;
+export const addToCart = asyncHandler(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const _id = req.user?._id;
+    const { prodId, colors, quantity } = req.body;
 
-  try {
-    const user = await UserModel.findById(_id);
+    try {
+      const user = await UserModel.findById(_id);
 
-    // Find the cart for the current user
-    let cart = await CartModel.findOne({ customer: user?._id });
+      // Find the cart for the current user
+      let cart = await CartModel.findOne({ customer: user?._id });
 
-    if (!cart) {
-      cart = new CartModel({
-        customer: user?._id,
-        products: [],
-        cartTotol: 0,
-        totalAfterDiscount: 0,
-      });
-    }
-
-    // Find the product to add to the cart
-    const product = await ProductModel.findById(prodId);
-
-    // Check If the product is Already in the cart
-
-    const existProdIndex = cart.products.findIndex(
-      (p) => p.product?.toString() === prodId.toString()
-    );
-
-    if (existProdIndex !== -1) {
-      // the product is already exists in the cart update the quantity
-      if (product?.countInStock && product.countInStock >= 1) {
-        cart.products[existProdIndex].quantity += 1;
-      } else {
-        createHttpError('400', 'Product is out of stock');
+      if (!cart) {
+        cart = new CartModel({
+          customer: user?._id,
+          products: [],
+          cartTotol: 0,
+          totalAfterDiscount: 0,
+        });
       }
-    } else {
-      // add the product to the cart
-      const newProduct = {
-        name: product?.name ?? '',
-        quantity: quantity,
-        price: product?.price ?? 0,
-        color: colors ?? undefined,
-        product: product?._id,
-        image: product?.images[0]?.url ?? '', // ensure image is always a string
-      };
-      cart.products.push(newProduct);
+
+      // Find the product to add to the cart
+      const product = await ProductModel.findById(prodId);
+
+      // Check If the product is Already in the cart
+
+      const existProdIndex = cart.products.findIndex(
+        (p) => p.product?.toString() === prodId.toString()
+      );
+
+      if (existProdIndex !== -1) {
+        // the product is already exists in the cart update the quantity
+        if (product?.countInStock && product.countInStock >= 1) {
+          cart.products[existProdIndex].quantity += 1;
+        } else {
+          createHttpError('400', 'Product is out of stock');
+        }
+      } else {
+        // add the product to the cart
+        const newProduct = {
+          name: product?.name ?? '',
+          quantity: quantity,
+          price: product?.price ?? 0,
+          color: colors ?? undefined,
+          product: product?._id,
+          image: product?.images[0]?.url ?? '', // ensure image is always a string
+        };
+        cart.products.push(newProduct);
+      }
+
+      // Calculate the cart total
+      cart.cartTotal = cart.products.reduce(
+        (prev, curr) => prev + curr.quantity * curr.price,
+        0
+      );
+
+      await cart.save();
+
+      res.status(200).json({ cart });
+    } catch (error) {
+      next(error);
     }
-
-    // Calculate the cart total
-    cart.cartTotal = cart.products.reduce(
-      (prev, curr) => prev + curr.quantity * curr.price,
-      0
-    );
-
-    await cart.save();
-
-    res.status(200).json({ cart });
-  } catch (error) {
-    next(error);
   }
-});
+);
 
 // Delete from Cart Function
-export const deleteFromCart = asyncHandler(async (req, res, next) => {
-  const _id = req.user?._id;
-  const { prodId } = req.body;
+export const deleteFromCart = asyncHandler(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const _id = req.user?._id;
+    const { prodId } = req.body;
 
-  try {
-    const user = await UserModel.findById(_id);
+    try {
+      const user = await UserModel.findById(_id);
 
-    // Find the cart for the current user
-    let cart = await CartModel.findOne({ customer: user?._id });
+      // Find the cart for the current user
+      let cart = await CartModel.findOne({ customer: user?._id });
 
-    if (!cart) {
-      cart = new CartModel({
-        customer: user?._id,
-        products: [],
-        cartTotol: 0,
-        totalAfterDiscount: 0,
-      });
-    }
-
-    // Find the product to delete from the cart
-    const product = await ProductModel.findById(prodId);
-
-    // Check If the product is Already in the cart
-
-    const existProdIndex = cart.products.findIndex(
-      (p) => p.product?.toString() === prodId.toString()
-    );
-
-    if (existProdIndex !== -1) {
-      // the product is already exists in the cart update the quantity
-
-      if (cart.products[existProdIndex].quantity > 1) {
-        cart.products[existProdIndex].quantity -= 1;
-      } else {
-        // If the quantity is 1, remove the product from the cart
-        cart.products.splice(existProdIndex, 1);
+      if (!cart) {
+        cart = new CartModel({
+          customer: user?._id,
+          products: [],
+          cartTotol: 0,
+          totalAfterDiscount: 0,
+        });
       }
-    } else {
-      res.json("doesn't exist in the cart");
+
+      // Find the product to delete from the cart
+      const product = await ProductModel.findById(prodId);
+
+      // Check If the product is Already in the cart
+
+      const existProdIndex = cart.products.findIndex(
+        (p) => p.product?.toString() === prodId.toString()
+      );
+
+      if (existProdIndex !== -1) {
+        // the product is already exists in the cart update the quantity
+
+        if (cart.products[existProdIndex].quantity > 1) {
+          cart.products[existProdIndex].quantity -= 1;
+        } else {
+          // If the quantity is 1, remove the product from the cart
+          cart.products.splice(existProdIndex, 1);
+        }
+      } else {
+        res.json("doesn't exist in the cart");
+      }
+
+      // Calculate the cart total
+      cart.cartTotal = cart.products.reduce(
+        (prev, curr) => prev - curr.quantity * curr.price,
+        0
+      );
+
+      await cart.save();
+
+      res.status(200).json({ cart });
+    } catch (error) {
+      next(error);
     }
-
-    // Calculate the cart total
-    cart.cartTotal = cart.products.reduce(
-      (prev, curr) => prev - curr.quantity * curr.price,
-      0
-    );
-
-    await cart.save();
-
-    res.status(200).json({ cart });
-  } catch (error) {
-    next(error);
   }
-});
+);
 
-export const getUserCart = asyncHandler(async (req, res, next) => {
-  const _id = req.user?._id;
+export const getUserCart = asyncHandler(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const _id = req.user?._id;
 
-  try {
-    const cart = await CartModel.find({ customer: _id }).populate(
-      'products.product'
-    );
-    // Check if User already has product in cart
+    try {
+      const cart = await CartModel.find({ customer: _id }).populate(
+        'products.product'
+      );
+      // Check if User already has product in cart
 
-    res.json(cart);
-  } catch (error) {
-    next(error);
+      res.json(cart);
+    } catch (error) {
+      next(error);
+    }
   }
-});
+);
 
 export const emptyCart = asyncHandler(async (req, res, next) => {
   const _id = req.user?._id;

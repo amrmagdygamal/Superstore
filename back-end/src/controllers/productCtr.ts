@@ -6,7 +6,7 @@ import ProductModel from '../model/ProductModel';
 import UserModel from '../model/UserModel';
 
 
-export const createProduct = asyncHandler(async (req, res, next) => {
+export const createProduct = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
   try {
     if (req.body.title) {
       req.body.slug = slugify(req.body.title);
@@ -17,7 +17,7 @@ export const createProduct = asyncHandler(async (req, res, next) => {
     next(error);
   }
 });
-export const updateProduct = asyncHandler(async (req, res, next) => {
+export const updateProduct = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
   const { _id } = req.params;
   try {
     if (req.body.title) {
@@ -35,7 +35,7 @@ export const updateProduct = asyncHandler(async (req, res, next) => {
     next(error);
   }
 });
-export const deleteProduct = asyncHandler(async (req, res, next) => {
+export const deleteProduct = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
   const { _id } = req.params;
   try {
     const deleteProduct = await ProductModel.findOneAndDelete({ _id });
@@ -46,7 +46,7 @@ export const deleteProduct = asyncHandler(async (req, res, next) => {
   }
 });
 
-export const getProduct = asyncHandler(async (req, res, next) => {
+export const getProduct = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { _id } = req.params;
     const findProduct = await ProductModel.findById(_id).populate("color").exec();
@@ -57,7 +57,7 @@ export const getProduct = asyncHandler(async (req, res, next) => {
   }
 });
 
-export const getAllProducts = asyncHandler(async (req, res, next) => {
+export const getAllProducts = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
   try {
     // Filtering
 
@@ -109,7 +109,7 @@ export const getAllProducts = asyncHandler(async (req, res, next) => {
   }
 });
 
-export const addToWishList = asyncHandler(async (req, res, next) => {
+export const addToWishList = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
   const _id = req.user?._id;
 
   const { prodId } = req.body;
@@ -148,7 +148,7 @@ export const addToWishList = asyncHandler(async (req, res, next) => {
   }
 });
 
-export const rating = asyncHandler(async (req, res, next) => {
+export const rating = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
   const { _id } = req.user;
 
   const { star, prodId, comment } = req.body;

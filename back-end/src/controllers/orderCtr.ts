@@ -89,7 +89,7 @@ export const createOrder = asyncHandler(
   }
 );
 
-export const getUserOrders = asyncHandler(async (req, res, next) => {
+export const getUserOrders = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
   const _id  = req.user?._id;
   try {
     const userorders = await OrderModel.find({ orderby: _id });
@@ -114,7 +114,7 @@ export const getAllOrders = asyncHandler(
   }
 );
 
-export const getOrderByUserId = asyncHandler(async (req, res, next) => {
+export const getOrderByUserId = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
   const { id } = req.params;
   validateMongoDbId(id);
   try {
@@ -128,7 +128,7 @@ export const getOrderByUserId = asyncHandler(async (req, res, next) => {
   }
 });
 
-export const updateOrderStatus = asyncHandler(async (req, res, next) => {
+export const updateOrderStatus = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
   const { status } = req.body;
   const { _id } = req.params;
   validateMongoDbId(_id);
@@ -149,7 +149,7 @@ export const updateOrderStatus = asyncHandler(async (req, res, next) => {
   }
 });
 
-export const getOrder = asyncHandler(async (req, res, next) => {
+export const getOrder = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
   const _id  = req.user?._id;
 
   try {
@@ -162,7 +162,7 @@ export const getOrder = asyncHandler(async (req, res, next) => {
 
 
 
-export const getAnOrder = asyncHandler(async (req, res, next) => {
+export const getAnOrder = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
   const {id} = req.params;
 
   try {

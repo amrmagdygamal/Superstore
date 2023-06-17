@@ -47,11 +47,11 @@ const SignUpPage = () => {
     }
   });
 
-  // useEffect(() => {
-  //   if(userState.userInfor !== null && userState.isError === false) {
-  //     navigate("/login")
-  //   }
-  // }, [userState])
+  useEffect(() => {
+    if(userState.userInfor !== undefined && userState.userInfor !== "" && userState.isError === false) {
+      navigate("/login")
+    }
+  }, [userState])
 
   return (
     <>

@@ -3,7 +3,7 @@ import asyncHandler from 'express-async-handler';
 import { validateMongoDbId } from '../Util/validateMongodbId';
 import EnquiryModel from '../model/EnquiryModel';
 
-export const createEnquiry = asyncHandler(async (req, res, next) => {
+export const createEnquiry = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
   try {
     const newEnquiry = await EnquiryModel.create(req.body);
 
@@ -13,7 +13,7 @@ export const createEnquiry = asyncHandler(async (req, res, next) => {
   }
 });
 
-export const updateEnquiry = asyncHandler(async (req, res, next) => {
+export const updateEnquiry = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
   const { _id } = req.params;
   validateMongoDbId(_id);
   try {
@@ -29,7 +29,7 @@ export const updateEnquiry = asyncHandler(async (req, res, next) => {
   }
 });
 
-export const deletEnquiry = asyncHandler(async (req, res, next) => {
+export const deletEnquiry = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
   const { _id } = req.params;
   validateMongoDbId(_id);
   try {
@@ -41,7 +41,7 @@ export const deletEnquiry = asyncHandler(async (req, res, next) => {
   }
 });
 
-export const getEnquiry = asyncHandler(async (req, res, next) => {
+export const getEnquiry = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
   const { _id } = req.params;
   validateMongoDbId(_id);
   try {
@@ -55,7 +55,7 @@ export const getEnquiry = asyncHandler(async (req, res, next) => {
   }
 });
 
-export const getAllEnquirys = asyncHandler(async (req, res, next) => {
+export const getAllEnquirys = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
   try {
     const allEnquirys = await EnquiryModel.find();
 

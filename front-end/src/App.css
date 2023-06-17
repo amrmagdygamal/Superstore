@@ -23,6 +23,12 @@ body {
   font-family: 'Rubik', sans-serif;
 }
 
+.nav-item.dropdown a {
+  color: white !important;
+}
+
+
+
 .card-wrapper {
   background-color: white;
   box-shadow: 0 0 7px 2px #71717130;
