@@ -12,6 +12,7 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import CustomModal from '../components/CustomeModel';
+import { number } from 'yup';
 
 const columns: any = [
   {
@@ -38,7 +39,7 @@ const columns: any = [
     dataIndex: 'color',
   },
   {
-    title: 'Price',
+    title: 'Price $',
     dataIndex: 'price',
     sorter: (a: any, b: any) => a.price - b.price,
   },
@@ -79,16 +80,24 @@ const Productlist = () => {
   for (let i = 0; i < productState.length; i++) {
     data1.push({
       key: i + 1,
-      title: productState[i].name,
+      name: productState[i].name,
       brand: productState[i].brand,
       category: productState[i].category,
-      color: productState[i].color,
+      color: productState[i].color?.map((c: any, j: number) => (
+        <div key={j} className='d-flex align-items-center gap-3'>
+          <p
+            className="rounded-circle p-3 mb-0"
+            style={{ backgroundColor: c.title }}
+          ></p>
+          {c.title}
+        </div>
+      )),
       price: productState[i].price,
       action: (
         <>
           <Link
             to={`/admin/product/${productState[i]._id}`}
-            className="fs-3 text-dark"
+            className="fs-3 text-dark" 
           >
             <BiEdit />
           </Link>
@@ -114,7 +123,7 @@ const Productlist = () => {
   return (
     <>
       <div>
-        <h3 className="mb-4 title">Products</h3>
+        <h3 className="mb-4 title" style={{backgroundColor: "648e1801fdc9d13f119e2481"}}>Products</h3>
         <div>
           <Table columns={columns} dataSource={data1} />
         </div>

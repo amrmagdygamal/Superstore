@@ -95,8 +95,8 @@ export const getAllProducts = asyncHandler(async (req: Request, res: Response, n
       if (skip >= productCount) throw new Error('This Page does not exists');
     }
 
-    const product = await query;
-    res.json(product);
+    const product = await query.populate('color').exec();
+    res.json(product)
   } catch (error) {
     next(error);
   }

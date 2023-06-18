@@ -89,6 +89,10 @@ interface ProductState {
   productCategory?: string;
   productPrice?: number;
   productImages?: any;
+  productTag?: string
+  productBrand?: string
+  productColor?: any
+  productQuant?: number
 
 }
 
@@ -153,11 +157,15 @@ export const productSlice = createSlice({
         state.isLoading = false;
         state.isError = false;
         state.isSuccess = true;
-        state.productName = action.payload.title;
+        state.productName = action.payload.name;
         state.productDesc = action.payload.description;
         state.productCategory = action.payload.category;
         state.productPrice = action.payload.price;
+        state.productColor = action.payload.color;
+        state.productBrand = action.payload.brand;
         state.productImages = action.payload.images;
+        state.productTag = action.payload.tag;
+        state.productQuant = action.payload.countInStock;
         
       })
       .addCase(getProduct.rejected, (state, action) => {

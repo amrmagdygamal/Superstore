@@ -16,7 +16,7 @@ uploadRouter.post(
   UploadControllers.uploadImages
 )
 
-;
+
 
 uploadRouter.delete(
   '/delete-img/:id',
