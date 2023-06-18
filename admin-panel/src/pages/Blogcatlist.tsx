@@ -56,11 +56,6 @@ const Blogcatlist = () => {
     dispatch(getBlogCategories());
   }, []);
 
-  useEffect(() => {
-    dispatch(getBlogCategories());
-  }, [blogCategoryState]);
-
-
   const data1: any = [];
   for (let i = 0; i < blogCategoryState?.length; i++) {
     data1.push({
@@ -90,7 +85,7 @@ const Blogcatlist = () => {
     setTimeout(() => {
       setOpen(false)
       dispatch(getBlogCategories());
-    }, 100);
+    }, 400);
     setOpen(false);
   };
 

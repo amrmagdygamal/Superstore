@@ -5,12 +5,12 @@ import { config } from '../../utils/axiosconfig';
 // const getTokenFromLocalStorage = localStorage.getItem
 
 const getAllOrders = async () => {
-  const response = await axios.get(`${base_url}orders/getallorders`);
+  const response = await axios.get(`${base_url}orders/getallorders`, config);
   return response.data;
 };
 
 const getOrderbyuserid = async (id: string) => {
-  const response = await axios.get(`${base_url}orders/getorderbyuserid/${id}`);
+  const response = await axios.get(`${base_url}orders/getorderbyuserid/${id}`, config);
   return response.data;
 };
 
@@ -31,7 +31,7 @@ const getAnOrder = async (id: string) => {
 
 
 const updateOrder = async (data: any) => {
-  const response = await axios.put(`${base_url}orders/updateorder/${data.id}`, {status: data.status}, config);
+  const response = await axios.put(`${base_url}orders/updateorder/${data.id}`, data, config);
 
   return response.data;
 };

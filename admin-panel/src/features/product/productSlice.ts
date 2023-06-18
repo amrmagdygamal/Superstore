@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { createAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import ProductService from './productService';
+import { toast } from 'react-toastify';
 
 export const getProducts = createAsyncThunk(
   'product/get-products',
@@ -132,12 +133,18 @@ export const productSlice = createSlice({
         state.isError = false;
         state.isSuccess = true;
         state.createdProduct = action.payload;
+        if (state.isSuccess === true) {
+          toast.success('Product Added Successfullly!');
+        }
       })
       .addCase(createProduct.rejected, (state, action) => {
         state.isError = true;
         state.isSuccess = false;
         state.isLoading = false;
         state.message = action.error.message ?? '';
+        if (state.isError === true) {
+          toast.error('Some Thing went wrong!');
+        }
       })
       .addCase(getProduct.pending, (state) => {
         state.isLoading = true;
@@ -149,8 +156,9 @@ export const productSlice = createSlice({
         state.productName = action.payload.title;
         state.productDesc = action.payload.description;
         state.productCategory = action.payload.category;
-        state.productAuthor = action.payload.author;
+        state.productPrice = action.payload.price;
         state.productImages = action.payload.images;
+        
       })
       .addCase(getProduct.rejected, (state, action) => {
         state.isLoading = false;
@@ -166,12 +174,18 @@ export const productSlice = createSlice({
         state.isError = false;
         state.isSuccess = true;
         state.updatedProduct = action.payload;
+        if (state.isSuccess === true) {
+          toast.success('Product Updated Successfullly!');
+        }
       })
       .addCase(updateProduct.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.isSuccess = false;
         state.message = action.error.message ?? "Some Thing went wrong";
+        if (state.isError === true) {
+          toast.error('Some Thing went wrong!');
+        }
       })
       .addCase(deleteProduct.pending, (state) => {
         state.isLoading = true;
@@ -181,12 +195,18 @@ export const productSlice = createSlice({
         state.isError = false;
         state.isSuccess = true;
         state.deletedProduct = action.payload;
+        if (state.isSuccess === true) {
+          toast.success('Product Deleted Successfullly!');
+        }
       })
       .addCase(deleteProduct.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.isSuccess = false;
         state.message = action.error.message ?? "Some Thing went wrong";
+        if (state.isError === true) {
+          toast.error('Some Thing went wrong!');
+        }
       })
       .addCase(resetState, () => initialState);
   },

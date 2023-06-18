@@ -2,8 +2,6 @@ import { NextFunction, Request, Response } from 'express';
 import asyncHandler from 'express-async-handler';
 import { validateMongoDbId } from '../Util/validateMongodbId';
 import brandModel from '../model/brandModel';
-import mongoose from 'mongoose';
-import createHttpError from 'http-errors';
 
 export const createBrand = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
   try {

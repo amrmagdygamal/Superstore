@@ -2,7 +2,6 @@ import { useEffect } from 'react';
 import CustomInput from '../components/CustomInput';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
 import * as yup from 'yup';
 import { useFormik } from 'formik';
 import {
@@ -48,20 +47,6 @@ const AddCoupon = () => {
     }
   }, [getCouponId]);
 
-  useEffect(() => {
-    if (isSuccess && createdCoupon) {
-      toast.success('Coupon Added Successfullly!');
-    }
-    if (isSuccess && updatedCoupon) {
-      toast.success('Coupon Updated Successfully!');
-      navigate('/admin/list-coupon');
-    }
-    if (isError) {
-      toast.error('Something Went Wrong!');
-    }
-  }, [isSuccess, isError, isLoading]);
-
-
 
 
 
@@ -77,14 +62,11 @@ const AddCoupon = () => {
     validationSchema: schema,
     onSubmit: (values) => {
       if (getCouponId !== undefined) {
-        const data: CouponInfo = { _id: getCouponId, couponData: values };
+        const data: CouponInfo = { _id: getCouponId, name: values.name, expiry: values.expiry, discount: values.discount };
         dispatch(updateCoupon(data));
       } else {
         dispatch(createCoupon(values));
         formik.resetForm();
-        setTimeout(() => {
-          dispatch(resetState());
-        }, 300);
       }
     },
   });

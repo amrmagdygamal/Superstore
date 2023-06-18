@@ -1,7 +1,7 @@
 import asyncHandler from 'express-async-handler';
 import { NextFunction, Request, Response } from 'express';
 import OrderModel from '../model/OrderModel';
-import UserModel from '../model/UserModel';
+import {UserModel} from '../model/UserModel';
 import CartModel from '../model/CartModel';
 import uniqid from 'uniqid';
 import ProductModel from '../model/ProductModel';
@@ -130,12 +130,11 @@ export const getOrderByUserId = asyncHandler(async (req: Request, res: Response,
 
 export const updateOrderStatus = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
   const { status } = req.body;
-  const { _id } = req.params;
-  validateMongoDbId(_id);
+  const { id } = req.params;
 
   try {
     const updateOrderStatus = await OrderModel.findOneAndUpdate(
-      { _id },
+      { id },
       {
         status: status,
         paymentResult: {

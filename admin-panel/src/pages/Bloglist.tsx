@@ -61,10 +61,6 @@ const Bloglist = () => {
   }, []);
 
 
-  useEffect(() => {
-    dispatch(getBlogs());
-  }, [blogState]);
-
 
 
   const data1: any = [];
@@ -97,7 +93,7 @@ const Bloglist = () => {
     dispatch(deleteBlog(e));
     setTimeout(() => {
       dispatch(getBlogs());
-    }, 100);
+    }, 400);
     setOpen(false);
   };
 

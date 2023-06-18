@@ -1,13 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useEffect } from 'react';
+import  { useEffect } from 'react';
 import { Table } from 'antd';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '../app/store';
 import { getAllOrders, updateOrder } from '../features/order/orderSlice';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { BiEdit } from 'react-icons/bi';
-import { AiFillDelete } from 'react-icons/ai';
+
 
 const columns: any = [
   {
@@ -43,12 +42,10 @@ const columns: any = [
 
 const Orders = () => {
   const dispatch: AppDispatch = useDispatch();
-
-  useEffect(() => {
-    dispatch(getAllOrders());
-  }, []);
-
   const AllOrderState = useSelector((state: any) => state.order.orders);
+
+
+
 
   const data1: any = [];
   for (let i = 0; i < AllOrderState?.length; i++) {
@@ -80,6 +77,10 @@ const Orders = () => {
 
   const updateOneOrder = (e: any) => {
     dispatch(updateOrder(e))
+
+    setTimeout(() => {
+      dispatch(getAllOrders())
+    }, 400);
   }
 
   return (

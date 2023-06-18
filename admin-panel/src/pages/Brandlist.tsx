@@ -52,10 +52,7 @@ const Brandlist = () => {
     dispatch(getBrands());
   }, []);
 
-  useEffect(() => {
-    dispatch(getBrands());
-  }, [brandState]);
-
+  
 
   const data1: any = [];
   for (let i = 0; i < brandState.length; i++) {
@@ -85,7 +82,7 @@ const Brandlist = () => {
     dispatch(deleteBrand(e));
     setTimeout(() => {
       dispatch(getBrands());
-    }, 100);
+    }, 400);
     setOpen(false);
   };
 

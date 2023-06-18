@@ -7,9 +7,6 @@ import {UserModel} from '../model/UserModel';
 
 export const createProduct = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
   try {
-    if (req.body.title) {
-      req.body.slug = slugify(req.body.title);
-    }
     const newProduct = await ProductModel.create(req.body);
     res.json(newProduct);
   } catch (error) {
@@ -19,9 +16,6 @@ export const createProduct = asyncHandler(async (req: Request, res: Response, ne
 export const updateProduct = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
   const { id } = req.params;
   try {
-    if (req.body.title) {
-      req.body.slug = slugify(req.body.title);
-    }
 
     const updateProduct = await ProductModel.findOneAndUpdate(
       { id },

@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import 'react-widgets/styles.css';
 
 import ReactQuill from 'react-quill';
@@ -19,24 +19,26 @@ import { createProduct, resetState } from '../features/product/productSlice';
 import CustomInput from '../components/CustomInput';
 import { getprodCategories } from '../features/productcategory/prodCategorySlice';
 
+const schema = Yup.object().shape({
+  name: Yup.string().required('Name is Required'),
+  images: Yup.array().required('').min(1, 'You should one Image'),
+
+  description: Yup.string().required('Description is Required'),
+  price: Yup.number().required('Price is Required'),
+  brand: Yup.string().required('Brand is Required'),
+  tag: Yup.string().required('Tag is Required'),
+  category: Yup.string().required('Category is Required'),
+  color: Yup.array()
+    .min(1, 'Pick at least one color')
+    .required('Color is Required'),
+  countInStock: Yup.number().required('Quantity is Required'),
+});
+
+
 const AddProduct = () => {
   const [color, setColor] = useState([]);
   const [images, setImages] = useState([]);
 
-  const schema = Yup.object().shape({
-    name: Yup.string().required('Name is Required'),
-    images: Yup.array().required('').min(1, 'You should one Image'),
-
-    description: Yup.string().required('Description is Required'),
-    price: Yup.number().required('Price is Required'),
-    brand: Yup.string().required('Brand is Required'),
-    tag: Yup.string().required('Tag is Required'),
-    category: Yup.string().required('Category is Required'),
-    color: Yup.array()
-      .min(1, 'Pick at least one color')
-      .required('Color is Required'),
-    countInStock: Yup.number().required('Quantity is Required'),
-  });
 
   const dispatch: AppDispatch = useDispatch();
 
@@ -80,19 +82,12 @@ const AddProduct = () => {
     });
   });
 
-  const { isLoading, isSuccess, isError, createdProduct } = newProduct;
   useEffect(() => {
     formik.values.color = color ? color : [];
     formik.values.images = img;
   }, [color, images]);
 
-  useEffect(() => {
-    if (isSuccess && createdProduct) {
-      toast.success('Product Added Successfully!');
-    } else if (isError) {
-      toast.error("Couldn't Add the product");
-    }
-  }, [isLoading, isSuccess, isError]);
+  
 
   const formik = useFormik({
     initialValues: {
@@ -112,9 +107,6 @@ const AddProduct = () => {
       dispatch(createProduct(values));
       formik.resetForm();
       setColor([]);
-      setTimeout(() => {
-        dispatch(resetState());
-      }, 8000);
     },
   });
   return (

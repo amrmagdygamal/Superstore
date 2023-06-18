@@ -4,6 +4,10 @@ import * as ProductControllers from '../controllers/productCtr'
 
 const productRouter = express.Router();
 
+productRouter.get(
+  '/',
+  ProductControllers.getAllProducts
+);
 productRouter.post(
   '/',
   auhtMiddleware,
@@ -40,10 +44,6 @@ productRouter.get(
   ProductControllers.getProduct
 );
 
-productRouter.get(
-  '/',
-  ProductControllers.getAllProducts
-);
 
 
 

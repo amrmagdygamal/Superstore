@@ -106,7 +106,7 @@ const Enquiries = () => {
     dispatch(deleteEnquiry(e));
     setTimeout(() => {
       dispatch(getEnquiries());
-    }, 100);
+    }, 400);
     setOpen(false);
   };
 

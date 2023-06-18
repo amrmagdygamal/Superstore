@@ -50,6 +50,7 @@ const Couponlist = () => {
     setOpen(true);
     setCouponId(e);
   };
+  const CouponState = useSelector((state: any) => state.coupon.coupons);
 
   const hideModel = () => {
     setOpen(false);
@@ -59,8 +60,9 @@ const Couponlist = () => {
     dispatch(resetState());
     dispatch(getCoupons());
   }, []);
+  
 
-  const CouponState = useSelector((state: any) => state.coupon.coupons);
+
 
   const data1: any = [];
   for (let i = 0; i < CouponState.length; i++) {
@@ -92,7 +94,7 @@ const Couponlist = () => {
     dispatch(deleteCoupon(e));
     setTimeout(() => {
       dispatch(getCoupons());
-    }, 100);
+    }, 400);
     setOpen(false);
   };
 

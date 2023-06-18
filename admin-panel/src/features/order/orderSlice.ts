@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { createAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import OrderService from './orderService';
-import { User } from '../../types/User';
 import { toast } from 'react-toastify';
 
 export const getAllOrders = createAsyncThunk(

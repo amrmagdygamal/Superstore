@@ -54,11 +54,7 @@ const Categorieslist = () => {
     dispatch(getprodCategories());
   }, []);
 
-  useEffect(() => {
-    dispatch(getprodCategories());
-  }, [prodCategoryState]);
-
-
+  
   const data1: any = [];
   for (let i = 0; i < prodCategoryState.length; i++) {
     data1.push({

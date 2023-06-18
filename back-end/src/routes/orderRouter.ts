@@ -6,12 +6,12 @@ import OrderModel from '../model/OrderModel';
 
 const orderRouter = express.Router();
 
+orderRouter.get('/getallorders', auhtMiddleware,isAdmin,  OrderControllers.getAllOrders);
 orderRouter.post('/', auhtMiddleware, OrderControllers.createOrder);
 
 
 orderRouter.get('/ordershistory', auhtMiddleware, OrderControllers.getUserOrders);
 
-orderRouter.get('/getallorders', auhtMiddleware,isAdmin,  OrderControllers.getAllOrders);
 
 orderRouter.get('/getorderbyuserid/:id', auhtMiddleware, isAdmin ,OrderControllers.getOrderByUserId);
 orderRouter.get('/getMonthWiseOrderIncome', auhtMiddleware,OrderControllers.getMonthWiseOrderIncome);

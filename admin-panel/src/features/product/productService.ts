@@ -15,13 +15,7 @@ const createProduct = async (product: any) => {
 const updateProduct = async (product: any) => {
   const response = await axios.put(
     `${base_url}pruducts/${product._id}`,
-    {
-      title: product.productData.title,
-      description: product.productData.description,
-      category: product.productData.category,
-      author: product.productData.author,
-      images: product.productData.images,
-    },
+    product,
     config
   );
 

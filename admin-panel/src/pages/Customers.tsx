@@ -2,7 +2,7 @@
 import React, { useEffect } from 'react';
 import { Table } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
-import { getCustomers } from '../features/customers/customerSlice';
+import { getCustomers, resetState } from '../features/customers/customerSlice';
 import { AppDispatch } from '../app/store';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
@@ -38,6 +38,7 @@ const Customers = () => {
 
 
   useEffect(() => {
+    dispatch(resetState());
     dispatch(getCustomers())
   }, [])
 

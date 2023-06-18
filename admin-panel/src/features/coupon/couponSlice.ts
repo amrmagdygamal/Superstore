@@ -2,6 +2,7 @@
 import { createAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import Couponservice from './couponService';
 import couponService from './couponService';
+import { toast } from 'react-toastify';
 
 export const getCoupons = createAsyncThunk(
   'coupon/get-coupons',
@@ -16,7 +17,7 @@ export const getCoupons = createAsyncThunk(
 
 export const createCoupon = createAsyncThunk(
   'coupon/create-coupon',
-  async (couponData: any, thunkAPI) => {
+  async (couponData: CouponInfo, thunkAPI) => {
     try {
       return await Couponservice.createCoupon(couponData);
     } catch (error) {
@@ -60,11 +61,9 @@ export const deleteCoupon = createAsyncThunk(
 
 export interface CouponInfo {
   _id?: string;
-  couponData: {
-    name: string;
-    expiry: Date;
-    discount: number;
-  };
+  name: string;
+  expiry: Date;
+  discount: number;
 }
 
 interface CouponState {
@@ -77,8 +76,8 @@ interface CouponState {
   updatedCoupon?: CouponInfo;
   deletedCoupon?: CouponInfo;
   couponName?: string;
-  couponDiscount?: number
-  couponExpiry?: Date
+  couponDiscount?: number;
+  couponExpiry?: Date;
 }
 
 const initialState: CouponState = {
@@ -111,6 +110,7 @@ export const couponSlice = createSlice({
         state.isSuccess = false;
         state.isLoading = false;
         state.message = action.error.message ?? '';
+        
       })
       .addCase(createCoupon.pending, (state) => {
         state.isLoading = true;
@@ -120,12 +120,18 @@ export const couponSlice = createSlice({
         state.isSuccess = true;
         state.isError = false;
         state.createdCoupon = action.payload;
+        if (state.isSuccess === true) {
+          toast.success('Coupon Added Successfullly!');
+        }
       })
       .addCase(createCoupon.rejected, (state, action) => {
         state.isError = true;
         state.isSuccess = false;
         state.isLoading = false;
         state.message = action.error.message ?? '';
+        if (state.isError === true) {
+          toast.error('Some Thing went wrong!');
+        }
       })
       .addCase(getCoupon.pending, (state) => {
         state.isLoading = true;
@@ -152,12 +158,18 @@ export const couponSlice = createSlice({
         state.isError = false;
         state.isSuccess = true;
         state.updatedCoupon = action.payload;
+        if (state.isSuccess === true) {
+          toast.success('Coupon Updated Successfullly!');
+        }
       })
       .addCase(updateCoupon.rejected, (state, action) => {
         state.isError = true;
         state.isSuccess = false;
         state.isLoading = false;
         state.message = action.error.message ?? '';
+        if (state.isError === true) {
+          toast.error('Some Thing went wrong!');
+        }
       })
       .addCase(deleteCoupon.pending, (state) => {
         state.isLoading = true;
@@ -167,12 +179,18 @@ export const couponSlice = createSlice({
         state.isError = false;
         state.isSuccess = true;
         state.deletedCoupon = action.payload;
+        if (state.isSuccess === true) {
+          toast.success('Coupon Deleted Successfullly!');
+        }
       })
       .addCase(deleteCoupon.rejected, (state, action) => {
         state.isError = true;
         state.isSuccess = false;
         state.isLoading = false;
         state.message = action.error.message ?? '';
+        if (state.isError === true) {
+          toast.error('Some Thing went wrong!');
+        }
       })
       .addCase(resetState, () => initialState);
   },

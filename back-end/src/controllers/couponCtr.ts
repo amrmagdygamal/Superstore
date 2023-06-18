@@ -21,16 +21,26 @@ export const getAllCoupons = asyncHandler ( async (req: Request, res: Response, 
   }
 });
 
+export const getCoupon = asyncHandler ( async (req: Request, res: Response, next: NextFunction) => {
+  const { id } = req.params;
+
+  try {
+    const getAcoupon = await couponModel.findById(id);
+    res.json(getAcoupon);
+  } catch (error) {
+    next(error)
+  }
+});
+
 
 
 export const updateCoupon = asyncHandler ( async (req: Request, res: Response, next: NextFunction) => {
-  const { _id } = req.params;
-  validateMongoDbId(_id);
+  const { id } = req.params;
+  validateMongoDbId(id);
 
   try {
-    const updatedcoupon = await couponModel.findByIdAndUpdate(_id, req.body, {
+    const updatedcoupon = await couponModel.findByIdAndUpdate(id, req.body, {
     new: true,
-    runValidators: true
     });
     res.json(updatedcoupon)
   } catch (error) {
@@ -40,11 +50,11 @@ export const updateCoupon = asyncHandler ( async (req: Request, res: Response, n
 
 
 export const deleteCoupon = asyncHandler ( async (req: Request, res: Response, next: NextFunction) => {
-  const { _id } = req.params;
-  validateMongoDbId(_id);
+  const { id } = req.params;
+  validateMongoDbId(id);
 
   try {
-    const deletecoup = await couponModel.findByIdAndDelete(_id);
+    const deletecoup = await couponModel.findByIdAndDelete(id);
     res.json(deletecoup)
   } catch (error) {
     next(error)

@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Table } from 'antd';
 import { BiEdit } from 'react-icons/bi';
 import { AiFillDelete } from 'react-icons/ai';
@@ -49,20 +49,6 @@ const columns: any = [
 ];
 
 
-interface Product {
-  id: string;
-  title: string;
-  category: string;
-  author: string;
-  // other properties...
-}
-
-interface ProductState {
-  products: Product[];
-  loading: boolean;
-  error: string | null;
-}
-
 
 
 
@@ -94,8 +80,10 @@ const Productlist = () => {
     data1.push({
       key: i + 1,
       title: productState[i].name,
+      brand: productState[i].brand,
       category: productState[i].category,
-      author: productState[i].author,
+      color: productState[i].color,
+      price: productState[i].price,
       action: (
         <>
           <Link
@@ -117,10 +105,10 @@ const Productlist = () => {
 
   const handleDelete = (e: string) => {
     dispatch(deleteProduct(e));
+    setOpen(false);
     setTimeout(() => {
       dispatch(getProducts());
-    }, 100);
-    setOpen(false);
+    }, 400);
   };
 
   return (
