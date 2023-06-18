@@ -7,6 +7,11 @@ const getBlogs = async () => {
   const response = await axios.get(`${base_url}blogs/`);
   return response.data;
 };
+const uploadImg = async (data: any) => {
+  const response = await axios.post(`${base_url}blogs/upload/`, data, config);
+  return response.data;
+};
+
 
 const createBlog = async (blog: BlogInfo) => {
   const response = await axios.post(`${base_url}blogs/`, blog, config);
@@ -15,7 +20,7 @@ const createBlog = async (blog: BlogInfo) => {
 
 const updateBlog = async (blog: BlogInfo) => {
   const response = await axios.put(
-    `${base_url}blog/${blog._id}`,blog,
+    `${base_url}blogs/${blog._id}`,blog,
     config
   );
 
@@ -39,5 +44,6 @@ const Blogservice = {
   getBlog,
   updateBlog,
   deleteBlog,
+  uploadImg,
 };
 export default Blogservice;

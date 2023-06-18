@@ -6,15 +6,15 @@ import { blogImgResize, uploadPhoto } from "../middlewares/uploadImgs";
 
 const blogRouter = express.Router();
 
-blogRouter.post('/', auhtMiddleware, isAdmin, BlogControllers.createBlog);
-blogRouter.put(
-  '/upload/:id' ,
+blogRouter.post(
+  '/upload/' ,
   auhtMiddleware,
   isAdmin,
   uploadPhoto.array("images", 2),
   blogImgResize,
   BlogControllers.uploadImages
-)
+  )
+blogRouter.post('/', auhtMiddleware, isAdmin, BlogControllers.createBlog);
 blogRouter.put('/likes', auhtMiddleware, BlogControllers.likeTheBlog);
 blogRouter.put('/dislikes', auhtMiddleware, BlogControllers.disLikeTheBlog);
 blogRouter.put('/:id', auhtMiddleware, isAdmin, BlogControllers.updateBlog);

@@ -17,9 +17,9 @@ export const cloudinaryUploadImg = async (fileToUploads: any, folderName: any) =
         resolve({}); // Return an empty object to indicate failure
       } else {
         resolve({
-          url: result.secure_url,
-          asset_id: result.asset_id,
-          public_id: result.public_id,
+          url: result?.secure_url,
+          asset_id: result?.asset_id,
+          public_id: result?.public_id,
         });
       }
     });

@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import multer from 'multer';
 import path from 'path';
 import sharp from 'sharp';
+
 import fs from 'fs';
 
 
@@ -20,7 +21,7 @@ const multerFilter = (
   file: any,
   cb: any
 ) => {
-  if (file.mimetype.startsWith('image')) {
+  if (file.mimetype.startsWith('image/webp')) {
     cb(null, true); // Accept the file
   } else {
     cb(
@@ -53,6 +54,14 @@ export const productImgResize = async (
 
   await Promise.all(
     req.files.map(async (file) => {
+      if (file.mimetype === 'image/webp') {
+        // Convert webp image to jpeg
+        const convertedFile = `${file.path}.jpeg`;
+        await sharp(file.path)
+          .jpeg({ quality: 90 })
+          .toFile(convertedFile);
+        file.path = convertedFile;
+      }
       await sharp(file.path)
         .resize(400, 400)
         .toFormat('jpeg')
@@ -74,13 +83,22 @@ export const blogImgResize = async (req: Request, res: Response, next: NextFunct
 
   await Promise.all(
     req.files.map(async (file) => {
+      if (file.mimetype === 'image/webp') {
+        // Convert webp image to jpeg
+        const convertedFile = `${file.path}.jpeg`;
+        await sharp(file.path)
+          .jpeg({ quality: 90 })
+          .toFile(convertedFile);
+        file.path = convertedFile;
+      }
       await sharp(file.path)
-      .resize(300, 200)
+      .resize(400, 400)
       .toFormat('jpeg')
       .jpeg({ quality: 90 })
       .toFile(`public/images/blogs/${file.filename}`);
     fs.unlinkSync(`public/images/blogs/${file.filename}`)
     })
   )
+  next();
 
 }

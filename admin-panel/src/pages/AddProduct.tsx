@@ -18,6 +18,7 @@ import {
   createProduct,
   getProduct,
   resetState,
+  updateProduct,
 } from '../features/product/productSlice';
 import CustomInput from '../components/CustomInput';
 import { getprodCategories } from '../features/productcategory/prodCategorySlice';
@@ -120,10 +121,19 @@ const AddProduct = () => {
     },
     validationSchema: schema,
     onSubmit: (values) => {
-      alert(JSON.stringify(values));
-      // dispatch(createProduct({name: values.name, description: values.description, price: values.price, brand: values.brand, category: values.category, countInStock: values.countInStock, color: values.color, images: values.images, tag: values.tag}));
-      // formik.resetForm();
-      // setColor([]);
+      if (getProductId !== undefined) {
+        const data: any = {name: values.name, description: values.description, price: values.price, brand: values.brand, category: values.category, countInStock: values.countInStock, color: values.color, images: values.images, tag: values.tag};
+        dispatch(updateProduct(data));
+        setTimeout(() => {
+          navigate("/admin/product-list")
+        }, 400);
+      } else {
+
+        dispatch(createProduct({name: values.name, description: values.description, price: values.price, brand: values.brand, category: values.category, countInStock: values.countInStock, color: values.color, images: values.images, tag: values.tag}));
+        formik.resetForm();
+        setColor([]);
+      }
+      
     },
   });
   return (
@@ -149,7 +159,7 @@ const AddProduct = () => {
             ) : null}
           </div>
           <input
-            className="form-control"
+            className="form-control p-3"
             placeholder="Write Description for the product"
             onChange={formik.handleChange('description')}
             onBlur={formik.handleBlur('description')}

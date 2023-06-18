@@ -11,15 +11,16 @@ import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
 import {toast} from 'react-toastify';
 import Dropzone from 'react-dropzone';
-import { deleteImg, uploadImg } from '../features/upload/uploadSlice';
-import { BlogInfo, createBlog, getBlog, resetState, updateBlog } from '../features/blogs/blogSlice';
+import { BlogInfo, createBlog, getBlog, resetState, updateBlog, uploadImg } from '../features/blogs/blogSlice';
 import CustomInput from '../components/CustomInput';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { deleteImg } from '../features/upload/uploadSlice';
+import { getBlogCategories } from '../features/blogcategory/blogCategorySlice';
 
 
 const schema = Yup.object().shape({
   title: Yup.string().required('Title is Required'),
-  images: Yup.array().required("").min(1, 'You should one Image'),
+  images: Yup.array().required("").min(1, 'You should Upload one Image'),
   description: Yup.string().required('Description is Required'),
   blogCategory: Yup.string().required('Category is Required'),
 
@@ -31,7 +32,6 @@ const AddBlogPage = () => {
 
   const dispatch: AppDispatch = useDispatch();
 
-  const [images, setImages] = useState([]);
 
   const location = useLocation();
   const navigate = useNavigate();
@@ -40,13 +40,16 @@ const AddBlogPage = () => {
 
 
   
-  const imgState = useSelector((state: any) => state.img.images);
+  const blogImgState = useSelector((state: any) => state.blog.images);
 
   const blogState = useSelector((state: any) => state.blog);
-
   const blogCategoryState = useSelector(
     (state: any) => state.blogCategory.blogCategories
   );
+
+  useEffect(() => {
+    dispatch(getBlogCategories())
+  }, [])
 
   const {
     isSuccess,
@@ -63,7 +66,7 @@ const AddBlogPage = () => {
   
   
       const img: any = [];
-      imgState.forEach((i: any) => {
+      blogImgState?.forEach((i: any) => {
         img.push({
           public_id: i.public_id,
           url: i.url,
@@ -82,7 +85,7 @@ const AddBlogPage = () => {
       
       useEffect(() => {
         formik.values.images = img;
-      }, [images]);
+      }, [img]);
       
   
 
@@ -94,7 +97,7 @@ const AddBlogPage = () => {
       description: blogDesc || '',
       blogCategory: blogCategory || '',
       author: blogAuthor || "",
-      images: "",
+      images: [],
     },
 
 
@@ -107,6 +110,7 @@ const AddBlogPage = () => {
           navigate("/admin/blog-list")
         }, 400);
       } else {
+        
         dispatch(createBlog({ title: values.title, description: values.description, category: values.blogCategory, author: values.author, images: values.images}));
         formik.resetForm();
       }
@@ -138,8 +142,9 @@ const AddBlogPage = () => {
               <div>{formik.errors.title as React.ReactNode}</div>
             ) : null}
           </div>
-          <ReactQuill
-            theme="snow"
+          <input
+            className="form-control p-3"
+            placeholder="Write Description for the Blog"
             onChange={formik.handleChange('description')}
             onBlur={formik.handleBlur('description')}
             value={formik.values.description}
@@ -160,8 +165,8 @@ const AddBlogPage = () => {
             <option value="">Select Blog Categroy</option>
             {blogCategoryState.map((i: any, j: any) => {
               return (
-                <option key={j} value={i.name}>
-                  {i.name}
+                <option key={j} value={i.title}>
+                  {i.title}
                 </option>
               );
             })}
@@ -204,7 +209,7 @@ const AddBlogPage = () => {
             </Dropzone>
           </div>
           <div className="showimages d-flex mt-3 flex-wrap gap-3">
-            {imgState.map((i: any, j: string) => {
+            {blogImgState?.map((i: any, j: string) => {
               return (
                 <div className="position-relative" key={j}>
                   <button
@@ -213,7 +218,7 @@ const AddBlogPage = () => {
                     className="btn-close position-absolute"
                     style={{ top: '.68rem', right: '.67rem' }}
                   ></button>
-                  <img src={i.url} alt="img" width={200} height={200} />
+                  <img src={i.url} alt="img" width={405} height={280} />
                 </div>
               );
             })}

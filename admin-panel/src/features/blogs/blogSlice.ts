@@ -2,6 +2,7 @@
 import { createAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import blogService from './blogService';
 import { toast } from 'react-toastify';
+import Blogservice from './blogService';
 
 export const getBlogs = createAsyncThunk(
   'blog/get-blogs',
@@ -13,6 +14,22 @@ export const getBlogs = createAsyncThunk(
     }
   }
 );
+
+export const uploadImg = createAsyncThunk(
+  "upload/an-image",
+  async (data: any, thunkAPI) => {
+    try {
+      const formData = new FormData();
+      for (let i = 0; i < data.length; i++) {
+        formData.append("images", data[i]);
+      }
+      return await Blogservice.uploadImg(formData);
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
+
 
 export const createBlog = createAsyncThunk(
   'blog/create-Blogs',
@@ -85,6 +102,7 @@ interface BlogState {
   blogCategory?: string;
   blogAuthor?: string;
   blogImages?: any;
+  images?: any
 }
 
 const initialState: BlogState = {
@@ -117,6 +135,28 @@ export const blogSlice = createSlice({
         state.isSuccess = false;
         state.isLoading = false;
         state.message = action.error.message ?? '';
+      })
+      .addCase(uploadImg.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(uploadImg.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isError = false;
+        state.isSuccess = true;
+        state.images = action.payload;
+        if(state.isSuccess ===true) {
+          toast.success("image Uploaded successfully!")
+        }
+      })
+      .addCase(uploadImg.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.isSuccess = false;
+        state.message = action.error.message
+        ?? "";
+        if(state.isError === true) {
+          toast.error("Some Thing went wrong!")
+        }
       })
       .addCase(createBlog.pending, (state) => {
         state.isLoading = true;
