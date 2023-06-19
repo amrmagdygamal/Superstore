@@ -3,8 +3,8 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import authService from './authService';
 import { LoginData, User } from '../../types/User';
 
-const getUserformLocalStorage = localStorage.getItem('userInfo')
-  ? JSON.parse(localStorage.getItem('userInfo')!)
+const getUserformLocalStorage = localStorage.getItem('admin')
+  ? JSON.parse(localStorage.getItem('admin')!)
   : null;
 
 const initialState = {

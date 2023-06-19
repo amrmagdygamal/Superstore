@@ -36,12 +36,12 @@ function App() {
           <Routes>
             <Route path="/" element={<Layout />}>
               <Route index element={<HomePage />} />
+              <Route path="signup" element={<SignUpPage />} />
+              <Route path="login" element={<LoginPage />} />
               <Route path="about" element={<About />} />
               <Route path="contact" element={<Contact />} />
               <Route path="blogs" element={<Blog />} />
               <Route path="compare" element={<CompareProduct />} />
-              <Route path="signup" element={<SignUpPage />} />
-              <Route path="login" element={<LoginPage />} />
               <Route path="forgot-password" element={<ForgotPassword />} />
               <Route path="reset-password/:token" element={<ResetPassword />} />
               <Route path="product/:id" element={<ProductPage />} />

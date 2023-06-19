@@ -14,18 +14,10 @@ const Login = () => {
   const navigate = useNavigate();
 
 
-  const authState = useSelector((state: RootState) => state);
-
-  const { userInfo, isLoading, isSuccess, isError, message } = authState.auth;
+  const authState = useSelector((state: RootState) => state.auth);
 
 
-  useEffect(() => {
-    if(isSuccess) {
-      navigate("admin");
-    } else {
-      navigate("")
-    }
-  }, [userInfo, isLoading, isSuccess, isError, message])
+
 
   const schema = Yup.object().shape({
     email: Yup.string()
@@ -45,6 +37,12 @@ const Login = () => {
     },
   });
 
+  useEffect(() => {
+    if(authState?.userInfo !== undefined) {
+      navigate("/admin")
+    }
+  }, [authState])
+
   return (
     <>
       <div
@@ -55,7 +53,7 @@ const Login = () => {
           <h3 className="text-center title">Login</h3>
           <p className="text-center">Login to your account to continue.</p>
           <div className="error text-center">
-            {message == "Rejected" ? "You are not an Admin" : ""}
+            {authState?.message == "Rejected" ? "You are not an Admin" : ""}
           </div>
           <form action="" onSubmit={formik.handleSubmit}>
             <CustomInput

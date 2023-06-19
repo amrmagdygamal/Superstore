@@ -6,7 +6,7 @@ export const generateToken = (id:any) => {
     { id }, 
     process.env.JWEBT_SECRET!, 
     {
-      expiresIn: '2h',
+      expiresIn: '7h',
     }
   )
 }

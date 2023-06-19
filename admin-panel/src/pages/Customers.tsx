@@ -1,12 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { Table } from 'antd';
-import type { ColumnsType } from 'antd/es/table';
 import { getCustomers, resetState } from '../features/customers/customerSlice';
 import { AppDispatch } from '../app/store';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
-import { User } from '../types/User';
 
 
 
@@ -42,13 +40,13 @@ const Customers = () => {
     dispatch(getCustomers())
   }, [])
 
-  const customerState = useSelector((state: any) => state.customer.customers);
+  const customerState = useSelector((state: any) => state.customer.cutomers);
 
   const data1: any = [];
-for (let i = 0; i < customerState.length; i++) {
-  if(customerState[i].role !== "admin") {
+for (let i = 0; i < customerState?.length; i++) {
+  if(customerState[i]?.role !== "admin") {
     data1.push({
-      key: i + 1,
+      key: i ,
       username: customerState[i].username,
       email: customerState[i].email,
     })

@@ -247,6 +247,16 @@ export const logout = asyncHandler(
   }
 );
 
+export const allUsers = asyncHandler(
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const getusers = await UserModel.find().select('+email -refreshToken');
+      res.json(getusers);
+    } catch (error) {
+      next(error);
+    }
+  }
+);
 // fetching specific user
 export const getuser = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
@@ -327,16 +337,6 @@ export const saveAddress = asyncHandler(
 
 // FETCHING all users
 
-export const allUsers = asyncHandler(
-  async (req: Request, res: Response, next: NextFunction) => {
-    try {
-      const getusers = await UserModel.find().select('-password');
-      res.json(getusers);
-    } catch (error) {
-      next(error);
-    }
-  }
-);
 
 // Block User
 export const blockUser = asyncHandler(

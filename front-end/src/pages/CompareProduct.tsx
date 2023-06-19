@@ -39,7 +39,7 @@ const CompareProduct = () => {
                 </div>
                 <div className="product-detail">
                   <h5>Color:</h5>
-                  <Color />
+                  {/* <Color /> */}
                 </div>
                 <div className="product-detail">
                   <h5>Size:</h5>
@@ -82,7 +82,7 @@ const CompareProduct = () => {
                 </div>
                 <div className="product-detail">
                   <h5>Color:</h5>
-                  <Color />
+                  {/* <Color /> */}
                 </div>
                 <div className="product-detail">
                   <h5>Size:</h5>

@@ -24,8 +24,8 @@ userRouter.post(
   UserControllers.applyCoupon
 );
 userRouter.get('/cart', auhtMiddleware, UserControllers.getUserCart);
-userRouter.get('/:id', auhtMiddleware, isAdmin, UserControllers.getuser);
 userRouter.get('/all-users', auhtMiddleware, isAdmin, UserControllers.allUsers);
+userRouter.get('/:id', auhtMiddleware, isAdmin, UserControllers.getuser);
 
 userRouter.delete('/empty-cart', auhtMiddleware, UserControllers.emptyCart);
 userRouter.get('/wishlist', auhtMiddleware, UserControllers.getWishList);

@@ -1,7 +1,6 @@
 import axios from 'axios';
 import { base_url } from '../../utils/base_url';
-import { User } from '../../types/User';
-import { AnyObjectSchema } from 'yup';
+
 
 // login admin 
 
