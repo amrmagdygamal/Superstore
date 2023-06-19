@@ -620,7 +620,7 @@ export const getUserCart = asyncHandler(
     try {
       const cart = await CartModel.find({ customer: _id }).populate(
         'products.product'
-      );
+      ).populate("products.product.color").exec()
       // Check if User already has product in cart
 
       res.json(cart);

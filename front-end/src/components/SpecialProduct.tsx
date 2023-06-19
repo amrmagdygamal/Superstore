@@ -35,7 +35,7 @@ const SpecialProduct = (props: propsTypes) => {
             <ReachStars
               count={5}
               size={24}
-              value={product?.totalrating?.toString()}
+              value={product?.totalrating}
               edit={false}
               activeColor="#ffd700"
             />

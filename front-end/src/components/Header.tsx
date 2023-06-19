@@ -140,14 +140,14 @@ const Header = () => {
                 id="basic-nav-dropdown"
               >
                 <Link
-                  className="dropdown-item"
+                  className="dropdown-item text-dark"
                   to="/profile-page"
                   onClick={signOutHandler}
                 >
                   My Profile
                 </Link>
                 <LinkContainer to="/orderhistory">
-                  <NavDropdown.Item>Order History</NavDropdown.Item>
+                  <NavDropdown.Item className='text-dark'>Order History</NavDropdown.Item>
                 </LinkContainer>
                 <button
                   className="dropdown-item"
@@ -164,7 +164,8 @@ const Header = () => {
               to="/cart"
             >
               <img src="/images/cart.svg" alt="cart" />
-              {cartState[0]?.products?.length > 0 && (
+              {cartState && 
+              cartState[0]?.products?.length > 0 && (
                 <div className="d-flex flex-column gap-1">
                   <span>
                     <Badge pill bg="white" text="dark">

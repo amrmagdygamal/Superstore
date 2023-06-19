@@ -257,12 +257,14 @@ export const userSlice = createSlice({
         state.isError = false;
         state.cart = action.payload;
         state.message = 'success';
+
       })
       .addCase(getUserCart.rejected, (state, action) => {
         state.isError = true;
         state.isSuccess = false;
         state.isLoading = false;
         state.message = action.error.message ?? '';
+        
       })
       .addCase(deleteFromCart.pending, (state) => {
         state.isLoading = true;
