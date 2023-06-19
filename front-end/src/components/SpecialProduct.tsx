@@ -20,7 +20,7 @@ const SpecialProduct = (props: propsTypes) => {
         <div className="d-flex justify-content-between">
           <Link to={`/product/${product?._id}`}>
             <div className="">
-              <img src="images/watch.jpg" className="img-fluid" alt="watch" />
+              <img src={product?.images[0]?.url} className="img-fluid" alt="watch" />
             </div>
           </Link>
           <Card.Body>
@@ -35,7 +35,7 @@ const SpecialProduct = (props: propsTypes) => {
             <ReachStars
               count={5}
               size={24}
-              value={product?.totalrating}
+              value={product?.totalrating?.toString()}
               edit={false}
               activeColor="#ffd700"
             />

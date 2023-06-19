@@ -5,12 +5,6 @@ import { Color } from './ColorModel';
 const productSchema = new Schema(
   {
     name: { type: String, required: true, trim: true },
-    images: [
-      {
-        public_id: String,
-        url: String,
-      },
-    ],
     brand: {
       type: String,
       required: true,
@@ -37,7 +31,13 @@ const productSchema = new Schema(
     },
     numReviews: { type: Number, default: 0 },
     color: [{type: mongoose.Schema.Types.ObjectId, ref: "Color"}],
-    tags: String,
+    tag: String,
+    images: [
+      {
+        public_id: String,
+        url: String,
+      },
+    ],
   },
   {
     timestamps: true,

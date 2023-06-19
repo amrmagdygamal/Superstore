@@ -1,6 +1,5 @@
 import { useContext, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { useCreateOrderMutation } from '../hooks/orderHooks';
 import { getError } from '../utils';
 import { ApiError } from '../types/ApiErrors';
 import { toast } from 'react-toastify';
@@ -11,6 +10,7 @@ import LoadingBox from '../components/LoadingBox';
 import { AppDispatch } from '../app/store';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
+import { createOrder } from '../features/order/orderSlice';
 
 const PlaceOrderPage = () => {
   const navigate = useNavigate();
@@ -22,8 +22,6 @@ const PlaceOrderPage = () => {
   const round2 = (num: number) => Number(num.toFixed(2));
 
 
-
-  const { mutateAsync: createOrder, isLoading } = useCreateOrderMutation();
 
   const PlaceOrderHandler = async () => {
     try {

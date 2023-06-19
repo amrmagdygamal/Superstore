@@ -7,7 +7,11 @@ const productRouter = express.Router();
 productRouter.get(
   '/',
   ProductControllers.getAllProducts
-);
+  );
+  productRouter.get(
+    '/:id',
+    ProductControllers.getProduct
+  );
 productRouter.post(
   '/',
   auhtMiddleware,
@@ -39,10 +43,6 @@ productRouter.delete(
   ProductControllers.deleteProduct
   );
 
-productRouter.get(
-  '/:id',
-  ProductControllers.getProduct
-);
 
 
 

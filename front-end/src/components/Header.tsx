@@ -10,19 +10,26 @@ import { getUserCart, logout } from '../features/user/userSlice';
 import { Typeahead } from 'react-bootstrap-typeahead';
 import 'react-bootstrap-typeahead/css/Typeahead.css';
 import { getproduct } from '../features/product/productSlice';
+import { getCategories } from '../features/category/categorySlice';
 
 const Header = () => {
   const dispatch: AppDispatch = useDispatch();
   const navigate = useNavigate();
   const cartState = useSelector((state: any) => state.user.cart);
   const productState = useSelector((state: any) => state?.product?.products);
+  const categoryState = useSelector((state: any) => state?.productCategory?.categorys);
   const deleteFromCartState = useSelector(
     (state: any) => state.user.deletFromCart
   );
 
   useEffect(() => {
     dispatch(getUserCart());
-  }, [cartState | deleteFromCartState]);
+    dispatch(getCategories())
+  }, []);
+
+  // useEffect(() => {
+  //   dispatch(getUserCart())
+  // }, [cartState])
 
   const userState = useSelector((state: any) => state.user);
 
@@ -118,7 +125,7 @@ const Header = () => {
               </p>
             </Link>
 
-            {userState?.user === undefined  ? (
+            {userState === undefined  ? (
               <Link className="nav-link d-flex text-white gap-2" to="/login">
                 Login <br /> My Account
               </Link>
@@ -127,7 +134,7 @@ const Header = () => {
                 title={
                   <>
                     <img src="/images/user.svg" alt="user" />
-                    Welcome {userState?.user?.username}
+                    Welcome {userState?.userInfor?.username}
                   </>
                 }
                 id="basic-nav-dropdown"
@@ -157,17 +164,17 @@ const Header = () => {
               to="/cart"
             >
               <img src="/images/cart.svg" alt="cart" />
-              {cartState?.products.length > 0 && (
+              {cartState[0]?.products?.length > 0 && (
                 <div className="d-flex flex-column gap-1">
                   <span>
                     <Badge pill bg="white" text="dark">
-                      {cartState?.products.reduce(
+                      {cartState[0]?.products?.reduce(
                         (a: any, c: any) => a + c.quantity,
                         0
                       )}
                     </Badge>
                   </span>
-                  <p className="mb-0">${cartState?.cartTotal}</p>
+                  <p className="mb-0">${cartState[0]?.cartTotal}</p>
                 </div>
               )}
             </Link>
@@ -186,10 +193,12 @@ const Header = () => {
               </>
             }
           >
-            <NavDropdown.Item>;lka;lk;l</NavDropdown.Item>
-            <NavDropdown.Item>;lka;lk;l</NavDropdown.Item>
-            <NavDropdown.Item>;lka;lk;l</NavDropdown.Item>
-            <NavDropdown.Item>;lka;lk;l</NavDropdown.Item>
+            {categoryState?.map((i: any, j: number) => {
+              return (
+
+                <NavDropdown.Item key={j}>{i?.title}</NavDropdown.Item>
+              )
+            })}
           </NavDropdown>
           <Nav className="align-items-center gap-3">
             <NavLink to="/">Home</NavLink>

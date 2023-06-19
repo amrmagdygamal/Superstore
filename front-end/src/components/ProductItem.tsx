@@ -2,7 +2,7 @@ import { Button, Card } from 'react-bootstrap';
 import { ProductInfo } from '../types/ProductInfo';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useContext, useEffect } from 'react';
-import Rating from './Rating';
+import ReachStars from 'react-rating-stars-component';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '../app/store';
 import { addToWishList } from '../features/product/productSlice';
@@ -41,7 +41,7 @@ const ProductItem = (props: ProductItemProps)=> {
 
   return (
     <div className={`${location.pathname == "/store" ? `gr-${grid}` : "col-3"}`}>
-          <Card  className="product-card mb-4 position-relative">
+          <Card  className="product-card mb-4 position-relative d-flex gap-4" style={{height: grid ==12 ? "20rem" : ""}}>
         <div className="wishlist-icon position-absolute">
           <button className='border-0 bg-transparent' onClick={() => {addWishlist(product?._id)}}>
               <img src="/images/wish.svg" alt="wishlist" />
@@ -49,8 +49,8 @@ const ProductItem = (props: ProductItemProps)=> {
         </div>
         <div>
           <div className="product-image">
-            <img onClick={() => navigate(`/product/${product?._id}`)} src={product?.images} alt={product?.name} />
-            <img onClick={() => navigate(`/product/${product?._id}`)} src={product?.images} alt={product?.name} />
+            <img onClick={() => navigate(`/product/${product?._id}`)} src={product?.images[0].url} alt={product?.name} className='img-fluid mb-3 bg-white w-75'/>
+            <img onClick={() => navigate(`/product/${product?._id}`)} src={product?.images[0].url} alt={product?.name} className='img-fluid mb-3 bg-white w-75'/>
           </div>
         </div>
 
@@ -60,7 +60,13 @@ const ProductItem = (props: ProductItemProps)=> {
             <Card.Title>{product?.name}</Card.Title>
           </Link>
           car
-          <Rating rating={product?.totalrating} />
+          <ReachStars
+              count={5}
+              size={24}
+              value={product?.totalrating}
+              edit={false}
+              activeColor="#ffd700"
+            />
 
           <Card.Text>{product?.description}</Card.Text>
           <Card.Text>$ {product?.price}</Card.Text>

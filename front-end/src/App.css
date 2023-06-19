@@ -252,7 +252,7 @@ a {
 }
 
 .description p {
-  font-size: 14px;
+  font-size: 16px;
   color: var(--text-dark-color);
 }
 
@@ -370,13 +370,19 @@ a {
   background-color: white;
   border-radius: .8rem;
   border: none;
+  display: flex;
+  gap: 2rem;
   overflow: hidden;
+  background-size: cover;
+  height: 28rem;
   width: 100%;
   box-shadow: 0px 0px 3px 1px rgb(32 32 32 / 5%);
+  flex-direction: column;
 }
 
 .product-card .product-image {
-  height: 12rem;
+  max-height: 10rem;
+  max-width: 18rem;
 }
 
 .product-card .product-image img {
@@ -821,6 +827,8 @@ a {
 .other-images {
   background-color: white;
   padding: 1.29rem;
+
+  background-size: cover;
 }
 
 .other-images>div {

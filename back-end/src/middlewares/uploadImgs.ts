@@ -23,6 +23,8 @@ const multerFilter = (
 ) => {
   if (file.mimetype.startsWith('image/webp')) {
     cb(null, true); // Accept the file
+  } else if (file.mimetype.startsWith('image')) {
+    cb(null, true);
   } else {
     cb(
       {

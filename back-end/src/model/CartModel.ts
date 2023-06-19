@@ -12,7 +12,7 @@ const CartModel = new mongoose.Schema(
         quantity: { type: Number, required: true },
         image: { type: String, required: true },
         price: { type: Number, required: true },
-        color: {type: mongoose.Schema.Types.ObjectId, ref: "Color"},
+        color: [{type: mongoose.Schema.Types.ObjectId, ref: "Color"}],
         product: { type: mongoose.Schema.Types.ObjectId, ref: 'Product' },
       },
     ],

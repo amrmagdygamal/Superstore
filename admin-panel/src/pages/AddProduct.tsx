@@ -2,7 +2,6 @@
 import { useEffect, useState } from 'react';
 import 'react-widgets/styles.css';
 
-import ReactQuill from 'react-quill';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import 'react-quill/dist/quill.snow.css';
@@ -47,10 +46,6 @@ const AddProduct = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const getProductId = location.pathname.split('/')[3];
-
-  const brandState = useSelector((state: any) => state.brand.brands);
-  const colorState = useSelector((state: any) => state.color.colors);
-  const imgState = useSelector((state: any) => state.img.images);
   const newProduct = useSelector((state: any) => state.product);
   const {
     isSuccess,
@@ -59,14 +54,26 @@ const AddProduct = () => {
     createdProduct,
     productName,
     productDesc,
-    productPrice,
-    productBrand,
     productCategory,
-    productQuant,
+    productPrice,
     productColor,
-    productImages,
+    productBrand,
     productTag,
+    productQuant,
+    productImages,
   } = newProduct;
+  
+  useEffect(() => {
+    if (getProductId !== undefined) {
+      dispatch(getProduct(getProductId));
+      console.log(productName, productDesc, productCategory)
+    } else {
+      dispatch(resetState());
+    }
+  }, [getProductId]);
+  const brandState = useSelector((state: any) => state.brand.brands);
+  const colorState = useSelector((state: any) => state.color.colors);
+  const imgState = useSelector((state: any) => state.img.images);
   const prodCategoryState = useSelector(
     (state: any) => state.prodCategory.prodCategories
   );
@@ -75,13 +82,6 @@ const AddProduct = () => {
     setColor(e);
   };
 
-  useEffect(() => {
-    if (getProductId !== undefined) {
-      dispatch(getProduct(getProductId));
-    } else {
-      dispatch(resetState());
-    }
-  }, [getProductId]);
 
   useEffect(() => {
     dispatch(getBrands());
@@ -103,42 +103,65 @@ const AddProduct = () => {
   });
 
   useEffect(() => {
+
     formik.values.color = color ? color : [];
     formik.values.images = img;
   }, [color, img]);
 
   const formik = useFormik({
     initialValues: {
-      name:  productName || '',
-      description:  productDesc || '',
-      price:  productPrice || '',
-      brand:  productBrand || '',
-      category:  productCategory || '',
-      countInStock:  productQuant || '',
-      color:  [],
-      images:  productImages || [],
-      tag:  productTag || '',
+      name: productName || '',
+      description: productDesc || '',
+      category: productCategory || '',
+      price: productPrice || '',
+      color: [],
+      brand: productBrand || '',
+      tag: productTag || '',
+      countInStock: productQuant || '',
+      images: productImages || [],
     },
     validationSchema: schema,
     onSubmit: (values) => {
       if (getProductId !== undefined) {
-        const data: any = {name: values.name, description: values.description, price: values.price, brand: values.brand, category: values.category, countInStock: values.countInStock, color: values.color, images: values.images, tag: values.tag};
+        const data: any = {
+          name: values.name,
+          description: values.description,
+          price: values.price,
+          brand: values.brand,
+          category: values.category,
+          countInStock: values.countInStock,
+          color: values.color,
+          images: values.images,
+          tag: values.tag,
+        };
         dispatch(updateProduct(data));
         setTimeout(() => {
-          navigate("/admin/product-list")
+          navigate('/admin/product-list');
         }, 400);
       } else {
-
-        dispatch(createProduct({name: values.name, description: values.description, price: values.price, brand: values.brand, category: values.category, countInStock: values.countInStock, color: values.color, images: values.images, tag: values.tag}));
+        dispatch(
+          createProduct({
+            name: values.name,
+            description: values.description,
+            price: values.price,
+            brand: values.brand,
+            category: values.category,
+            countInStock: values.countInStock,
+            color: values.color,
+            images: values.images,
+            tag: values.tag,
+          })
+        );
         formik.resetForm();
         setColor([]);
       }
-      
     },
   });
   return (
     <div>
-      <h3 className="mb-4 name">{getProductId !== undefined ? 'Edit' : 'Add'} Product</h3>
+      <h3 className="mb-4 name">
+        {getProductId !== undefined ? 'Edit' : 'Add'} Product
+      </h3>
 
       <div className="">
         <form action="" onSubmit={formik.handleSubmit}>
@@ -200,7 +223,8 @@ const AddProduct = () => {
                   {i.title}
                 </option>
               );
-            })} as React.ReactNode
+            })}{' '}
+            as React.ReactNode
           </select>
           <div className="error mb-3">
             {formik.touched.brand && formik.errors.brand ? (
@@ -236,7 +260,7 @@ const AddProduct = () => {
             value={formik.values.tag}
             className="form-control py-3 mb-3"
           >
-            <option value="featured" disabled>
+            <option value="features">
               Featured
             </option>
             <option value="popular">Popular</option>
@@ -291,35 +315,33 @@ const AddProduct = () => {
             </Dropzone>
           </div>
           <div className="showimages d-flex flex-wrap gap-3">
-            {productImages?.length !=  0 ? (
-              productImages?.map((i: any, j: string) => {
-                return (
-                  <div className="position-relative" key={j}>
-                    <button
-                      type="button"
-                      onClick={() => dispatch(deleteImg(i.public_id))}
-                      className="btn-close position-absolute"
-                      style={{ top: '.68rem', right: '.67rem' }}
-                    ></button>
-                    <img src={i.url} alt="img" width={200} height={200} />
-                  </div>
-                );
-              })
-            ) : (
-              imgState.map((i: any, j: string) => {
-                return (
-                  <div className="position-relative" key={j}>
-                    <button
-                      type="button"
-                      onClick={() => dispatch(deleteImg(i.public_id))}
-                      className="btn-close position-absolute"
-                      style={{ top: '.68rem', right: '.67rem' }}
-                    ></button>
-                    <img src={i.url} alt="img" width={200} height={200} />
-                  </div>
-                );
-              })
-            )}
+            {productImages != undefined
+              ? productImages?.map((i: any, j: string) => {
+                  return (
+                    <div className="position-relative" key={j}>
+                      <button
+                        type="button"
+                        onClick={() => dispatch(deleteImg(i.public_id))}
+                        className="btn-close position-absolute"
+                        style={{ top: '.68rem', right: '.67rem' }}
+                      ></button>
+                      <img src={i.url} alt="img" width={200} height={200} />
+                    </div>
+                  );
+                })
+              : imgState.map((i: any, j: string) => {
+                  return (
+                    <div className="position-relative" key={j}>
+                      <button
+                        type="button"
+                        onClick={() => dispatch(deleteImg(i.public_id))}
+                        className="btn-close position-absolute"
+                        style={{ top: '.68rem', right: '.67rem' }}
+                      ></button>
+                      <img src={i.url} alt="img" width={200} height={200} />
+                    </div>
+                  );
+                })}
           </div>
           <div className="error">
             {formik.touched.images && formik.errors.images ? (

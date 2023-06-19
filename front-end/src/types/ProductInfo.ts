@@ -10,6 +10,6 @@ export type ProductInfo = {
   totalrating: number;
   numReviews: number;
   sold: number;
-  tags: string
+  tag: string
   color: any
 };

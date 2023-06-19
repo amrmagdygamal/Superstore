@@ -6,7 +6,7 @@ import { config } from '../../utils/axiosconfig';
 
 const getProducts = async (data: any) => {
   const response = await axios.get(
-    `${base_url}pruducts?${data?.brand ? `brand=${data?.brand}&&` : ''}${
+    `${base_url}products?${data?.brand ? `brand=${data?.brand}&&` : ''}${
       data?.category ? `category=${data?.category}&&` : ''
     }${data?.tag ? `tag=${data?.tag}&&` : ''}${
       data?.color ? `color=${data?.color}&&` : ''
@@ -20,7 +20,7 @@ const getProducts = async (data: any) => {
 };
 
 const getProduct = async (id: string) => {
-  const response = await axios.get(`${base_url}pruducts/${id}/`);
+  const response = await axios.get(`${base_url}products/${id}/`);
   if (response.data) {
     return response.data;
   }
@@ -28,7 +28,7 @@ const getProduct = async (id: string) => {
 
 const addToWishList = async (id: string) => {
   const response = await axios.put(
-    `${base_url}pruducts/wishlist/`,
+    `${base_url}products/wishlist/`,
     { prodId: id },
     config
   );
@@ -49,7 +49,7 @@ const deleteFromCart = async (id: string) => {
 };
 
 const rateProduct = async (data: any) => {
-  const response = await axios.put(`${base_url}pruducts/rating/`, data, config);
+  const response = await axios.put(`${base_url}products/rating/`, data, config);
   if (response.data) {
     return response.data;
   }

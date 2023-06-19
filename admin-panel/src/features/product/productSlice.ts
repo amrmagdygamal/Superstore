@@ -163,9 +163,9 @@ export const productSlice = createSlice({
         state.productPrice = action.payload.price;
         state.productColor = action.payload.color;
         state.productBrand = action.payload.brand;
-        state.productImages = action.payload.images;
         state.productTag = action.payload.tag;
         state.productQuant = action.payload.countInStock;
+        state.productImages = action.payload.images;
         
       })
       .addCase(getProduct.rejected, (state, action) => {

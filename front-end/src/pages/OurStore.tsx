@@ -6,10 +6,6 @@ import ProductItem from '../components/ProductItem';
 import { Color } from '../components/Color';
 import Rating from '../components/Rating';
 import Container from '../components/Container';
-import LoadingBox from '../components/LoadingBox';
-import { getError } from '../utils';
-import { ApiError } from '../types/ApiErrors';
-import MessageBox from '../components/MessageBox';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
 import { AppDispatch } from '../app/store';
@@ -23,15 +19,15 @@ const OurStore = () => {
 
   const brandState = useSelector((state: any) => state.brand.brands);
   const colorState = useSelector((state: any) => state.color.colors);
+  const productState = useSelector((state: any) => state.product.products);
 
   const prodCategoryState = useSelector(
     (state: any) => state.productCategory.categories
   );
-  const productState = useSelector((state: any) => state.product.products);
-  const [brands, setBrands] = useState<string[]>([]);
-  const [categories, setCategories] = useState<string[]>([]);
-  const [tags, setTags] = useState<string[]>([]);
-  const [colors, setColors] = useState<string[]>([]);
+  const [brands, setBrands] = useState<any[]>([]);
+  const [categories, setCategories] = useState<any[]>([]);
+  const [tags, setTags] = useState<any[]>([]);
+  const [colors, setColors] = useState<any[]>([]);
 
   // Filter States
 
@@ -48,16 +44,16 @@ const OurStore = () => {
   };
 
   useEffect(() => {
-    const prodBrands: Array<string> = [];
-    const prodCategories: Array<string> = [];
-    const prodTags: Array<string> = [];
-    const prodColors: Array<string> = [];
+    const prodBrands: Array<any> = [];
+    const prodCategories: Array<any> = [];
+    const prodTags: Array<any> = [];
+    const prodColors: Array<any> = [];
 
     for (let index = 0; index < productState?.length; index++) {
       const elem = productState[index];
       prodBrands.push(elem?.brand);
       prodCategories.push(elem?.category);
-      prodTags.push(elem?.tags);
+      prodTags.push(elem?.tag);
       prodColors.push(elem?.color);
     }
 
@@ -83,9 +79,9 @@ const OurStore = () => {
               <ul className="ps-0">
                 {categories &&
                   [...new Set(categories)].map(
-                    (item: string, index: number) => {
+                    (item: any, index: number) => {
                       return (
-                        <li key={index} onClick={() => setCategory(item)}>
+                        <li className='button m-2 px-0 py-1 text-center' key={index} onClick={() => setCategory(item)}>
                           {item}
                         </li>
                       );
@@ -141,15 +137,15 @@ const OurStore = () => {
               <div>
                 <div>
                   {colors &&
-                    [...new Set(colors)].map((item: string, index: number) => {
+                    [...new Set(colors)].map((item: any, index: number) => {
                       return (
                         <li
-                          style={{ backgroundColor: productState.title }}
+                          style={{ backgroundColor: item?.color }}
                           className="bg-light rounded-cirlce px-3 py-2"
                           key={index}
                           onClick={() => setColor(item)}
                         >
-                          {item}
+                          {item.color}
                         </li>
                       );
                     })}
@@ -163,13 +159,13 @@ const OurStore = () => {
                   {tags &&
                     [...new Set(tags)].map((item: string, index: number) => {
                       return (
-                        <Badge
-                          className="bg-light rounded-3 px-3 py-2"
+                        <button
+                        className='button m-2 px-3 py-2 text-center'
                           key={index}
                           onClick={() => setTag(item)}
                         >
                           {item}
-                        </Badge>
+                        </button>
                       );
                     })}
                 </div>
@@ -182,13 +178,13 @@ const OurStore = () => {
                   {brands &&
                     [...new Set(brands)].map((item: string, index: number) => {
                       return (
-                        <Badge
-                          className="bg-light rounded-3 px-3 py-2"
+                        <button
+                        className='button m-2 px-3 py-2 text-center'
                           key={index}
                           onClick={() => setBrand(item)}
                         >
                           {item}
-                        </Badge>
+                        </button>
                       );
                     })}
                 </div>
@@ -298,10 +294,8 @@ const OurStore = () => {
           <div className="products-list pb-5">
             <div className="d-flex flex-wrap gap-2">
               {productState &&
-                productState?.map((product: ProductInfo, index: number) => {
-                  if (product.tags === 'popular') {
-                    return <ProductItem product={product} key={index} />;
-                  }
+                productState?.map((product: any, index: number) => {
+                    return <ProductItem product={product} key={index} grid={grid} />;
                 })}
             </div>
           </div>

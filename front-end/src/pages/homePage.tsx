@@ -17,7 +17,7 @@ import { getBlogs } from '../features/blog/blogSlice';
 import moment from 'moment';
 import { ProductInfo } from '../types/ProductInfo';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import {Navigation ,Pagination, Autoplay } from 'swiper';
+import { Navigation, Pagination, Autoplay } from 'swiper';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
@@ -38,7 +38,7 @@ const HomePage = () => {
   const blogState = useSelector((state: any) => state.blog.blogs);
 
   const getAllProducts = () => {
-    dispatch(getproducts());
+    dispatch(getproducts({}));
   };
 
   const getAllBlogs = () => {
@@ -49,9 +49,6 @@ const HomePage = () => {
     getAllProducts();
     getAllBlogs();
   }, []);
-
-
-
 
   function createSlide1() {
     return (
@@ -77,7 +74,7 @@ const HomePage = () => {
   }
   function createSlide2() {
     return (
-      <SwiperSlide className='rounded-4'>
+      <SwiperSlide className="rounded-4">
         <div className="main-banner position-relative">
           <img
             src="/images/20220912applewatchsefull.jpg"
@@ -86,7 +83,7 @@ const HomePage = () => {
           />
           <div className="main-banner-content position-absolute">
             <h4>SuperCharged</h4>
-          
+
             <p>Apple</p>
             <p>Smart </p>
             <p>Watch </p>
@@ -100,7 +97,7 @@ const HomePage = () => {
   }
   function createSlide4() {
     return (
-      <SwiperSlide className='rounded-4'>
+      <SwiperSlide className="rounded-4">
         <div className="main-banner position-relative">
           <img
             src="/images/apple-watch-ultra-og-202209_GEO_IN.jpeg"
@@ -109,7 +106,7 @@ const HomePage = () => {
           />
           <div className="main-banner-content position-absolute">
             <h4>SuperCharged</h4>
-          
+
             <p>Apple</p>
             <p>Smart </p>
             <p>Watch </p>
@@ -131,10 +128,10 @@ const HomePage = () => {
             className="main-banner rounded-4"
           />
           <div className="main-banner-content position-absolute">
-            <h4 className='text-black'>SuperCharged For Pros</h4>
-            <h2 className='text-black'>iPad S13+ Pro</h2>
-            <p className='text-black'>From $999.00 or $41.62/mo</p>
-            <p className='text-black'>For 24 mo. Footnote*</p>
+            <h4 className="text-black">SuperCharged For Pros</h4>
+            <h2 className="text-black">iPad S13+ Pro</h2>
+            <p className="text-black">From $999.00 or $41.62/mo</p>
+            <p className="text-black">For 24 mo. Footnote*</p>
             <Link className="button" to={''}>
               Buy Now
             </Link>
@@ -150,12 +147,9 @@ const HomePage = () => {
         <Meta title="Super Store" />
         <div className="col-6">
           <Swiper
-            modules={[Navigation ,Pagination, Autoplay]}
+            modules={[Navigation, Pagination, Autoplay]}
             slidesPerView={1}
-            autoplay={
-              {delay: 5000,
-              disableOnInteraction: false,}
-            }
+            autoplay={{ delay: 5000, disableOnInteraction: false }}
             loop
             pagination={{ clickable: true }}
           >
@@ -310,7 +304,11 @@ const HomePage = () => {
                 <h6>Proffessional Watches</h6>
                 <p>9 Items</p>
               </div>
-              <img src="/images/Apple_watch.webp" alt="camera" className="img" />
+              <img
+                src="/images/Apple_watch.webp"
+                alt="camera"
+                className="img"
+              />
             </div>
             <div className="d-flex justify-content-around align-items-center">
               <div>
@@ -335,7 +333,7 @@ const HomePage = () => {
         </div>
         {productState &&
           productState?.map((product: ProductInfo, index: number) => {
-            if (product.tags === 'features') {
+            if (product?.tag === 'features') {
               return <ProductItem product={product} key={index} />;
             }
           })}
@@ -406,8 +404,8 @@ const HomePage = () => {
         </Row>
         <Row>
           {productState &&
-            productState?.map((product: ProductInfo, index: number) => {
-              if (product.tags === 'special') {
+            productState?.map((product: any, index: number) => {
+              if (product?.tag === 'special') {
                 return <SpecialProduct product={product} key={index} />;
               }
             })}
@@ -419,7 +417,7 @@ const HomePage = () => {
         </div>
         {productState &&
           productState?.map((product: ProductInfo, index: number) => {
-            if (product.tags === 'popular') {
+            if (product.tag === 'popular') {
               return <ProductItem product={product} key={index} />;
             }
           })}

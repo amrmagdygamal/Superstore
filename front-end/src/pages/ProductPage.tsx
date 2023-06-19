@@ -12,7 +12,11 @@ import { MdFavorite } from 'react-icons/md';
 import Container from '../components/Container';
 import { AppDispatch } from '../app/store';
 import { useDispatch } from 'react-redux';
-import { getproduct, rateProduct } from '../features/product/productSlice';
+import {
+  getproduct,
+  getproducts,
+  rateProduct,
+} from '../features/product/productSlice';
 import { useSelector } from 'react-redux';
 import { ProductInfo } from '../types/ProductInfo';
 import { addToCart, getUserCart } from '../features/user/userSlice';
@@ -24,33 +28,44 @@ const ProductPage = () => {
   const navigate = useNavigate();
   const getProductId = location.pathname.split('/')[2];
   const productState = useSelector((state: any) => state.product.product);
-  const addCartState = useSelector((state: any) => state.user.addCart);
+  const allProductsState = useSelector((state: any) => state.product.products);
+  const addCartState = useSelector((state: any) => state.user);
   const cartState = useSelector((state: any) => state.user.cart);
-  const [color, setColor] = useState({});
-  const [colorBorder, setColorBorder] = useState(false);
-  const [alreadyAdded, setAlreadyAdded] = useState(true);
+  const [alreadyAdded, setAlreadyAdded] = useState(false);
   const [star, setStar] = useState(0);
   const [comment, setComment] = useState('');
 
   const { isLoading, isError, isSuccess, addCart } = addCartState;
-  const colors: any = [];
+  const [quantity, setQuantity] = useState(1);
+  const [colors, setColors] = useState<any[]>([]);
 
   useEffect(() => {
-    colors.push(color);
-    if (colors.length > quantity) {
-      setQuantity(colors.length);
-    }
-  }, [color]);
+    dispatch(getproducts({}));
+    dispatch(getproduct(getProductId));
+  }, []);
 
-  const [quantity, setQuantity] = useState(1);
+  const handleSetCol = (item: any) => {
+    const itemIndex = colors.findIndex((color: any) => color._id === item._id);
+    
+    let newColors = [];
+    if (itemIndex >= 0) {
+      newColors = colors.filter((color: any) => color._id !== item._id);
+    } else {
+      newColors = [...colors, item];
+    }
+  
+    if (newColors.length > quantity) {
+      setQuantity(newColors.length);
+    }
+  
+    setColors(newColors);
+
+  };
+
 
   const handlerQuant = (e: number) => {
     setQuantity(e);
   };
-
-  useEffect(() => {
-    dispatch(getproduct(getProductId));
-  }, []);
 
   useEffect(() => {
     dispatch(getUserCart());
@@ -64,17 +79,19 @@ const ProductPage = () => {
     }
   }, []);
 
-  const prodcartData = { getProductId, colors, quantity };
 
+  const prodData = {prodId: getProductId, colors: colors, quantity: quantity}
   const addProductToCart = (data: any) => {
     if (colors.length == 0) {
       if (productState?.color.length == 1) {
-        setColor(productState.color[0]);
+        colors.push(productState.color[0]);
       } else {
         toast.error('Please Choose Color');
       }
     } else {
-      dispatch(addToCart(prodcartData));
+      // console.log(colors)
+      // console.log(data)
+      dispatch(addToCart(data));
     }
   };
 
@@ -115,14 +132,14 @@ const ProductPage = () => {
         <div className="col-6">
           <div className="product-image-section">
             <div>
-              <img src={productState?.images[0].url} alt="" />
+              <img src={productState?.images[0]?.url} alt="" />
             </div>
           </div>
           <div className="other-images d-flex flex-wrap gap-2">
-            {productState?.images.map((img: any, index: number) => {
+            {productState?.images?.map((img: any, index: number) => {
               return (
                 <div key={index}>
-                  <img src={img?.url} alt="" />
+                  <img src={img?.url} className="w-75" alt="" />
                 </div>
               );
             })}
@@ -139,7 +156,7 @@ const ProductPage = () => {
                 <ReactStars
                   count={5}
                   size={24}
-                  value={productState?.totalrating.toString()}
+                  value={productState?.totalrating}
                   edit={true}
                   activeColor="#ffd700"
                 />
@@ -194,16 +211,21 @@ const ProductPage = () => {
               <div className="d-flex gap-1 flex-column mt-2 mb-3">
                 <h3 className="type-title">Color :</h3>
                 {productState &&
-                  productState?.colors?.map((col: any, index: number) => {
+                  productState?.color?.map((col: any, index: number) => {
                     return (
-                      <ul className="colors">
-                        <Color
-                          col={col}
-                          key={index}
-                          setColor={setColor}
-                          setColorBorder={setColorBorder}
-                          border={colorBorder}
-                        />
+                      <ul className="colors" key={index}>
+                        <div
+                          
+                          style={{
+                            border: colors.includes(col) ? `4px solid ${col.title}` : 'none'
+                          }}
+                          className="p-1 text-center rounded-circle"
+                        ><button
+                            className="p-3 border-0 rounded-circle"
+                            style={{ backgroundColor: col.title }}
+                            onClick={() => handleSetCol(col)}
+                          ></button>
+                        </div>
                       </ul>
                     );
                   })}
@@ -267,7 +289,7 @@ const ProductPage = () => {
                   {alreadyAdded === false ? (
                     <>
                       <button
-                        onClick={() => addProductToCart(prodcartData)}
+                        onClick={() => addProductToCart(prodData)}
                         className="button m-2 py-3 px-4"
                         type="submit"
                       >
@@ -334,8 +356,9 @@ const ProductPage = () => {
       <Container class1="description py-5 home-wrapper-2">
         <div className="col-12">
           <h4>Description</h4>
-          <div className="p-2 bg-white box-shadow">
+          <div className="p-4 bg-white box-shadow d-flex align-items-center ">
             <p
+              className="mb-0"
               dangerouslySetInnerHTML={{ __html: productState?.description }}
             ></p>
           </div>
@@ -408,10 +431,8 @@ const ProductPage = () => {
                       edit={false}
                       activeColor="#ffd700"
                     />
-                    <p>
-                    {item?.comment}
-                    </p>
-                  </div>
+                    <p>{item?.comment}</p>
+                  </div>;
                 })}
             </div>
           </div>
@@ -421,9 +442,9 @@ const ProductPage = () => {
         <div className="col-12">
           <h3 className="section_heading">Our Popular Products</h3>
         </div>
-        {productState &&
-          productState?.map((product: ProductInfo, index: number) => {
-            if (product.tags === 'popular') {
+        {allProductsState &&
+          allProductsState.map((product: any, index: number) => {
+            if (product.tag === 'popular') {
               return <ProductItem product={product} key={index} />;
             }
           })}

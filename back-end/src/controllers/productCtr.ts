@@ -5,51 +5,6 @@ import ProductModel from '../model/ProductModel';
 import {UserModel} from '../model/UserModel';
 
 
-export const createProduct = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    const newProduct = await ProductModel.create(req.body);
-    res.json(newProduct);
-  } catch (error) {
-    next(error);
-  }
-});
-export const updateProduct = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
-  const { id } = req.params;
-  try {
-
-    const updateProduct = await ProductModel.findOneAndUpdate(
-      { id },
-      req.body,
-      { new: true }
-    );
-
-    res.json(updateProduct);
-  } catch (error) {
-    next(error);
-  }
-});
-export const deleteProduct = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
-  const { id } = req.params;
-  try {
-    const deleteProduct = await ProductModel.findOneAndDelete({ id });
-
-    res.json(deleteProduct);
-  } catch (error) {
-    next(error);
-  }
-});
-
-export const getProduct = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    const { id } = req.params;
-    const findProduct = await ProductModel.findById(id).populate("color").exec();
-
-    res.json(findProduct);
-  } catch (error) {
-    next(error);
-  }
-});
-
 export const getAllProducts = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
   try {
     // Filtering
@@ -97,6 +52,59 @@ export const getAllProducts = asyncHandler(async (req: Request, res: Response, n
 
     const product = await query.populate('color').exec();
     res.json(product)
+  } catch (error) {
+    next(error);
+  }
+});
+
+export const createProduct = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const newProduct = await ProductModel.create(req.body);
+    res.json(newProduct);
+  } catch (error) {
+    next(error);
+  }
+});
+export const updateProduct = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+  const { id } = req.params;
+  try {
+
+    const updateProduct = await ProductModel.findOneAndUpdate(
+      {id} ,
+      req.body,
+      { new: true }
+    );
+
+    res.json(updateProduct);
+  } catch (error) {
+    next(error);
+  }
+});
+export const deleteProduct = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+  const { id } = req.params;
+  try {
+    const deleteProduct = await ProductModel.findOneAndDelete({ id });
+
+    res.json(deleteProduct);
+  } catch (error) {
+    next(error);
+  }
+});
+
+export const getProduct = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const { id } = req.params;
+    const findProduct = await ProductModel.findById(id)
+    .populate('name')
+    .populate('description')
+    .populate('tag')
+    .populate('color')
+    .populate('price')
+    .populate('category')
+    .populate('brand')
+    .exec();
+
+    res.json(findProduct);
   } catch (error) {
     next(error);
   }

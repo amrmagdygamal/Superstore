@@ -1,15 +1,19 @@
+import { useState } from "react";
+
 interface PropsTypes {
   col: any;
   setColor?: any;
-  setColorBorder?: any;
   border?: boolean;
+  color?: any
 }
 
 export const Color = (props: PropsTypes) => {
-  const { col, setColor, setColorBorder, border } = props;
+    const [colorBorder, setColorBorder] = useState(false);
+
+  const { col, setColor } = props;
   return (
     <div
-      style={{ border: border == true ? `3px solid ${col.title}` : 'none' }}
+      style={{ border: colorBorder == true ? `3px solid ${col.title}` : 'none' }}
       className="p-2 text-center rounded-circle"
     >
       <li

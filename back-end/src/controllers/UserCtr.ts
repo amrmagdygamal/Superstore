@@ -532,10 +532,10 @@ export const addToCart = asyncHandler(
         const newProduct = {
           name: product?.name ?? '',
           quantity: quantity,
+          image: product?.images[0]?.url ?? '', // ensure image is always a string
           price: product?.price ?? 0,
           color: colors ?? undefined,
           product: product?._id,
-          image: product?.images[0]?.url ?? '', // ensure image is always a string
         };
         cart.products.push(newProduct);
       }
