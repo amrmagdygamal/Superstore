@@ -27,7 +27,15 @@ body {
   color: white !important;
 }
 
-
+div .main-banner {
+  max-height: 420px;
+  
+}
+.main-banner {
+  width: 636px;
+  height: auto;
+  
+}
 
 .card-wrapper {
   background-color: white;

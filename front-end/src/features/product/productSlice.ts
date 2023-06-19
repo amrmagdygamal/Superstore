@@ -2,24 +2,6 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import productService from './productServcie';
 import { toast } from 'react-toastify';
 
-export interface productState {
-  products: [];
-  isError: boolean;
-  isLoading: boolean;
-  isSuccess: boolean;
-  message: string;
-  product?: any;
-  addToWishlist?: any;
-  rateProd?: any
-}
-
-const initialState: productState = {
-  products: [],
-  isError: false,
-  isLoading: false,
-  isSuccess: false,
-  message: '',
-};
 
 export const getproducts = createAsyncThunk(
   'product/get-products',
@@ -63,7 +45,25 @@ export const rateProduct = createAsyncThunk(
       return thunkAPI.rejectWithValue(error);
     }
   }
-);
+  );
+  export interface productState {
+    products: [];
+    isError: boolean;
+    isLoading: boolean;
+    isSuccess: boolean;
+    message: string;
+    product?: any;
+    addToWishlist?: any;
+    rateProd?: any
+  }
+  
+  const initialState: productState = {
+    products: [],
+    isError: false,
+    isLoading: false,
+    isSuccess: false,
+    message: '',
+  };
 
 export const productSlice = createSlice({
   name: 'products',

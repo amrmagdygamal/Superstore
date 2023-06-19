@@ -1,10 +1,8 @@
 import { useEffect } from 'react';
 import { Row } from 'react-bootstrap';
-import MessageBox from '../components/MessageBox';
-import LoadingBox from '../components/LoadingBox';
+
 import ProductItem from '../components/ProductItem';
-import { ApiError } from '../types/ApiErrors';
-import { getError } from '../utils';
+
 import { Link, useNavigate } from 'react-router-dom';
 import Marquee from 'react-fast-marquee';
 import BlogCard from '../components/BlogCard';
@@ -18,7 +16,13 @@ import { getproducts } from '../features/product/productSlice';
 import { getBlogs } from '../features/blog/blogSlice';
 import moment from 'moment';
 import { ProductInfo } from '../types/ProductInfo';
-
+import { Swiper, SwiperSlide } from 'swiper/react';
+import {Navigation ,Pagination, Autoplay } from 'swiper';
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
+import 'swiper/css/scrollbar';
+import 'swiper/css/autoplay';
 
 const HomePage = () => {
   const dispatch: AppDispatch = useDispatch();
@@ -33,8 +37,6 @@ const HomePage = () => {
   const productState = useSelector((state: any) => state.product.products);
   const blogState = useSelector((state: any) => state.blog.blogs);
 
-  const { isLoading, isError, isSuccess } = productState;
-
   const getAllProducts = () => {
     dispatch(getproducts());
   };
@@ -48,37 +50,126 @@ const HomePage = () => {
     getAllBlogs();
   }, []);
 
-  return isLoading ? (
-    <LoadingBox />
-  ) : isError ? (
-    <MessageBox variant="danger">{getError(isError as ApiError)}</MessageBox>
-  ) : (
+
+
+
+  function createSlide1() {
+    return (
+      <SwiperSlide>
+        <div className="main-banner position-relative">
+          <img
+            src="/images/catbanner-03.jpg"
+            alt="main banner"
+            className="main-banner rounded-4"
+          />
+          <div className="main-banner-content position-absolute">
+            <h4>SuperCharged For Pros</h4>
+            <h2>iPad S13+ Pro</h2>
+            <p>From $999.00 or $41.62/mo</p>
+            <p>For 24 mo. Footnote*</p>
+            <Link className="button" to={''}>
+              Buy Now
+            </Link>
+          </div>
+        </div>
+      </SwiperSlide>
+    );
+  }
+  function createSlide2() {
+    return (
+      <SwiperSlide className='rounded-4'>
+        <div className="main-banner position-relative">
+          <img
+            src="/images/20220912applewatchsefull.jpg"
+            alt="main banner"
+            className="main-banner rounded-4"
+          />
+          <div className="main-banner-content position-absolute">
+            <h4>SuperCharged</h4>
+          
+            <p>Apple</p>
+            <p>Smart </p>
+            <p>Watch </p>
+            <Link className="button mt-4" to={''}>
+              Buy Now
+            </Link>
+          </div>
+        </div>
+      </SwiperSlide>
+    );
+  }
+  function createSlide4() {
+    return (
+      <SwiperSlide className='rounded-4'>
+        <div className="main-banner position-relative">
+          <img
+            src="/images/apple-watch-ultra-og-202209_GEO_IN.jpeg"
+            alt="main banner"
+            className="main-banner rounded-4"
+          />
+          <div className="main-banner-content position-absolute">
+            <h4>SuperCharged</h4>
+          
+            <p>Apple</p>
+            <p>Smart </p>
+            <p>Watch </p>
+            <Link className="button mt-4" to={''}>
+              Buy Now
+            </Link>
+          </div>
+        </div>
+      </SwiperSlide>
+    );
+  }
+  function createSlide3() {
+    return (
+      <SwiperSlide>
+        <div className="main-banner position-relative">
+          <img
+            src="/images/latest-iphones-you-can-buy-on-emi.webp"
+            alt="main banner"
+            className="main-banner rounded-4"
+          />
+          <div className="main-banner-content position-absolute">
+            <h4 className='text-black'>SuperCharged For Pros</h4>
+            <h2 className='text-black'>iPad S13+ Pro</h2>
+            <p className='text-black'>From $999.00 or $41.62/mo</p>
+            <p className='text-black'>For 24 mo. Footnote*</p>
+            <Link className="button" to={''}>
+              Buy Now
+            </Link>
+          </div>
+        </div>
+      </SwiperSlide>
+    );
+  }
+
+  return (
     <>
       <Container class1="home-wrapper-2 py-5">
         <Meta title="Super Store" />
         <div className="col-6">
-          <div className="main-banner position-relative">
-            <img
-              src="images/main-banner-1.jpg"
-              alt="main banner"
-              className="img-fluid rounded-4"
-            />
-            <div className="main-banner-content position-absolute">
-              <h4>SuperCharged For Pros</h4>
-              <h2>iPad S13+ Pro</h2>
-              <p>From $999.00 or $41.62/mo</p>
-              <p>For 24 mo. Footnote*</p>
-              <Link className="button" to={''}>
-                Buy Now
-              </Link>
-            </div>
-          </div>
+          <Swiper
+            modules={[Navigation ,Pagination, Autoplay]}
+            slidesPerView={1}
+            autoplay={
+              {delay: 5000,
+              disableOnInteraction: false,}
+            }
+            loop
+            pagination={{ clickable: true }}
+          >
+            {createSlide1()}
+            {createSlide2()}
+            {createSlide3()}
+            {createSlide4()}
+          </Swiper>
         </div>
         <div className="col-6">
           <div className="d-flex flex-wrap justify-content-between align-items-center gap-2">
             <div className="small-banner position-relative">
               <img
-                src="images/catbanner-01.jpg"
+                src="/images/catbanner-01.jpg"
                 alt="main banner"
                 className="img-fluid rounded-4"
               />
@@ -91,7 +182,7 @@ const HomePage = () => {
             </div>
             <div className="small-banner position-relative">
               <img
-                src="images/catbanner-03.jpg"
+                src="/images/catbanner-03.jpg"
                 alt="main banner"
                 className="img-fluid rounded-4"
               />
@@ -104,7 +195,7 @@ const HomePage = () => {
             </div>
             <div className="small-banner position-relative">
               <img
-                src="images/catbanner-02.jpg"
+                src="/images/catbanner-02.jpg"
                 alt="main banner"
                 className="img-fluid rounded-4"
               />
@@ -117,7 +208,7 @@ const HomePage = () => {
             </div>
             <div className="small-banner position-relative">
               <img
-                src="images/catbanner-04.jpg"
+                src="/images/catbanner-04.jpg"
                 alt="main banner"
                 className="img-fluid rounded-4"
               />
@@ -135,35 +226,35 @@ const HomePage = () => {
         <div className="col-12">
           <div className="services d-flex align-items-center justify-content-between">
             <div className="d-flex align-items-center gap-3">
-              <img src="images/service.png" alt="services" />
+              <img src="/images/service.png" alt="services" />
               <div>
                 <h6>Free Shipping</h6>
                 <p className="mb-0">From all orders over $5</p>
               </div>
             </div>
             <div className="d-flex align-items-center gap-3">
-              <img src="images/service-02.png" alt="services" />
+              <img src="/images/service-02.png" alt="services" />
               <div>
                 <h6>Daily Surprise Offers</h6>
                 <p className="mb-0">Save up to 25% off</p>
               </div>
             </div>
             <div className="d-flex align-items-center gap-3">
-              <img src="images/service-03.png" alt="services" />
+              <img src="/images/service-03.png" alt="services" />
               <div>
                 <h6>Suppport 24/7</h6>
                 <p className="mb-0">Shop with an expert</p>
               </div>
             </div>
             <div className="d-flex align-items-center gap-3">
-              <img src="images/service-04.png" alt="services" />
+              <img src="/images/service-04.png" alt="services" />
               <div>
                 <h6>Affordable Prices</h6>
                 <p className="mb-0">Get Factory Default Prise</p>
               </div>
             </div>
             <div className="d-flex align-items-center gap-3">
-              <img src="images/service-05.png" alt="services" />
+              <img src="/images/service-05.png" alt="services" />
               <div>
                 <h6>Secure Payments</h6>
                 <p className="mb-0">100% Protected Payment</p>
@@ -180,28 +271,28 @@ const HomePage = () => {
                 <h6>Cameras</h6>
                 <p>10 Items</p>
               </div>
-              <img src="images/camera.jpg" alt="camera" />
+              <img src="/images/camera.jpg" alt="camera" />
             </div>
             <div className="d-flex justify-content-around align-items-center">
               <div>
                 <h6>Smart TV</h6>
                 <p>10 Items</p>
               </div>
-              <img src="images/tv.jpg" alt="camera" />
+              <img src="/images/tv.jpg" alt="camera" />
             </div>
             <div className="d-flex justify-content-around align-items-center">
               <div>
                 <h6>Smart Watches</h6>
                 <p>10 Items</p>
               </div>
-              <img src="images/watch.jpg" className="w-50" alt="camera" />
+              <img src="/images/watch.jpg" className="w-50" alt="camera" />
             </div>
             <div className="d-flex justify-content-around align-items-center">
               <div>
                 <h6>Home Appliances</h6>
                 <p>10 Items</p>
               </div>
-              <img src="images/homeapp.jpg" className="img" alt="camera" />
+              <img src="/images/homeapp.jpg" className="img" alt="camera" />
             </div>
             <div className="d-flex justify-content-around align-items-center">
               <div>
@@ -209,7 +300,7 @@ const HomePage = () => {
                 <p>5 Items</p>
               </div>
               <img
-                src="images/iPhone-15-2-600x600.jpg"
+                src="/images/iPhone-15-2-600x600.jpg"
                 alt="camera"
                 className="img"
               />
@@ -219,21 +310,21 @@ const HomePage = () => {
                 <h6>Proffessional Watches</h6>
                 <p>9 Items</p>
               </div>
-              <img src="images/Apple_watch.webp" alt="camera" className="img" />
+              <img src="/images/Apple_watch.webp" alt="camera" className="img" />
             </div>
             <div className="d-flex justify-content-around align-items-center">
               <div>
                 <h6>AirBods</h6>
                 <p>13 Items</p>
               </div>
-              <img src="images/acc.jpg" alt="camera" />
+              <img src="/images/acc.jpg" alt="camera" />
             </div>
             <div className="d-flex justify-content-around align-items-center">
               <div>
                 <h6>Music & Gaming</h6>
                 <p>10 Items</p>
               </div>
-              <img src="images/1.jpg" className="img" alt="camera" />
+              <img src="/images/1.jpg" className="img" alt="camera" />
             </div>
           </div>
         </div>
@@ -253,7 +344,7 @@ const HomePage = () => {
         <div className="col-3">
           <div className="famous-card position-relative">
             <img
-              src="images/famous-1.webp"
+              src="/images/famous-1.webp"
               className="img-fluid box-shadow "
               alt="famous"
             />
@@ -267,7 +358,7 @@ const HomePage = () => {
         <div className="col-3">
           <div className="famous-card position-relative">
             <img
-              src="images/famous-2.webp"
+              src="/images/famous-2.webp"
               className="img-fluid box-shadow "
               alt="famous"
             />
@@ -281,7 +372,7 @@ const HomePage = () => {
         <div className="col-3">
           <div className="famous-card position-relative">
             <img
-              src="images/famous-3.webp"
+              src="/images/famous-3.webp"
               className="img-fluid box-shadow "
               alt="famous"
             />
@@ -295,7 +386,7 @@ const HomePage = () => {
         <div className="col-3">
           <div className="famous-card position-relative">
             <img
-              src="images/famous-4.webp"
+              src="/images/famous-4.webp"
               className="img-fluid box-shadow "
               alt="famous"
             />
