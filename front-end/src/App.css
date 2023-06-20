@@ -24,7 +24,7 @@ body {
 }
 
 .nav-item.dropdown a {
-  color: white !important;
+  color: white;
 }
 
 div .main-banner {
@@ -106,29 +106,28 @@ a {
 
 
 .header-bottom a,
-.header-bottom .shop-categories-menu {
+.header-bottom .shop-categories-menu, .dropdown-menu.show {
   font-size: 14px;
   line-height: 18px;
-  color: white;
   font-weight: 400;
   letter-spacing: .3;
   text-transform: uppercase;
 }
 
-.shop-categories-menu.show .dropdown-menu {
+.shop-categories-menu.show .dropdown-menu, .dropdown-menu.show {
   width: 100%;
   background-color: var(--main-dark-color);
   border-radius: .4rem;
 }
 
-.shop-categories-menu .dropdown-item {
+.shop-categories-menu .dropdown-item, .dropdown-menu.show .dropdown-item{
   color: white;
-  padding: 20px;
+  padding: 10px;
   margin-bottom: 3px;
   border-bottom: 1px solid var(--bottom1-light-color);
 }
 
-.shop-categories-menu .dropdown-item:hover {
+.shop-categories-menu .dropdown-item:hover, .dropdown-menu.show .dropdown-item:hover {
   background-color: transparent;
   color: var(--main-yellow-color)
 }

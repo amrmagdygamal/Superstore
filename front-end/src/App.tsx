@@ -51,15 +51,14 @@ function App() {
               <Route path="refund-policy" element={<RefundPolicy />} />
               <Route path="term-conditions" element={<TermsAndConditions />} />
               <Route path="shipping-policy" element={<ShippingPolicy />} />
-
-              <Route path="profile-page" element={<Profile />} />
-              <Route path="wishlist" element={<WishList />} />
-              <Route path="cart" element={<CartPage />} />
-              <Route path="checkout" element={<Checkout />} />
-              <Route path="payment" element={<PaymentPage />} />
-              <Route path="placeorder" element={<PlaceOrderPage />} />
-              <Route path="/order/:id" element={<OrderPage />} />
-              <Route path="/orderhistory" element={<OrdersHistory />} />
+              <Route path="profile-page" element={<ProtectedRoute><Profile  /></ProtectedRoute>} />
+              <Route path="wishlist" element={<ProtectedRoute><WishList  /></ProtectedRoute>} />
+              <Route path="cart" element={<ProtectedRoute><CartPage  /></ProtectedRoute>} />
+              <Route path="checkout" element={<ProtectedRoute><Checkout  /></ProtectedRoute>} />
+              <Route path="payment" element={<ProtectedRoute><PaymentPage  /></ProtectedRoute>} />
+              <Route path="placeorder" element={<ProtectedRoute><PlaceOrderPage  /></ProtectedRoute>} />
+              <Route path="/order/:id" element={<ProtectedRoute><OrderPage  /></ProtectedRoute>} />
+              <Route path="/orderhistory" element={<ProtectedRoute><OrdersHistory  /></ProtectedRoute>} />
             </Route>
           </Routes>
         </main>

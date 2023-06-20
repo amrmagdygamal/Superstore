@@ -15,6 +15,7 @@ import { getCategories } from '../features/category/categorySlice';
 const Header = () => {
   const dispatch: AppDispatch = useDispatch();
   const navigate = useNavigate();
+  const userinf = JSON.parse(localStorage.getItem("userInfo") || "{}")
   const cartState = useSelector((state: any) => state.user.cart);
   const productState = useSelector((state: any) => state?.product?.products);
   const categoryState = useSelector((state: any) => state?.productCategory?.categorys);
@@ -125,29 +126,29 @@ const Header = () => {
               </p>
             </Link>
 
-            {userState === undefined  ? (
+            {userinf == undefined  ? (
               <Link className="nav-link d-flex text-white gap-2" to="/login">
                 Login <br /> My Account
               </Link>
             ) : (
-              <NavDropdown style={{color: "white !important"}}
+              <NavDropdown
                 title={
                   <>
                     <img src="/images/user.svg" alt="user" />
-                    Welcome {userState?.userInfor?.username}
+                    Welcome {userinf?.username}
                   </>
                 }
                 id="basic-nav-dropdown"
               >
                 <Link
-                  className="dropdown-item text-dark"
+                  className="dropdown-item"
                   to="/profile-page"
                   onClick={signOutHandler}
                 >
                   My Profile
                 </Link>
                 <LinkContainer to="/orderhistory">
-                  <NavDropdown.Item className='text-dark'>Order History</NavDropdown.Item>
+                  <NavDropdown.Item >Order History</NavDropdown.Item>
                 </LinkContainer>
                 <button
                   className="dropdown-item"
@@ -202,10 +203,10 @@ const Header = () => {
             })}
           </NavDropdown>
           <Nav className="align-items-center gap-3">
-            <NavLink to="/">Home</NavLink>
-            <NavLink to="/store">Our Store</NavLink>
-            <NavLink to="/blogs">Blogs</NavLink>
-            <NavLink to="/contact">Contact</NavLink>
+            <NavLink className="text-white" to="/">Home</NavLink>
+            <NavLink className="text-white" to="/store">Our Store</NavLink>
+            <NavLink className="text-white" to="/blogs">Blogs</NavLink>
+            <NavLink className="text-white" to="/contact">Contact</NavLink>
           </Nav>
         </div>
       </Container>

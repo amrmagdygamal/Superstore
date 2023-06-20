@@ -32,8 +32,8 @@ const BlogPage = () => {
 
   return (
     <>
-      <Meta title={blogState.title} />
-      <BreadCrumb title={blogState.title} />
+      <Meta title={blogState?.title} />
+      <BreadCrumb title={blogState?.title} />
       <Container class1="blog-wrapper home-wrapper-2 py-5">
         <div className="col-3">
           <div className="filter-card mb-3">
@@ -50,15 +50,15 @@ const BlogPage = () => {
         </div>
         <div className="col-9">
           <div className="blog-page">
-            <h3 className="title">{blogState.title}</h3>
+            <h3 className="title">{blogState?.title}</h3>
             <img
-              src={blogState.images[0].url ? blogState.images[0].url : "/images/blog-1.jpg"}
+              src={blogState?.images[0].url ? blogState?.images[0].url : "/images/blog-1.jpg"}
               className="img-fluid w-100 my-4"
               alt="blog"
             />
-            <p dangerouslySetInnerHTML={{ __html: blogState.description}}>
+            <p dangerouslySetInnerHTML={{ __html: blogState?.description}}>
             </p>
-            <Link to="/blog" className="d-flex gap-1 align-items-center fs-5">
+            <Link to="/blogs" className="d-flex gap-1 align-items-center fs-5">
               <HiOutlineArrowLeft />
               Go back to Blogs
             </Link>
@@ -66,7 +66,7 @@ const BlogPage = () => {
         </div>
       </Container>
     </>
-  );
+  );  
 };
 
 export default BlogPage;

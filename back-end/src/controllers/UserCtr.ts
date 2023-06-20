@@ -142,9 +142,7 @@ export const AdminLogin = asyncHandler(
         const error = createHttpError(401, 'Invalid credentials');
         throw error;
       }
-      const refreshToken =  generateRefreshToken(
-        findAdmin?._id.toString()
-      );
+      const refreshToken = generateRefreshToken(findAdmin?._id.toString());
 
       const updateuser = await UserModel.findByIdAndUpdate(
         findAdmin?._id,
@@ -175,7 +173,7 @@ export const AdminLogin = asyncHandler(
 export const handleRefreshToken = asyncHandler(
   async (req: Request, res: Response) => {
     const cookie = req.cookies;
-    console.log(cookie)
+    console.log(cookie);
 
     if (!cookie?.refreshToken) {
       const error = createHttpError(400, 'No Refresh Token in Cookies');
@@ -336,7 +334,6 @@ export const saveAddress = asyncHandler(
 );
 
 // FETCHING all users
-
 
 // Block User
 export const blockUser = asyncHandler(
@@ -589,8 +586,6 @@ export const deleteFromCart = asyncHandler(
         // the product is already exists in the cart update the quantity
 
         if (cart.products[existProdIndex].quantity > 1) {
-          cart.products[existProdIndex].quantity -= 1;
-        } else {
           // If the quantity is 1, remove the product from the cart
           cart.products.splice(existProdIndex, 1);
         }
@@ -618,9 +613,10 @@ export const getUserCart = asyncHandler(
     const _id = req.user?._id;
 
     try {
-      const cart = await CartModel.find({ customer: _id }).populate(
-        'products.product'
-      ).populate("products.product.color").exec()
+      const cart = await CartModel.find({ customer: _id })
+        .populate('products.product')
+        .populate('products.product.color')
+        .exec();
       // Check if User already has product in cart
 
       res.json(cart);

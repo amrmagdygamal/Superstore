@@ -15,9 +15,8 @@ import { addToWishList } from '../features/product/productSlice';
 const WishList = () => {
   const dispatch: AppDispatch = useDispatch();
 
-  const WishListState = useSelector((state: any) => state.user.wishlist.wishlist);
+  const WishListState = useSelector((state: any) => state.user.wishlist);
 
-  const { isLoading, isError, isSuccess } = WishListState;
 
   const getFavProducts = () => {
     dispatch(getUserWishlist());
@@ -34,38 +33,34 @@ const WishList = () => {
     getFavProducts();
   }, []);
 
-  return isLoading ? (
-    <LoadingBox />
-  ) : isError ? (
-    <MessageBox variant="danger">{getError(isError as ApiError)}</MessageBox>
-  ) : (
+  return (
     <>
       <Meta title="Wishlist Page" />
       <BreadCrumb title="Wishlist Page" />
       <Container class1="wishlist home-wrapper-2 py-5">
-        {WishListState.length === 0 && <div className='text-center fs-4'><b>No Products added to Wishlist</b></div>}
+        {WishListState?.length === 0 && <div className='text-center fs-4'><b>No Products added to Wishlist</b></div>}
         {WishListState&&
-          WishListState.map((product: any, index: string) => {
+          WishListState?.map((product: any, index: string) => {
           <div className="col-3">
           <div className="wishlist-card position-relative">
             <img
-              onClick={() => removefromlist(product._id)}
+              onClick={() => removefromlist(product?._id)}
               src="images/cross.svg"
               className="cross position-absolute img-fluid"
               alt="cross"
             />
             <div className="wishlist-card-image">
               <img
-                src={product.images[0].url}
+                src={product?.images[0].url}
                 className="w-100 img-fluid"
                 alt="watch"
               />
             </div>
             <div className="py-3 px-3">
               <h5 className="title">
-                {product.name}
+                {product?.name}
               </h5>
-              <h6 className="price">{product.price}</h6>
+              <h6 className="price">{product?.price}</h6>
             </div>
           </div>
         </div>
