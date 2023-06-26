@@ -1,14 +1,13 @@
 import { NextFunction, Request, Response } from 'express';
 import asyncHandler from 'express-async-handler';
 import { generateToken } from '../Util/token';
-import { UserModel, User } from '../model/UserModel';
+import { UserModel} from '../model/UserModel';
 import bcrypt from 'bcryptjs';
 import crypto from 'crypto';
 import createHttpError from 'http-errors';
 import { validateMongoDbId } from '../Util/validateMongodbId';
 import generateRefreshToken from '../../config/refreshToken';
 import jwt from 'jsonwebtoken';
-import validateEnv from '../Util/validateEnv';
 import { sendEmail } from './emailCtr';
 import CartModel from '../model/CartModel';
 import ProductModel from '../model/ProductModel';
@@ -194,7 +193,7 @@ export const handleRefreshToken = asyncHandler(
 
     jwt.verify(
       refreshToken,
-      validateEnv.JWEBT_SECRET,
+      process.env.JWEBT_SECRET || "somethingsecret",
       (err: jwt.VerifyErrors | null, decoded: any) => {
         if (err || user._id.toString() !== decoded?._id) {
           const error = createHttpError(

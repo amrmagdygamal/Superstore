@@ -1,5 +1,4 @@
-import asyncHandler from 'express-async-handler';
-import validateEnv from '../Util/validateEnv';
+
 import nodemailer from 'nodemailer';
 
 interface EmailData {
@@ -16,8 +15,8 @@ export const sendEmail = async (data: EmailData) => {
     port: 587,
     secure: false,
     auth: {
-      user: validateEnv.EMAIL_ID,
-      pass: validateEnv.MP,
+      user: process.env.EMAIL_ID,
+      pass: process.env.MP,
     },
   });
 

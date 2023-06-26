@@ -41,7 +41,7 @@ const Login = () => {
     if(authState?.userInfo || authState?.userInfo !== null) {
       navigate("/admin")
     } else {
-      navigate("/")
+      navigate("/login-admin")
     }
   }, [authState])
 

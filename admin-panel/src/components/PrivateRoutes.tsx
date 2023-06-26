@@ -10,15 +10,15 @@ export const PrivateRoutes = ({ children }: any) => {
       const decodedToken: any = jwtDecode(token);
       if (decodedToken.exp < Date.now() / 1000) {
         localStorage.clear()
-        return <Navigate to="/" replace={true} />;
+        return <Navigate to="/login-admin" replace={true} />;
       }
       return children;
     } catch (err) {
       console.error('Invalid token:', err);
       
-      return <Navigate to="/" replace={true} />;
+      return <Navigate to="/login-admin" replace={true} />;
     }
   }
 
-  return <Navigate to="/" replace={true} />;
+  return <Navigate to="/login-admin" replace={true} />;
 };

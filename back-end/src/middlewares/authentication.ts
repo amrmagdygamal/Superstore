@@ -1,7 +1,6 @@
-import e, { NextFunction, Request, Response } from 'express';
-import   {User, UserModel}  from '../model/UserModel';
+import  { NextFunction, Request, Response } from 'express';
+import   {UserModel}  from '../model/UserModel';
 import asyncHandler from 'express-async-handler';
-import validateEnv from '../Util/validateEnv';
 import jwt from 'jsonwebtoken'
 
 export const auhtMiddleware = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
@@ -10,7 +9,7 @@ export const auhtMiddleware = asyncHandler(async (req: Request, res: Response, n
   try {
   if(token) {
   
-      const decoded: any = jwt.verify(token, validateEnv.JWEBT_SECRET);
+      const decoded: any = jwt.verify(token, process.env.JWEBT_SECRET!);
       const user = await UserModel.findOne({_id: decoded.id}).select("+email").exec();
     
       if (!user) {

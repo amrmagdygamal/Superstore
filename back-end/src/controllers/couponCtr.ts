@@ -1,8 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 import asyncHandler from 'express-async-handler';
 import couponModel from '../model/couponModel';
-import { validateMongoDbId } from '../Util/validateMongodbId';
-
 export const createCoupon = asyncHandler ( async (req: Request, res: Response, next: NextFunction) => {
   try {
     const newcoupon = await couponModel.create(req.body);

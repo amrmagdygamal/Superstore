@@ -1,6 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
 import asyncHandler from 'express-async-handler';
-import { validateMongoDbId } from '../Util/validateMongodbId';
 import ProdCategoryModel from '../model/prodcategoryModel';
 
 export const createCategory = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {

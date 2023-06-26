@@ -1,9 +1,9 @@
-import validateEnv from './validateEnv';
+
 import { v2 as cloudinary } from 'cloudinary';
 cloudinary.config({
-  cloud_name: validateEnv.CLOUD_NAME,
-  api_key: validateEnv.API_KEY,
-  api_secret: validateEnv.API_SECRET,
+  cloud_name: process.env.CLOUD_NAME,
+  api_key: process.env.API_KEY,
+  api_secret: process.env.API_SECRET,
 });
 
 export const cloudinaryUploadImg = async (fileToUploads: any, folderName: any) => {

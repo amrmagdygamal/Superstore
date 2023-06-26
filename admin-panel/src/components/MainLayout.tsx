@@ -44,7 +44,7 @@ const MainLayout = () => {
           mode="inline"
           defaultSelectedKeys={['']}
           onClick={({ key }) => {
-            if (key === 'signout') {
+            if (key === 'signout-admin') {
               localStorage.clear()
               window.location.reload()
             } else {
@@ -68,7 +68,7 @@ const MainLayout = () => {
               label: 'Catalog',
               children: [
                 {
-                  key: 'product',
+                  key: 'add-product',
                   icon: <AiOutlineShoppingCart className="fs-4" />,
                   label: 'Add Product',
                 },
@@ -78,7 +78,7 @@ const MainLayout = () => {
                   label: 'Product List',
                 },
                 {
-                  key: 'brand',
+                  key: 'add-brand',
                   icon: <SiBrandfolder className="fs-4" />,
                   label: 'Add Brand',
                 },
@@ -88,7 +88,7 @@ const MainLayout = () => {
                   label: 'Brand List ',
                 },
                 {
-                  key: 'category',
+                  key: 'add-category',
                   icon: <BiCategoryAlt className="fs-4" />,
                   label: 'Add Category',
                 },
@@ -103,7 +103,7 @@ const MainLayout = () => {
                   label: 'Colors',
                 },
                 {
-                  key: 'color',
+                  key: 'add-color',
                   icon: <AiOutlineBgColors className="fs-4" />,
                   label: 'Add Color',
                 },
@@ -120,7 +120,7 @@ const MainLayout = () => {
               label: 'Marketing',
               children: [
                 {
-                  key: 'coupon',
+                  key: 'add-coupon',
                   icon: <ImBlog className="fs-4" />,
                   label: 'Add Coupon',
                 },
@@ -137,7 +137,7 @@ const MainLayout = () => {
               label: 'Blogs',
               children: [
                 {
-                  key: 'blog',
+                  key: 'add-blog',
                   icon: <ImBlog className="fs-4" />,
                   label: 'Add Blog',
                 },
@@ -147,7 +147,7 @@ const MainLayout = () => {
                   label: 'Blog List',
                 },
                 {
-                  key: 'blog-category',
+                  key: 'add-blog-category',
                   icon: <ImBlog className="fs-4" />,
                   label: 'Add Blog Category',
                 },
@@ -164,7 +164,7 @@ const MainLayout = () => {
               label: 'Enquiries',
             },
             {
-              key: 'signout',
+              key: 'signout-admin',
               icon: <CiLogout className="fs-4" />,
               label: 'Sign Out',
             },

@@ -1,6 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
 import asyncHandler from 'express-async-handler';
-import slugify from 'slugify';
 import ProductModel from '../model/ProductModel';
 import {UserModel} from '../model/UserModel';
 
