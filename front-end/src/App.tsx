@@ -1,6 +1,5 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import 'react-toastify/dist/ReactToastify.css';
-import HomePage from './pages/HomePage';
 import ProductPage from './pages/ProductPage';
 import CartPage from './pages/CartPage';
 import LoginPage from './pages/LoginPage';
@@ -27,6 +26,7 @@ import Checkout from './pages/Checkout';
 
 import Profile from './pages/Profile';
 import { ProtectedRoute } from './components/ProtectedRoute';
+import HomePage from './pages/HomePage';
 
 function App() {
   return (
