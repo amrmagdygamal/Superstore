@@ -1,6 +1,5 @@
 import axios from 'axios';
 import { base_url } from '../../utils/base_url';
-import { AnyObjectSchema } from 'yup';
 import { config } from '../../utils/axiosconfig';
 import { BlogcategInfo } from './blogCategorySlice';
 

@@ -1,6 +1,6 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import CustomInput from '../components/CustomInput';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { useDispatch, useSelector } from 'react-redux';
@@ -38,8 +38,10 @@ const Login = () => {
   });
 
   useEffect(() => {
-    if(authState?.userInfo !== undefined) {
+    if(authState?.userInfo || authState?.userInfo !== null) {
       navigate("/admin")
+    } else {
+      navigate("/")
     }
   }, [authState])
 

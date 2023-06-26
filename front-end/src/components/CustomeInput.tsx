@@ -1,4 +1,3 @@
-import React from "react";
 
 const CustomInput = (props: any) => {
   const { type, name, placeholder, classname } = props;

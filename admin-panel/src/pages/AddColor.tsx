@@ -2,7 +2,6 @@ import { useEffect } from 'react';
 import CustomInput from '../components/CustomInput';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
 import * as yup from 'yup';
 import { useFormik } from 'formik';
 import {
@@ -25,12 +24,7 @@ const AddColor = () => {
   const getColorId = location.pathname.split('/')[3];
 
   const {
-    isSuccess,
-    isError,
-    isLoading,
-    createdColor,
     colorName,
-    updatedColor,
   } = useSelector((state: any) => state.color);
 
   useEffect(() => {

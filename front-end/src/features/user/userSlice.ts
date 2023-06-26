@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import {
-  PayloadAction,
   createAction,
   createAsyncThunk,
   createSlice,
@@ -75,11 +74,11 @@ export const getUserCart = createAsyncThunk(
   }
 );
 
-export const deleteFromCart = createAsyncThunk(
-  'user/delete-from-cart',
-  async (prodId: string, thunkAPI) => {
+export const delFromCart = createAsyncThunk(
+  'cart/delete-from-cart',
+  async (prodId: any, thunkAPI) => {
     try {
-      return await userService.deleteFromCart(prodId);
+      return await userService.delFromCart(prodId);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }
@@ -162,7 +161,7 @@ export const userSlice = createSlice({
         state.message =
           action.payload?.response?.data?.message ?? action.error.message;
         if (state.isError === true) {
-          toast.error(action.payload.response.data.error, {
+          toast.error(action.payload.response.data?.error, {
             containerId: 'custom-container',
             style: { width: '500px', alignSelf: "center" }
           });
@@ -266,26 +265,31 @@ export const userSlice = createSlice({
         state.message = action.error.message ?? '';
         
       })
-      .addCase(deleteFromCart.pending, (state) => {
+      .addCase(delFromCart.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(deleteFromCart.fulfilled, (state, action) => {
+      .addCase(delFromCart.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isSuccess = true;
         state.isError = false;
         state.deletFromCart = action.payload;
-        state.message = 'success';
+        if (state.isSuccess === true) {
+          toast.success('Product Deleted Successfullly!');
+        }
       })
-      .addCase(deleteFromCart.rejected, (state, action) => {
+      .addCase(delFromCart.rejected, (state, action) => {
         state.isError = true;
         state.isSuccess = false;
         state.isLoading = false;
         state.message = action.error.message ?? '';
+        if (state.isError === true) {
+          toast.error('Some Thing went wrong!');
+        }
       })
       .addCase(forgotPass.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(forgotPass.fulfilled, (state, action) => {
+      .addCase(forgotPass.fulfilled, (state) => {
         state.isLoading = false;
         state.isSuccess = true;
         state.isError = false;
@@ -307,7 +311,7 @@ export const userSlice = createSlice({
       .addCase(resetPass.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(resetPass.fulfilled, (state, action) => {
+      .addCase(resetPass.fulfilled, (state) => {
         state.isLoading = false;
         state.isSuccess = true;
         state.isError = false;

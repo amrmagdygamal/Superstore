@@ -120,7 +120,7 @@ const Dashboard = () => {
     xField: 'type',
     yField: 'income',
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    color: ({ type }: any) => {
+    color: () => {
       return '#e9b10d';
     },
     label: {
@@ -150,7 +150,7 @@ const Dashboard = () => {
     xField: 'type',
     yField: 'sales',
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    color: ({ type }: any) => {
+    color: () => {
       return '#e9b10d';
     },
     label: {

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import Meta from '../components/Meta';
 import BreadCrumb from '../components/BreadCrumb';
 import Container from '../components/Container';
@@ -6,10 +6,6 @@ import { AppDispatch } from '../app/store';
 import { useDispatch } from 'react-redux';
 import { getUserWishlist } from '../features/user/userSlice';
 import { useSelector } from 'react-redux';
-import LoadingBox from '../components/LoadingBox';
-import MessageBox from '../components/MessageBox';
-import { getError } from '../utils';
-import { ApiError } from '../types/ApiErrors';
 import { addToWishList } from '../features/product/productSlice';
 
 const WishList = () => {
@@ -41,7 +37,7 @@ const WishList = () => {
         {WishListState?.length === 0 && <div className='text-center fs-4'><b>No Products added to Wishlist</b></div>}
         {WishListState&&
           WishListState?.map((product: any, index: string) => {
-          <div className="col-3">
+          <div key={index} className="col-3">
           <div className="wishlist-card position-relative">
             <img
               onClick={() => removefromlist(product?._id)}

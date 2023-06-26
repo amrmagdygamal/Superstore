@@ -49,14 +49,10 @@ const AddProduct = () => {
   const newProduct = useSelector((state: any) => state.product);
   const {
     isSuccess,
-    isError,
-    isLoading,
-    createdProduct,
     productName,
     productDesc,
     productCategory,
     productPrice,
-    productColor,
     productBrand,
     productTag,
     productQuant,
@@ -108,18 +104,39 @@ const AddProduct = () => {
     formik.values.images = img;
   }, [color, img]);
 
+  const [initialValues, setInitialValues] = useState({
+    name: '',
+    description: '',
+    category: '',
+    price: '',
+    color: [],
+    brand: '',
+    tag: '',
+    countInStock: '',
+    images: [],
+  });
+  
+  useEffect(() => {
+    if ( productName | productDesc | productCategory | productPrice | productBrand | productTag | productQuant) {
+      setTimeout(() => {
+        setInitialValues({
+          name: productName,
+          description: productDesc,
+          category: productCategory,
+          price: productPrice,
+          color: [],
+          brand: productBrand,
+          tag: productTag,
+          countInStock: productQuant,
+          images: productImages,
+        });
+      }, 3000);
+    }
+  }, [isSuccess, productName, productDesc, productCategory, productPrice, productBrand, productTag, productQuant, productImages]);
+  
+
   const formik = useFormik({
-    initialValues: {
-      name: productName || '',
-      description: productDesc || '',
-      category: productCategory || '',
-      price: productPrice || '',
-      color: [],
-      brand: productBrand || '',
-      tag: productTag || '',
-      countInStock: productQuant || '',
-      images: productImages || [],
-    },
+    initialValues,
     validationSchema: schema,
     onSubmit: (values) => {
       if (getProductId !== undefined) {

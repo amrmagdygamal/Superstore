@@ -36,7 +36,6 @@ export const getCoupon = asyncHandler ( async (req: Request, res: Response, next
 
 export const updateCoupon = asyncHandler ( async (req: Request, res: Response, next: NextFunction) => {
   const { id } = req.params;
-  validateMongoDbId(id);
 
   try {
     const updatedcoupon = await couponModel.findByIdAndUpdate(id, req.body, {
@@ -51,7 +50,6 @@ export const updateCoupon = asyncHandler ( async (req: Request, res: Response, n
 
 export const deleteCoupon = asyncHandler ( async (req: Request, res: Response, next: NextFunction) => {
   const { id } = req.params;
-  validateMongoDbId(id);
 
   try {
     const deletecoup = await couponModel.findByIdAndDelete(id);

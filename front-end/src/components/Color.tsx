@@ -1,4 +1,4 @@
-import { useState } from "react";
+
 
 interface PropsTypes {
   col: any;
@@ -8,9 +8,8 @@ interface PropsTypes {
 }
 
 export const Color = (props: PropsTypes) => {
-    const [colorBorder, setColorBorder] = useState(false);
 
-  const { col, setColor } = props;
+  const { col } = props;
   return (
     <div
       

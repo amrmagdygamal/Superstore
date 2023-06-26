@@ -1,12 +1,10 @@
-import { Button, Card } from 'react-bootstrap';
+import { Card } from 'react-bootstrap';
 import { ProductInfo } from '../types/ProductInfo';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { useContext, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import ReachStars from 'react-rating-stars-component';
-import { useDispatch } from 'react-redux';
-import { AppDispatch } from '../app/store';
-import { addToWishList } from '../features/product/productSlice';
-import { addToCart } from '../features/user/userSlice';
+// import { useDispatch } from 'react-redux';
+// import { AppDispatch } from '../app/store';
+// import { addToWishList } from '../features/product/productSlice';
 
 
 interface ProductItemProps {
@@ -18,22 +16,18 @@ interface ProductItemProps {
 const ProductItem = (props: ProductItemProps)=> {
 
 
-  const addProductToCart = (id: string) => {
-    dispatch(addToCart(id))
-  }
 
 
-  const dispatch: AppDispatch = useDispatch();
+
+  // const dispatch: AppDispatch = useDispatch();
   const navigate = useNavigate();
 
   const { grid, product} = props;
 
-  const location = useLocation();
-  const getProductId = location.pathname.split("/")[2]
 
-  const addWishlist = (id: string) => {
-    dispatch(addToWishList(id))
-  }
+  // const addWishlist = (id: string) => {
+  //   dispatch(addToWishList(id))
+  // }
 
 
 
@@ -43,7 +37,7 @@ const ProductItem = (props: ProductItemProps)=> {
     <div className={`${location.pathname == "/store" ? `gr-${grid}` : "col-3"}`}>
           <Card  className="product-card mb-4 position-relative d-flex gap-4" style={{height: grid ==12 ? "20rem" : ""}}>
         <div className="wishlist-icon position-absolute">
-          <button className='border-0 bg-transparent' onClick={() => {addWishlist(product?._id)}}>
+          <button className='border-0 bg-transparent'>
               <img src="/images/wish.svg" alt="wishlist" />
           </button>
         </div>

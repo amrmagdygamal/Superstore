@@ -1,14 +1,12 @@
-import { useState } from 'react';
+
 import Meta from '../components/Meta';
 import BreadCrumb from '../components/BreadCrumb';
 import { Link } from 'react-router-dom';
-import LoadingBox from '../components/LoadingBox';
 import { Form } from 'react-bootstrap';
 import Container from '../components/Container';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '../app/store';
 import { useFormik } from 'formik';
-import { useSelector } from 'react-redux';
 import { forgotPass } from '../features/user/userSlice';
 import * as Yup from 'yup';
 
@@ -23,7 +21,6 @@ const ForgotPassword = () => {
 
 
   const dispatch: AppDispatch = useDispatch();
-  const userState = useSelector((state: any) => state.user)
 
 
   const formik = useFormik({

@@ -25,12 +25,7 @@ const Addbrand = () => {
   console.log(getBrandId);
 
   const {
-    isSuccess,
-    isError,
-    isLoading,
-    createdBrand,
     brandName,
-    updatedBrand,
   } = useSelector((state: any) => state.brand);
 
   useEffect(() => {

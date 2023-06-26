@@ -1,14 +1,11 @@
-import { useState } from 'react';
 import Meta from '../components/Meta';
 import BreadCrumb from '../components/BreadCrumb';
-import LoadingBox from '../components/LoadingBox';
 import { Form } from 'react-bootstrap';
 import Container from '../components/Container';
 import { useFormik } from 'formik';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '../app/store';
-import { useSelector } from 'react-redux';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation} from 'react-router-dom';
 import * as Yup from 'yup';
 import { resetPass } from '../features/user/userSlice';
 
@@ -24,12 +21,10 @@ const resetPassSchema = Yup.object().shape({
 
 const ResetPassword = () => {
   const dispatch: AppDispatch = useDispatch();
-  const userState = useSelector((state: any) => state.user);
   const location = useLocation();
 
   const getToken = location.pathname.split('/')[2];
 
-  const navigate = useNavigate();
 
   const formik = useFormik({
     initialValues: {

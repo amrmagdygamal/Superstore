@@ -28,12 +28,7 @@ const AddCategory = () => {
   const getCategoryId = location.pathname.split('/')[3];
 
   const {
-    isSuccess,
-    isError,
-    isLoading,
-    createdCategory,
     categoryName,
-    updatedCategory,
   } = useSelector((state: any) => state.prodCategory);
     
   useEffect(() => {

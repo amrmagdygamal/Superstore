@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import { createAction, createAsyncThunk, createSlice, isPending } from '@reduxjs/toolkit';
+import { createAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import BrandService from './brandService';
 import { toast } from 'react-toastify';
 

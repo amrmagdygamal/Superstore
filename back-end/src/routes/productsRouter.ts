@@ -12,6 +12,7 @@ productRouter.get(
     '/:id',
     ProductControllers.getProduct
   );
+  
 productRouter.post(
   '/',
   auhtMiddleware,

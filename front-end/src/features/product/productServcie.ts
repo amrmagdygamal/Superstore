@@ -60,6 +60,7 @@ const productService = {
   getProduct,
   addToWishList,
   rateProduct,
+  deleteFromCart
 };
 
 export default productService;

@@ -1,4 +1,4 @@
-import { Badge, Card, Col } from 'react-bootstrap';
+import { Badge, Card} from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import ReachStars from 'react-rating-stars-component';
 import { ProductInfo } from '../types/ProductInfo';

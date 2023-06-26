@@ -12,7 +12,18 @@ export const getProducts = createAsyncThunk(
       return thunkAPI.rejectWithValue(error);
     }
   }
-);
+  );
+  
+  export const getProduct = createAsyncThunk(
+    'product/get-product',
+    async (id: string, thunkAPI) => {
+      try {
+        return await ProductService.getProduct(id);
+      } catch (error) {
+        return thunkAPI.rejectWithValue(error);
+      }
+    }
+  );
 
 export const createProduct = createAsyncThunk(
   'product/create-products',
@@ -30,17 +41,6 @@ export const createProduct = createAsyncThunk(
 
 
 
-
-export const getProduct = createAsyncThunk(
-  'product/get-product',
-  async (id: string, thunkAPI) => {
-    try {
-      return await ProductService.getProduct(id);
-    } catch (error) {
-      return thunkAPI.rejectWithValue(error);
-    }
-  }
-);
 export const updateProduct = createAsyncThunk(
   'product/update-product',
   async (product: any, thunkAPI) => {
@@ -129,6 +129,43 @@ export const productSlice = createSlice({
         state.isLoading = false;
         state.message = action.error.message ?? '';
       })
+      .addCase(getProduct.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(getProduct.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isError = false;
+        state.isSuccess = true;
+        const isDataComplete =
+        action.payload.name !== undefined &&
+        action.payload.description !== undefined &&
+        action.payload.category !== undefined &&
+        action.payload.price !== undefined &&
+        action.payload.color !== undefined &&
+        action.payload.brand !== undefined &&
+        action.payload.tag !== undefined &&
+        action.payload.countInStock !== undefined;
+    
+      // If all the required data has been fetched, set the productImages property
+      if (isDataComplete) {
+        state.productName = action.payload.name;
+        state.productDesc = action.payload.description;
+        state.productCategory = action.payload.category;
+        state.productPrice = action.payload.price;
+        state.productColor = action.payload.color;
+        state.productBrand = action.payload.brand;
+        state.productTag = action.payload.tag;
+        state.productQuant = action.payload.countInStock;
+        state.productImages = action.payload.images;
+      }
+        
+      })
+      .addCase(getProduct.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.isSuccess = false;
+        state.message = action.error.message ?? "Some Thing went wrong";
+      })
       .addCase(createProduct.pending, (state) => {
         state.isLoading = true;
       })
@@ -149,30 +186,6 @@ export const productSlice = createSlice({
         if (state.isError === true) {
           toast.error('Some Thing went wrong!');
         }
-      })
-      .addCase(getProduct.pending, (state) => {
-        state.isLoading = true;
-      })
-      .addCase(getProduct.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.isError = false;
-        state.isSuccess = true;
-        state.productName = action.payload.name;
-        state.productDesc = action.payload.description;
-        state.productCategory = action.payload.category;
-        state.productPrice = action.payload.price;
-        state.productColor = action.payload.color;
-        state.productBrand = action.payload.brand;
-        state.productTag = action.payload.tag;
-        state.productQuant = action.payload.countInStock;
-        state.productImages = action.payload.images;
-        
-      })
-      .addCase(getProduct.rejected, (state, action) => {
-        state.isLoading = false;
-        state.isError = true;
-        state.isSuccess = false;
-        state.message = action.error.message ?? "Some Thing went wrong";
       })
       .addCase(updateProduct.pending, (state) => {
         state.isLoading = true;

@@ -1,5 +1,4 @@
 import mongoose, { InferSchemaType, model } from 'mongoose';
-import UserModel from './UserModel';
 import ProductModel from './ProductModel';
 
 const OrderModel = new mongoose.Schema(

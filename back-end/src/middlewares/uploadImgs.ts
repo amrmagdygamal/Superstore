@@ -65,7 +65,7 @@ export const productImgResize = async (
         file.path = convertedFile;
       }
       await sharp(file.path)
-        .resize(400, 400)
+        .resize(300, 300)
         .toFormat('jpeg')
         .jpeg({ quality: 90 }) 
         .toFile(`public/images/products/${file.filename}`);

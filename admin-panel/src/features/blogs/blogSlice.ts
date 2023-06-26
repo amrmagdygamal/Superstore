@@ -16,12 +16,12 @@ export const getBlogs = createAsyncThunk(
 );
 
 export const uploadImg = createAsyncThunk(
-  "upload/an-image",
+  'upload/an-image',
   async (data: any, thunkAPI) => {
     try {
       const formData = new FormData();
       for (let i = 0; i < data.length; i++) {
-        formData.append("images", data[i]);
+        formData.append('images', data[i]);
       }
       return await Blogservice.uploadImg(formData);
     } catch (error) {
@@ -29,7 +29,6 @@ export const uploadImg = createAsyncThunk(
     }
   }
 );
-
 
 export const createBlog = createAsyncThunk(
   'blog/create-Blogs',
@@ -74,18 +73,13 @@ export const deleteBlog = createAsyncThunk(
   }
 );
 
-
-interface Image {
-  public_id: string;
-  url: string;
-}
 export interface BlogInfo {
-  _id?: string,
-    title: string;
-    description: string;
-    category: string;
-    author: string;
-    images: any;
+  _id?: string;
+  title: string;
+  description: string;
+  category: string;
+  author: string;
+  images: any;
 }
 
 interface BlogState {
@@ -102,7 +96,7 @@ interface BlogState {
   blogCategory?: string;
   blogAuthor?: string;
   blogImages?: any;
-  images?: any
+  images?: any;
 }
 
 const initialState: BlogState = {
@@ -144,18 +138,17 @@ export const blogSlice = createSlice({
         state.isError = false;
         state.isSuccess = true;
         state.images = action.payload;
-        if(state.isSuccess ===true) {
-          toast.success("image Uploaded successfully!")
+        if (state.isSuccess === true) {
+          toast.success('image Uploaded successfully!');
         }
       })
       .addCase(uploadImg.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.isSuccess = false;
-        state.message = action.error.message
-        ?? "";
-        if(state.isError === true) {
-          toast.error("Some Thing went wrong!")
+        state.message = action.error.message ?? '';
+        if (state.isError === true) {
+          toast.error('Some Thing went wrong!');
         }
       })
       .addCase(createBlog.pending, (state) => {
@@ -196,7 +189,7 @@ export const blogSlice = createSlice({
         state.isLoading = false;
         state.isError = true;
         state.isSuccess = false;
-        state.message = action.error.message ?? "Some Thing went wrong";
+        state.message = action.error.message ?? 'Some Thing went wrong';
         if (state.isError === true) {
           toast.error('Some Thing went wrong!');
         }
@@ -217,7 +210,7 @@ export const blogSlice = createSlice({
         state.isLoading = false;
         state.isError = true;
         state.isSuccess = false;
-        state.message = action.error.message ?? "Some Thing went wrong";
+        state.message = action.error.message ?? 'Some Thing went wrong';
         if (state.isError === true) {
           toast.error('Some Thing went wrong!');
         }
@@ -238,7 +231,7 @@ export const blogSlice = createSlice({
         state.isLoading = false;
         state.isError = true;
         state.isSuccess = false;
-        state.message = action.error.message ?? "Some Thing went wrong";
+        state.message = action.error.message ?? 'Some Thing went wrong';
         if (state.isError === true) {
           toast.error('Some Thing went wrong!');
         }

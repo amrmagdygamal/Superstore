@@ -1,24 +1,10 @@
-import { useNavigate } from 'react-router-dom';
-import { useGetHistoryOrdersQuery } from '../hooks/orderHooks';
-import { Helmet } from 'react-helmet-async';
-import MessageBox from '../components/MessageBox';
-import LoadingBox from '../components/LoadingBox';
-import { ApiError } from '../types/ApiErrors';
-import { getError } from '../utils';
-import { Button } from 'react-bootstrap';
-import { AppDispatch } from '../app/store';
-import { useDispatch } from 'react-redux';
-import { useSelector } from 'react-redux';
+
 import Meta from '../components/Meta';
 import BreadCrumb from '../components/BreadCrumb';
 import Container from '../components/Container';
 
 const OrdersHistory = () => {
-  const dispatch: AppDispatch = useDispatch();
-  const navigate = useNavigate();
-  const orderState = useSelector((state: any) => {
-    state.order.orders;
-  });
+
 
 
   return (

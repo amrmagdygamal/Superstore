@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { Table } from 'antd';
 import { BiEdit } from 'react-icons/bi';
 import { AiFillDelete } from 'react-icons/ai';
-import { AppDispatch, RootState } from '../app/store';
+import { AppDispatch} from '../app/store';
 import {
   deleteProduct,
   getProducts,
@@ -12,7 +12,6 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import CustomModal from '../components/CustomeModel';
-import { number } from 'yup';
 
 const columns: any = [
   {
@@ -117,7 +116,7 @@ const Productlist = () => {
     setOpen(false);
     setTimeout(() => {
       dispatch(getProducts());
-    }, 400);
+    }, 700);
   };
 
   return (

@@ -1,29 +1,21 @@
 import { useEffect, useState } from 'react';
 import BreadCrumb from '../components/BreadCrumb';
 import Meta from '../components/Meta';
-import { Badge } from 'react-bootstrap';
 import ProductItem from '../components/ProductItem';
-import { Color } from '../components/Color';
 import Rating from '../components/Rating';
 import Container from '../components/Container';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
 import { AppDispatch } from '../app/store';
 import { getproducts } from '../features/product/productSlice';
-import { ProductInfo } from '../types/ProductInfo';
 
 const OurStore = () => {
   const dispatch: AppDispatch = useDispatch();
 
   const [grid, setGrid] = useState(4);
 
-  const brandState = useSelector((state: any) => state.brand.brands);
-  const colorState = useSelector((state: any) => state.color.colors);
   const productState = useSelector((state: any) => state.product.products);
 
-  const prodCategoryState = useSelector(
-    (state: any) => state.productCategory.categories
-  );
   const [brands, setBrands] = useState<any[]>([]);
   const [categories, setCategories] = useState<any[]>([]);
   const [tags, setTags] = useState<any[]>([]);

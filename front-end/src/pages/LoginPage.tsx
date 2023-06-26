@@ -1,5 +1,6 @@
-import { useState, useContext, useEffect } from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import { useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { Form } from 'react-bootstrap';
 import * as Yup from 'yup';
 import Meta from '../components/Meta';
@@ -25,7 +26,6 @@ const loginSchema = Yup.object().shape({
   const userState = useSelector((state: any) => state.user)
 
   const navigate = useNavigate();
-  const { search } = useLocation();
 
   const formik = useFormik({
     initialValues: {

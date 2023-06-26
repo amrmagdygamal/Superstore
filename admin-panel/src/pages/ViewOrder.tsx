@@ -1,13 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { Table } from 'antd';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '../app/store';
-import { getAllOrders, getAnOrder, updateOrder } from '../features/order/orderSlice';
+import { getAnOrder } from '../features/order/orderSlice';
 import { useSelector } from 'react-redux';
-import { Link, useLocation } from 'react-router-dom';
-import { BiEdit } from 'react-icons/bi';
-import { AiFillDelete } from 'react-icons/ai';
+import { useLocation } from 'react-router-dom';
 
 const columns: any = [
   {
@@ -48,7 +46,6 @@ const ViewOrder = () => {
   const getOrderId = location.pathname.split("/")[2]
   
   const orderState = useSelector((state: any) => state?.order?.AnOrder);
-  const [status, setStatus] = useState("")
 
   useEffect(() => {
     dispatch(getAnOrder(getOrderId));
@@ -56,7 +53,6 @@ const ViewOrder = () => {
 
 
 
-  const AllOrderState = useSelector((state: any) => state.order.order[0].products);
 
   const data1: any = [];
   for (let i = 0; i < orderState?.products?.length; i++) {

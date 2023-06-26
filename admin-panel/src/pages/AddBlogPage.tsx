@@ -1,15 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import 'react-widgets/styles.css';
-
-import ReactQuill from 'react-quill';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import 'react-quill/dist/quill.snow.css';
 import { AppDispatch } from '../app/store';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
-import {toast} from 'react-toastify';
 import Dropzone from 'react-dropzone';
 import { BlogInfo, createBlog, getBlog, resetState, updateBlog, uploadImg } from '../features/blogs/blogSlice';
 import CustomInput from '../components/CustomInput';
@@ -52,11 +49,6 @@ const AddBlogPage = () => {
   }, [])
 
   const {
-    isSuccess,
-    isError,
-    isLoading,
-    createdBlog,
-    updatedBlog,
     blogName,
     blogDesc,
     blogCategory,

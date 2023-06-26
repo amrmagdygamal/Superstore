@@ -5,8 +5,8 @@ import ProductPage from './pages/ProductPage';
 import CartPage from './pages/CartPage';
 import LoginPage from './pages/LoginPage';
 import SignUpPage from './pages/SignUpPage';
-import PaymentPage from './pages/PaymentPage';
-import PlaceOrderPage from './pages/PlaceOrderPage';
+// import PaymentPage from './pages/PaymentPage';
+// import PlaceOrderPage from './pages/PlaceOrderPage';
 import OrderPage from './pages/OrderPage';
 import OrdersHistory from './pages/OrdersHistory';
 import Layout from './components/Layout';
@@ -55,8 +55,8 @@ function App() {
               <Route path="wishlist" element={<ProtectedRoute><WishList  /></ProtectedRoute>} />
               <Route path="cart" element={<ProtectedRoute><CartPage  /></ProtectedRoute>} />
               <Route path="checkout" element={<ProtectedRoute><Checkout  /></ProtectedRoute>} />
-              <Route path="payment" element={<ProtectedRoute><PaymentPage  /></ProtectedRoute>} />
-              <Route path="placeorder" element={<ProtectedRoute><PlaceOrderPage  /></ProtectedRoute>} />
+              {/* <Route path="payment" element={<ProtectedRoute><PaymentPage  /></ProtectedRoute>} /> */}
+              {/* <Route path="placeorder" element={<ProtectedRoute><PlaceOrderPage  /></ProtectedRoute>} /> */}
               <Route path="/order/:id" element={<ProtectedRoute><OrderPage  /></ProtectedRoute>} />
               <Route path="/orderhistory" element={<ProtectedRoute><OrdersHistory  /></ProtectedRoute>} />
             </Route>

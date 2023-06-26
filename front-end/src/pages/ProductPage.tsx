@@ -2,12 +2,12 @@
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import ReactStars from 'react-rating-stars-component';
 import Rating from '../components/Rating';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Meta from '../components/Meta';
 import BreadCrumb from '../components/BreadCrumb';
 import ProductItem from '../components/ProductItem';
-import { Color } from '../components/Color';
 import { TbArrowsShuffle } from 'react-icons/tb';
+import ReactImageMagnify from 'react-image-magnify';
 import { MdFavorite } from 'react-icons/md';
 import Container from '../components/Container';
 import { AppDispatch } from '../app/store';
@@ -18,7 +18,6 @@ import {
   rateProduct,
 } from '../features/product/productSlice';
 import { useSelector } from 'react-redux';
-import { ProductInfo } from '../types/ProductInfo';
 import { addToCart, getUserCart } from '../features/user/userSlice';
 import { toast } from 'react-toastify';
 
@@ -27,60 +26,62 @@ const ProductPage = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const getProductId = location.pathname.split('/')[2];
+  const [img, setImg] = useState("");
+  useEffect(() => {
+    dispatch(getproduct(getProductId));
+    if (productState?.isSuccess == true) {
+      setImg(productState?.images[0]?.url)
+    }
+    setTimeout(() => {
+      dispatch(getproducts({tag: "popular"}));
+    }, 1000);
+  }, []);
   const productState = useSelector((state: any) => state.product.product);
-  const allProductsState = useSelector((state: any) => state.product.products);
+
+
   const addCartState = useSelector((state: any) => state.user);
+  const allProductsState = useSelector((state: any) => state.product.products);
   const cartState = useSelector((state: any) => state.user.cart);
   const [alreadyAdded, setAlreadyAdded] = useState(false);
   const [star, setStar] = useState(0);
   const [comment, setComment] = useState('');
 
-  const { isLoading, isError, isSuccess, addCart } = addCartState;
+  const {  isSuccess, addCart } = addCartState;
   const [quantity, setQuantity] = useState(1);
   const [colors, setColors] = useState<any[]>([]);
 
-  useEffect(() => {
-    dispatch(getproducts({}));
-    dispatch(getproduct(getProductId));
-  }, []);
 
   const handleSetCol = (item: any) => {
     const itemIndex = colors.findIndex((color: any) => color._id === item._id);
-    
+
     let newColors = [];
     if (itemIndex >= 0) {
       newColors = colors.filter((color: any) => color._id !== item._id);
     } else {
       newColors = [...colors, item];
     }
-  
+
     if (newColors.length > quantity) {
       setQuantity(newColors.length);
     }
-  
+
     setColors(newColors);
-
   };
 
-
-  const handlerQuant = (e: number) => {
-    setQuantity(e);
-  };
 
   useEffect(() => {
     dispatch(getUserCart());
   }, [addCart, isSuccess]);
 
   useEffect(() => {
-    for (let index = 0; index < cartState?.products?.length; index++) {
-      if (getProductId == cartState?.products[index]._id) {
+    for (let index = 0; index < cartState && cartState[0]?.products?.length; index++) {
+      if (getProductId == cartState[0]?.products[index]?._id) {
         setAlreadyAdded(true);
       }
     }
   }, []);
 
-
-  const prodData = {prodId: getProductId, colors: colors, quantity: quantity}
+  const prodData = { prodId: getProductId, colors: colors, quantity: quantity };
   const addProductToCart = (data: any) => {
     if (colors.length == 0) {
       if (productState?.color.length == 1) {
@@ -89,8 +90,6 @@ const ProductPage = () => {
         toast.error('Please Choose Color');
       }
     } else {
-      // console.log(colors)
-      // console.log(data)
       dispatch(addToCart(data));
     }
   };
@@ -112,6 +111,19 @@ const ProductPage = () => {
     }
   };
 
+
+  const hoverHandler = (image: any, i: number) => {
+    setImg(image?.url);
+    refs.current[i].classList.add('active');
+    for (let j = 0; j < productState?.images?.length; j++) {
+      if (i !== j) {
+        refs.current[j].classList.remove('active');
+      }
+    }
+  };
+  const refs: any = useRef([]);
+  refs.current = [];
+
   const copyToClipboard = (text: string) => {
     console.log('text', text);
     const textField = document.createElement('textarea');
@@ -122,7 +134,7 @@ const ProductPage = () => {
     textField.remove();
   };
 
-  const [orderedProduct, setOrderedProduct] = useState(true);
+  const [orderedProduct] = useState(true);
 
   return (
     <>
@@ -131,15 +143,44 @@ const ProductPage = () => {
       <Container class1="product-page py-5 home-wrapper-2">
         <div className="col-6">
           <div className="product-image-section">
-            <div>
-              <img src={productState?.images[0]?.url} alt="" />
-            </div>
+            <ReactImageMagnify
+              {...{
+                smallImage: {
+                  alt: 'product',
+                  isFluidWidth: true,
+                  src: img,
+                  
+                },
+                largeImage: {
+                  src: img,
+                  width: 1400,
+                  height: 2100,
+                },
+                enlargedImagePosition: 'over',
+                enlargedImageContainerDimensions: {
+                  width: '200%',
+                  height: '200%',
+                },
+                enlargedImageStyle: {
+                  position: 'absolute',
+                  left: '50%',
+                  width: 3900,
+                  height: 4800,
+                  top: '50%',
+                  transform: 'translate(-50%, -50%)',
+                },
+              }}
+            />
           </div>
           <div className="other-images d-flex flex-wrap gap-2">
-            {productState?.images?.map((img: any, index: number) => {
+            {productState?.images?.map((imag: any, index: number) => {
               return (
-                <div key={index}>
-                  <img src={img?.url} className="w-75" alt="" />
+                <div
+                  className={index == 0 ? 'active' : ''}
+                  key={index}
+                  onMouseOver={() => hoverHandler(imag, index)}
+                >
+                  <img src={imag?.url} className="w-75" alt="" />
                 </div>
               );
             })}
@@ -215,12 +256,14 @@ const ProductPage = () => {
                     return (
                       <ul className="colors" key={index}>
                         <div
-                          
                           style={{
-                            border: colors.includes(col) ? `4px solid ${col.title}` : 'none'
+                            border: colors.includes(col)
+                              ? `4px solid ${col.title}`
+                              : 'none',
                           }}
                           className="p-1 text-center rounded-circle"
-                        ><button
+                        >
+                          <button
                             className="p-3 border-0 rounded-circle"
                             style={{ backgroundColor: col.title }}
                             onClick={() => handleSetCol(col)}

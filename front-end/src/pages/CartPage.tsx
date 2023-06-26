@@ -1,42 +1,37 @@
 import { useEffect } from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import Meta from '../components/Meta';
 import BreadCrumb from '../components/BreadCrumb';
 import Container from '../components/Container';
 import { AppDispatch } from '../app/store';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
-import { deleteFromCart, getUserCart } from '../features/user/userSlice';
+import { delFromCart, getUserCart, resetState } from '../features/user/userSlice';
 
 import { AiFillDelete } from 'react-icons/ai';
 import { Color } from '../components/Color';
 
 const CartPage = () => {
-  const navigate = useNavigate();
   const dispatch: AppDispatch = useDispatch();
-  const location = useLocation();
 
-  const delFromCartState = useSelector((state: any) => state.user.deletFromCart);
-
-  
 
 
 
   const cartState = useSelector((state: any) => state.user.cart);
-  const deleteFromCartState = useSelector(
-    (state: any) => state.user.deletFromCart
-  );
+  
 
   useEffect(() => {
+    dispatch(resetState());
     dispatch(getUserCart());
-  }, [cartState | deleteFromCartState]);
+  }, []);
 
-  const checkoutHandler = () => {
-    navigate('/login?redirect=/shipping');
-  };
 
-  const handleDelete = (e: any) => {
-    dispatch(deleteFromCart(e))
+  const handleDelete = (prodId: any) => {
+
+    dispatch(delFromCart(prodId))
+    setTimeout(() => {
+      dispatch(getUserCart());
+    }, 800);
 
   }
 
@@ -57,7 +52,7 @@ const CartPage = () => {
               cartState[0]?.products.map((cartProd: any, index: number) => {
                 return (
                   <>
-                    <div className="cart-data py-3 mb-2 d-flex  py-3 justify-content-between align-items-center">
+                    <div key={index} className="cart-data py-3 mb-2 d-flex  py-3 justify-content-between align-items-center">
                       <div className="w-40 align-items-center d-flex gap-3">
                         <div className="w-25">
                           <img
@@ -90,7 +85,7 @@ const CartPage = () => {
                       <div className="w-15 d-flex gap-3 align-items-center">
                         <div>
                           <Link
-                            to={`/product/${cartProd?.product}`}
+                            to={`/product/${cartProd?.product?._id}`}
                             className="text-info fs-5"
                           >
                             Edit
@@ -111,9 +106,7 @@ const CartPage = () => {
                         <div>
                           <button className="border-0">
                             <AiFillDelete
-                              onClick={() =>
-                                handleDelete(cartProd?.product?._id)
-                              }
+                              onClick={() => handleDelete(cartProd?.product?._id)}
                               className="text-danger"
                             />
                           </button>
@@ -131,7 +124,7 @@ const CartPage = () => {
           </>
         </div>
         <div className="col-12 py-2">
-          <Link to="/cart" className="button mt-3">
+          <Link to="/store" className="button mt-3">
             Continue Shipping
           </Link>
         </div>

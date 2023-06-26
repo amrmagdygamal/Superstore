@@ -3,7 +3,7 @@ import { Row } from 'react-bootstrap';
 
 import ProductItem from '../components/ProductItem';
 
-import { Link, useNavigate } from 'react-router-dom';
+import { Link} from 'react-router-dom';
 import Marquee from 'react-fast-marquee';
 import BlogCard from '../components/BlogCard';
 import SpecialProduct from '../components/SpecialProduct';
@@ -26,14 +26,8 @@ import 'swiper/css/autoplay';
 
 const HomePage = () => {
   const dispatch: AppDispatch = useDispatch();
-  const navigate = useNavigate();
 
-  const brandState = useSelector((state: any) => state.brand.brands);
-  const colorState = useSelector((state: any) => state.color.colors);
 
-  const prodCategoryState = useSelector(
-    (state: any) => state.productCategory.categories
-  );
   const productState = useSelector((state: any) => state.product.products);
   const blogState = useSelector((state: any) => state.blog.blogs);
 

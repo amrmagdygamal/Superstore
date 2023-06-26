@@ -1,5 +1,6 @@
 import 'dotenv/config';
 import mongoose from 'mongoose';
+import path from "path";
 import env from './Util/validateEnv';
 import express, { NextFunction, Request, Response } from 'express';
 
@@ -19,10 +20,10 @@ import couponRouter from './routes/couponRouter';
 import colorRouter from './routes/colorRouter';
 import enquiryRouter from './routes/enquiryRouter';
 import uploadRouter from './routes/uploadRouter';
+import validateEnv from './Util/validateEnv';
 
 
 
-const port = env.PORT;
 
 mongoose.set('strictQuery', true);
 mongoose
@@ -66,6 +67,16 @@ app.use('/api/upload', uploadRouter);
 app.use('/api/orders', orderRouter);
 app.use('/api/keys', KeyRouter);
 
+app.use(express.static(path.join(__dirname, "../../front-end/dist")))
+app.get("*", (req: Request, res: Response) => 
+res.sendFile(path.join(__dirname, "../../front-end/dist/index.html")))
+
+app.use(express.static(path.join(__dirname, "../../admin-panel/dist")))
+app.get("*", (req: Request, res: Response) => 
+res.sendFile(path.join(__dirname, "../../admin-panel/dist/index.html")))
+
+const PORT: number = parseInt((validateEnv.PORT || "4000") as string, 10)
+
 app.use((req, res, next) => {
   next(createHttpError(404, "Endpoint not found"));
 });
@@ -85,6 +96,6 @@ app.use((error: unknown, req: Request, res: Response, next: NextFunction) => {
 
 
 
-app.listen(port, () => {
-  console.log(`server started at Port: ${port}`);
+app.listen(PORT, () => {
+  console.log(`server started at Port: ${PORT}`);
 });

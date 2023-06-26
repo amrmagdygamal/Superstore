@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Badge, Nav, NavDropdown, Navbar, Row } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
 import { BsSearch } from 'react-icons/bs';
@@ -19,9 +19,6 @@ const Header = () => {
   const cartState = useSelector((state: any) => state.user.cart);
   const productState = useSelector((state: any) => state?.product?.products);
   const categoryState = useSelector((state: any) => state?.productCategory?.categorys);
-  const deleteFromCartState = useSelector(
-    (state: any) => state.user.deletFromCart
-  );
 
   useEffect(() => {
     dispatch(getUserCart());
@@ -32,9 +29,10 @@ const Header = () => {
   //   dispatch(getUserCart())
   // }, [cartState])
 
-  const userState = useSelector((state: any) => state.user);
 
   const [productOpt, setProductOpt] = useState([]);
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
   const [paginate, setPaginate] = useState(true);
 
   const signOutHandler = () => {
@@ -126,7 +124,7 @@ const Header = () => {
               </p>
             </Link>
 
-            {userinf == undefined  ? (
+            {userinf?.username == undefined  ? (
               <Link className="nav-link d-flex text-white gap-2" to="/login">
                 Login <br /> My Account
               </Link>

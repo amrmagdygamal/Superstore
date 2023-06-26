@@ -1,5 +1,5 @@
 import { Form } from 'react-bootstrap';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useFormik } from 'formik';
 
 import Meta from '../components/Meta';

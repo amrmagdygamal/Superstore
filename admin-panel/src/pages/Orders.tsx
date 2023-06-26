@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import  { useEffect } from 'react';
 import { Table } from 'antd';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '../app/store';
@@ -52,8 +51,8 @@ const Orders = () => {
     data1.push({
       key: i + 1,
       product: AllOrderState[i]?.name,
-      name: AllOrderState[i]?.products?.map((i: any, j: string) => {
-        <Link to={`/admin/order/${AllOrderState[i]?.orderby._id}`} >
+      name: AllOrderState[i]?.products?.map((i: any, j: number) => {
+        <Link key={j} to={`/admin/order/${AllOrderState[i]?.orderby._id}`} >
           View Order
         </Link>
       }),

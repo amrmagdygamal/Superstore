@@ -56,6 +56,16 @@ export const getAllProducts = asyncHandler(async (req: Request, res: Response, n
     next(error);
   }
 });
+export const getProduct = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const { id } = req.params;
+    const findProduct = await ProductModel.findById(id);
+
+    res.json(findProduct);
+  } catch (error) {
+    next(error);
+  }
+});
 
 export const createProduct = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -91,24 +101,6 @@ export const deleteProduct = asyncHandler(async (req: Request, res: Response, ne
   }
 });
 
-export const getProduct = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    const { id } = req.params;
-    const findProduct = await ProductModel.findById(id)
-    .populate('name')
-    .populate('description')
-    .populate('tag')
-    .populate('color')
-    .populate('price')
-    .populate('category')
-    .populate('brand')
-    .exec();
-
-    res.json(findProduct);
-  } catch (error) {
-    next(error);
-  }
-});
 
 export const addToWishList = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
   const id = req.user?._id;

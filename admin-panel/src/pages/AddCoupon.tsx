@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import CustomInput from '../components/CustomInput';
 import { useDispatch, useSelector } from 'react-redux';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation} from 'react-router-dom';
 import * as yup from 'yup';
 import { useFormik } from 'formik';
 import {
@@ -25,18 +25,12 @@ const AddCoupon = () => {
   const dispatch: AppDispatch = useDispatch();
   
   const location = useLocation();
-  const navigate = useNavigate();
   const getCouponId = location.pathname.split('/')[3];
 
   const {
-    isSuccess,
-    isError,
-    isLoading,
-    createdCoupon,
     couponName,
     couponExpiry,
     couponDiscount,
-    updatedCoupon,
   } = useSelector((state: any) => state.coupon);
 
   useEffect(() => {

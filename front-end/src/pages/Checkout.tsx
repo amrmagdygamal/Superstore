@@ -1,6 +1,4 @@
-import React from 'react';
-import { useContext, useEffect, useState } from 'react';
-import { CountryList } from 'react-select-country-list';
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Link, useNavigate } from 'react-router-dom';
 import CheckOutSteps from '../components/CheckOutSteps';
 import { Nav } from 'react-bootstrap';
@@ -26,13 +24,13 @@ const signUpSchema = Yup.object().shape({
 const Checkout = () => {
   const dispatch: AppDispatch = useDispatch();
 
-  const cartState = useSelector((state: any) => state.use.cart);
+  const cartState = useSelector((state: any) => state.user.cart);
   const orderState = useSelector((state: any) => state.order);
-  const { isLoading, isError, isSuccess, crOrder} = orderState;
+  const userState = useSelector((state: any) => state.user.userInfor);
+  const { isSuccess, crOrder} = orderState;
   const navigate = useNavigate();
 
 
-  const round2 = (num: number) => Number(num.toFixed(2));
 
 
   const arabCountries = [
@@ -59,11 +57,6 @@ const Checkout = () => {
     { name: 'United Arab Emirates', code: 'AE' },
     { name: 'Yemen', code: 'YE' },
   ];
-  const submitHandler = (e: React.SyntheticEvent) => {
-    e.preventDefault();
-
-    navigate('/payment');
-  };
 
   const formik = useFormik({
     initialValues: {
@@ -136,7 +129,7 @@ const Checkout = () => {
             </Nav>
             <h4 className="title total">Contact Information</h4>
             <p className="user-details total">
-              Amr Magdy (amroraker@gmail.com)
+              {userState?.username}   ({userState?.email})
             </p>
             <h4 className="mb-3">Shipping Address</h4>
             <form
@@ -265,7 +258,7 @@ const Checkout = () => {
         </div>
         <div className="col-5">
           {cartState &&
-            cartState?.products?.map((product: any) => {
+            cartState[0]?.products?.map((product: any) => {
               return (
                 <div key={product?.product._Id} className="border-bottom py-4">
                   <div className="d-flex gap-2 align-items-center">
@@ -303,7 +296,7 @@ const Checkout = () => {
           <div className="border-bottom py-4">
             <div className="d-flex justify-content-between align-items-center">
               <p>Subtotal</p>
-              <p>$ {cartState.cartTotal}</p>
+              <p>$ {cartState[0].cartTotal}</p>
             </div>
             <div className="d-flex justify-content-between align-items-center">
               <p className="mb-0 total">Shipping</p>

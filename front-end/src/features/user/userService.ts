@@ -59,8 +59,9 @@ const getUserCart = async () => {
   }
 };
 
-const deleteFromCart = async (id: string) => {
-  const response = await axios.put(`${base_url}users/delete-from-cart/`, id, config);
+const delFromCart = async (prodId: any) => {
+  console.log('Deleting product with ID:');
+  const response = await axios.delete(`${base_url}users/delete-from-cart/${prodId}`, config);
   if(response.data) {
     return response.data;
   }
@@ -96,7 +97,7 @@ const userService = {
   getUserWishlist,
   addToCart,
   getUserCart,
-  deleteFromCart,
+  delFromCart,
   forgotPass,
   resetPass,
 };

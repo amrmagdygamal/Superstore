@@ -1,7 +1,7 @@
 import { Navigate } from 'react-router-dom';
 import jwtDecode from 'jwt-decode';
 
-export const ProtectedRoute = ({ children }: any) => {
+export const PrivateRoutes = ({ children }: any) => {
   const getTokenFromLocalStorage = JSON.parse(localStorage.getItem('admin')!)
   const token = getTokenFromLocalStorage?.token;
 

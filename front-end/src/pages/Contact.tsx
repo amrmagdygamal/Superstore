@@ -7,7 +7,6 @@ import { useDispatch } from 'react-redux';
 import { AppDispatch } from '../app/store';
 import * as Yup from 'yup';
 
-import { useLocation, useNavigate } from 'react-router-dom';
 import { useFormik } from 'formik';
 import { postQuery } from '../features/contact/contactSlice';
 
@@ -23,11 +22,6 @@ const signUpSchema = Yup.object().shape({
 
 const Contact = () => {
   const dispatch: AppDispatch = useDispatch();
-
-  const navigate = useNavigate();
-  const { search } = useLocation();
-  const redirectInUrl = new URLSearchParams(search).get('redirect');
-  const redirect = redirectInUrl ? redirectInUrl : '/';
 
   const formik = useFormik({
     initialValues: {

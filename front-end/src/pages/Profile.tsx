@@ -1,14 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import {useState } from 'react';
 import Meta from '../components/Meta';
 import BreadCrumb from '../components/BreadCrumb';
 import Container from '../components/Container';
-import { AppDispatch } from '../app/store';
-import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
 import {FiEdit} from 'react-icons/fi'
 
 const Profile = () => {
-  const dispatch: AppDispatch = useDispatch();
 
   const userState = useSelector((state: any) => state.user);
   const [edit, setEdit] = useState(false);

@@ -73,7 +73,7 @@ export const login = asyncHandler(
       }
       // check if user exists or not
       const user = await UserModel.findOne({ email: email })
-        .select('+password')
+        .select('+password +email')
         .exec();
 
       if (!user) {
@@ -553,56 +553,48 @@ export const addToCart = asyncHandler(
 );
 
 // Delete from Cart Function
-export const deleteFromCart = asyncHandler(
-  async (req: Request, res: Response, next: NextFunction) => {
-    const _id = req.user?._id;
-    const { prodId } = req.body;
-
-    try {
+export const deleteFromCart = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+  const _id = req.user?._id;
+  
+  const prodId = new mongoose.Types.ObjectId(req.params.id);
+  try {
+      console.log(_id)
       const user = await UserModel.findById(_id);
+      console.log(user)
 
       // Find the cart for the current user
-      let cart = await CartModel.findOne({ customer: user?._id });
+      const cart = await CartModel.findOne({ customer: user?._id });
+      console.log(cart)
+        
 
-      if (!cart) {
-        cart = new CartModel({
-          customer: user?._id,
-          products: [],
-          cartTotol: 0,
-          totalAfterDiscount: 0,
-        });
-      }
-
-      // Find the product to delete from the cart
-      const product = await ProductModel.findById(prodId);
+      
 
       // Check If the product is Already in the cart
-
-      const existProdIndex = cart.products.findIndex(
-        (p) => p.product?.toString() === prodId.toString()
+      let existProdIndex: any = -1;
+      existProdIndex = cart?.products.findIndex(
+        (p) => p?.product?.toString() === prodId.toString()
       );
+      console.log(existProdIndex)
 
-      if (existProdIndex !== -1) {
-        // the product is already exists in the cart update the quantity
-
-        if (cart.products[existProdIndex].quantity > 1) {
-          // If the quantity is 1, remove the product from the cart
-          cart.products.splice(existProdIndex, 1);
-        }
+      if (existProdIndex != -1) {
+        // The product exists in the cart, delete it
+        cart?.products.splice(existProdIndex, 1);
       } else {
-        res.json("doesn't exist in the cart");
+        // The product doesn't exist in the cart
+        console.log('dfkajfladj')
       }
 
       // Calculate the cart total
-      cart.cartTotal = cart.products.reduce(
-        (prev, curr) => prev - curr.quantity * curr.price,
+      cart!.cartTotal = cart?.products.reduce(
+        (prev, curr) => prev + curr.quantity * curr.price,
         0
       );
 
-      await cart.save();
+      await cart?.save();
 
-      res.status(200).json({ cart });
+      res.status(200).json("success");
     } catch (error) {
+      console.error(error);
       next(error);
     }
   }
