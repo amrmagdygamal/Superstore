@@ -10,6 +10,8 @@ import ProductItem from '../components/ProductItem';
 import Container from '../components/Container';
 import { AppDispatch } from '../app/store';
 import { useDispatch } from 'react-redux';
+import {HiOutlineArrowRight} from 'react-icons/hi';
+import {MdFavorite} from 'react-icons/md';
 import {
   getproduct,
   getproducts,
@@ -320,7 +322,7 @@ const ProductPage = () => {
               <div className="d-flex align-items-center gap-2">
                 <div className="me-3">
                   <a href="#">
-                    <TbArrowsShuffle className="fs-5 me-2" />
+                    <HiOutlineArrowRight className="fs-5 me-2" />
                     Add To Compare
                   </a>
                 </div>
