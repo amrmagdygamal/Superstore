@@ -2,12 +2,11 @@
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import ReactStars from 'react-rating-stars-component';
 import Rating from '../components/Rating';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import Meta from '../components/Meta';
 import BreadCrumb from '../components/BreadCrumb';
 import ProductItem from '../components/ProductItem';
-import { TbArrowsShuffle } from 'react-icons/tb';
-import { MdFavorite } from 'react-icons/md';
+
 import Container from '../components/Container';
 import { AppDispatch } from '../app/store';
 import { useDispatch } from 'react-redux';
@@ -25,11 +24,9 @@ const ProductPage = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const getProductId = location.pathname.split('/')[2];
-  const [img, setImg] = useState("");
   useEffect(() => {
     dispatch(getproduct(getProductId));
     if (productState?.isSuccess == true) {
-      setImg(productState?.images[0]?.url)
     }
     setTimeout(() => {
       dispatch(getproducts({tag: "popular"}));
@@ -111,17 +108,7 @@ const ProductPage = () => {
   };
 
 
-  const hoverHandler = (image: any, i: number) => {
-    setImg(image?.url);
-    refs.current[i].classList.add('active');
-    for (let j = 0; j < productState?.images?.length; j++) {
-      if (i !== j) {
-        refs.current[j].classList.remove('active');
-      }
-    }
-  };
-  const refs: any = useRef([]);
-  refs.current = [];
+
 
   const copyToClipboard = (text: string) => {
     console.log('text', text);
