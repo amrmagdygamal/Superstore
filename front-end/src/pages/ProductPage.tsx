@@ -7,7 +7,6 @@ import Meta from '../components/Meta';
 import BreadCrumb from '../components/BreadCrumb';
 import ProductItem from '../components/ProductItem';
 import { TbArrowsShuffle } from 'react-icons/tb';
-import ReactImageMagnify from 'react-image-magnify';
 import { MdFavorite } from 'react-icons/md';
 import Container from '../components/Container';
 import { AppDispatch } from '../app/store';
@@ -141,46 +140,17 @@ const ProductPage = () => {
       <Meta title="Product Page" />
       <BreadCrumb title={productState?.name} />
       <Container class1="product-page py-5 home-wrapper-2">
-        <div className="col-6">
+      <div className="col-6">
           <div className="product-image-section">
-            <ReactImageMagnify
-              {...{
-                smallImage: {
-                  alt: 'product',
-                  isFluidWidth: true,
-                  src: img,
-                  
-                },
-                largeImage: {
-                  src: img,
-                  width: 1400,
-                  height: 2100,
-                },
-                enlargedImagePosition: 'over',
-                enlargedImageContainerDimensions: {
-                  width: '200%',
-                  height: '200%',
-                },
-                enlargedImageStyle: {
-                  position: 'absolute',
-                  left: '50%',
-                  width: 3900,
-                  height: 4800,
-                  top: '50%',
-                  transform: 'translate(-50%, -50%)',
-                },
-              }}
-            />
+            <div>
+              <img src={productState?.images[0].url} alt="" />
+            </div>
           </div>
           <div className="other-images d-flex flex-wrap gap-2">
-            {productState?.images?.map((imag: any, index: number) => {
+            {productState?.images.map((img: any, index: number) => {
               return (
-                <div
-                  className={index == 0 ? 'active' : ''}
-                  key={index}
-                  onMouseOver={() => hoverHandler(imag, index)}
-                >
-                  <img src={imag?.url} className="w-75" alt="" />
+                <div key={index}>
+                  <img src={img?.url} alt="" />
                 </div>
               );
             })}

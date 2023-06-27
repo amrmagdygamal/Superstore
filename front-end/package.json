@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "npm --force install && tsc && vite build",
+    "build": "npm install && tsc && vite build",
     "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
   },
@@ -14,7 +14,6 @@
     "@reduxjs/toolkit": "^1.9.5",
     "@tanstack/react-query": "^4.29.5",
     "@tanstack/react-query-devtools": "^4.29.6",
-    "@types/react-image-magnify": "^2.7.1",
     "@types/react-redux": "^7.1.25",
     "@types/swiper": "^6.0.0",
     "axios": "^1.4.0",
@@ -22,7 +21,7 @@
     "formik": "^2.4.1",
     "jwt-decode": "^3.1.2",
     "moment": "^2.29.4",
-    "react": "18.0.0",
+    "react": "^18.2.0",
     "react-bootstrap": "^2.7.4",
     "react-bootstrap-typeahead": "^6.2.3",
     "react-dom": "^18.2.0",
@@ -30,7 +29,6 @@
     "react-helmet-async": "^1.3.0",
     "react-icons": "^4.9.0",
     "react-id-swiper": "^4.0.0",
-    "react-image-magnify": "^2.7.4",
     "react-image-zoom": "^1.3.1",
     "react-medium-image-zoom": "^5.1.6",
     "react-rating-stars-component": "^2.2.0",
