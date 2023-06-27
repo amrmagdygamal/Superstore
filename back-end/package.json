@@ -5,7 +5,7 @@
   "main": "src/index.js",
   "scripts": {
     "dev": "ts-node-dev --respawn --transpile-only --files src/index.ts",
-    "build": "tsc",
+    "build": "npm i && tsc",
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node build/src/index.js",
     "server": "nodemon index.js"
