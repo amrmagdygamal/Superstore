@@ -64,17 +64,7 @@ app.use('/api/upload', uploadRouter);
 app.use('/api/orders', orderRouter);
 app.use('/api/keys', KeyRouter);
 
-app.use(express.static(path.join(__dirname, "../../../front-end/dist")));
 
-app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "../../../front-end/dist/index.html"));
-});
-
-app.use(express.static(path.join(__dirname, "../../../admin-panel/dist")));
-
-app.get("/admin", (req, res) => {
-  res.sendFile(path.join(__dirname, "../../../admin-panel/dist/index.html"));
-});
 const PORT: number = parseInt((process.env.PORT || "4000") as string, 10)
 
 app.use((req, res, next) => {
