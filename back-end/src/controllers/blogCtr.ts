@@ -1,33 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 import asyncHandler from 'express-async-handler';
 import blogModel from '../model/blogModel';
-import { cloudinaryUploadImg } from '../Util/cloudinary';
-import fs from 'fs';
-
-export const uploadImages = asyncHandler(
-  async (req: Request, res: Response, next: NextFunction) => {
-    try {
-      const uploader = (path: any) => cloudinaryUploadImg(path, 'images');
-
-      const urls = [];
-      const files: any = req.files;
-      for (const file of files) {
-        const { path } = file;
-        const newpath: any = await uploader(path);
-        urls.push(newpath);
-
-        fs.unlinkSync(path);
-      }
-      const images = urls.map((file) => {
-        return file;
-      });
-      res.json(images);
-    } catch (error) {
-      next(error);
-    }
-  }
-);
-
 export const createBlog = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
     try {

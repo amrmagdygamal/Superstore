@@ -1,12 +1,13 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import 'react-toastify/dist/ReactToastify.css';
+import HomePage from './pages/HomePage';
 import ProductPage from './pages/ProductPage';
 import CartPage from './pages/CartPage';
 import LoginPage from './pages/LoginPage';
 import SignUpPage from './pages/SignUpPage';
 // import PaymentPage from './pages/PaymentPage';
 // import PlaceOrderPage from './pages/PlaceOrderPage';
-import OrderPage from './pages/OrderPage';
+// import OrderPage from './pages/OrderPage';
 import OrdersHistory from './pages/OrdersHistory';
 import Layout from './components/Layout';
 import About from './pages/About';
@@ -26,7 +27,7 @@ import Checkout from './pages/Checkout';
 
 import Profile from './pages/Profile';
 import { ProtectedRoute } from './components/ProtectedRoute';
-import HomePage from './pages/HomePage';
+
 
 function App() {
   return (
@@ -57,7 +58,7 @@ function App() {
               <Route path="checkout" element={<ProtectedRoute><Checkout  /></ProtectedRoute>} />
               {/* <Route path="payment" element={<ProtectedRoute><PaymentPage  /></ProtectedRoute>} /> */}
               {/* <Route path="placeorder" element={<ProtectedRoute><PlaceOrderPage  /></ProtectedRoute>} /> */}
-              <Route path="/order/:id" element={<ProtectedRoute><OrderPage  /></ProtectedRoute>} />
+              {/* <Route path="/order/:id" element={<ProtectedRoute><OrderPage  /></ProtectedRoute>} /> */}
               <Route path="/orderhistory" element={<ProtectedRoute><OrdersHistory  /></ProtectedRoute>} />
             </Route>
           </Routes>

@@ -7,7 +7,6 @@ import { Row } from 'react-bootstrap';
 import { getBlogs } from '../features/blog/blogSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch } from '../app/store';
-import moment from 'moment';
 
 const Blog = () => {
   const dispatch: AppDispatch = useDispatch();
@@ -51,7 +50,6 @@ const Blog = () => {
                     description={blog?.description}
                     image={blog.images[0].url}
                     author={blog.author}
-                    date={moment(blog.createdAt).format('MMMM Do YYYY, h:mm')}
                   />
                 </div>
               );

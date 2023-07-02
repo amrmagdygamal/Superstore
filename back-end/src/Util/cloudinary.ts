@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 
 import { v2 as cloudinary } from 'cloudinary';
 cloudinary.config({
@@ -29,14 +31,14 @@ export const cloudinaryUploadImg = async (fileToUploads: any, folderName: any) =
 
 export const cloudinaryDeleteImg = async (
   fileToDelete: any,
-  folderName: any
+  _folderName: string
 ) => {
   return new Promise((resolve: any) => {
     cloudinary.uploader.destroy(
       fileToDelete,
       {
         
-        resource_type: 'auto',
+        resource_type: 'image',
       },
       (error: any, result: any) => {
         if(error) {

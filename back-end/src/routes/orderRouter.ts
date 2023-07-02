@@ -1,8 +1,6 @@
-import express, { Request, Response } from 'express';
-import asyncHandler from 'express-async-handler';
+import express, {  } from 'express';
 import * as OrderControllers from '../controllers/orderCtr';
 import { auhtMiddleware, isAdmin } from '../middlewares/authentication';
-import OrderModel from '../model/OrderModel';
 
 const orderRouter = express.Router();
 

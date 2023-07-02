@@ -9,7 +9,7 @@ export const auhtMiddleware = asyncHandler(async (req: Request, res: Response, n
   try {
   if(token) {
   
-      const decoded: any = jwt.verify(token, process.env.JWEBT_SECRET!);
+      const decoded: any = jwt.verify(token, process.env.JWEBT_SECRET as string);
       const user = await UserModel.findOne({_id: decoded.id}).select("+email").exec();
     
       if (!user) {

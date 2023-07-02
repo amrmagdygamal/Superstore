@@ -5,7 +5,6 @@ import { UserModel} from '../model/UserModel';
 import bcrypt from 'bcryptjs';
 import crypto from 'crypto';
 import createHttpError from 'http-errors';
-import { validateMongoDbId } from '../Util/validateMongodbId';
 import generateRefreshToken from '../../config/refreshToken';
 import jwt from 'jsonwebtoken';
 import { sendEmail } from './emailCtr';
@@ -258,7 +257,6 @@ export const allUsers = asyncHandler(
 export const getuser = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
     const { _id } = req.params;
-    validateMongoDbId(_id);
 
     try {
       const getuser = await UserModel.findById(_id).select('-password');
@@ -273,7 +271,6 @@ export const getuser = asyncHandler(
 export const deleteUser = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
     const { _id } = req.params;
-    validateMongoDbId(_id);
 
     try {
       const deleteuser = await UserModel.findByIdAndDelete(_id);
@@ -338,7 +335,6 @@ export const saveAddress = asyncHandler(
 export const blockUser = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
     const { _id } = req.params;
-    validateMongoDbId(_id);
 
     try {
       const blockuser = await UserModel.findByIdAndUpdate(
@@ -363,7 +359,6 @@ export const blockUser = asyncHandler(
 export const unBlockUser = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
     const { _id } = req.params;
-    validateMongoDbId(_id);
 
     try {
       const unblocked = await UserModel.findByIdAndUpdate(

@@ -1,4 +1,3 @@
-import { Request, Response, NextFunction } from 'express';
 import mongoose, { Document, InferSchemaType, model, Schema } from "mongoose";
 import bcrypt from "bcryptjs";
 import crypto from "crypto";

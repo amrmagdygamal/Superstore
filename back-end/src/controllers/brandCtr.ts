@@ -1,6 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
 import asyncHandler from 'express-async-handler';
-import { validateMongoDbId } from '../Util/validateMongodbId';
 import brandModel from '../model/brandModel';
 
 export const createBrand = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
@@ -14,7 +13,6 @@ export const createBrand = asyncHandler(async (req: Request, res: Response, next
 });
 export const getBrand = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
   const { id } = req.params;
-  validateMongoDbId(id)
   try {
     
     const getBrand = await brandModel.findById(id);

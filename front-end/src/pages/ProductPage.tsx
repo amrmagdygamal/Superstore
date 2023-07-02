@@ -28,8 +28,7 @@ const ProductPage = () => {
   const getProductId = location.pathname.split('/')[2];
   useEffect(() => {
     dispatch(getproduct(getProductId));
-    if (productState?.isSuccess == true) {
-    }
+
     setTimeout(() => {
       dispatch(getproducts({tag: "popular"}));
     }, 1000);
@@ -52,7 +51,7 @@ const ProductPage = () => {
   const handleSetCol = (item: any) => {
     const itemIndex = colors.findIndex((color: any) => color._id === item._id);
 
-    let newColors = [];
+    let newColors: any = [];
     if (itemIndex >= 0) {
       newColors = colors.filter((color: any) => color._id !== item._id);
     } else {

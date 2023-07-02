@@ -5,7 +5,6 @@ import {UserModel} from '../model/UserModel';
 import CartModel from '../model/CartModel';
 import uniqid from 'uniqid';
 import ProductModel from '../model/ProductModel';
-import { validateMongoDbId } from '../Util/validateMongodbId';
 
 // export const createOrder = asyncHandler(async (req: Request, res: Response) => {
 
@@ -116,7 +115,6 @@ export const getAllOrders = asyncHandler(
 
 export const getOrderByUserId = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
   const { id } = req.params;
-  validateMongoDbId(id);
   try {
     const userorders = await OrderModel.findOne({ orderby: id })
       .populate('products.product')
@@ -273,10 +271,10 @@ export const payOrder = asyncHandler(async (req: Request, res: Response) => {
     order.paymentResult = {
       PaymentMethod: req.body.paymentMethod, // assuming the payment method is sent in the request body
       paymentId: order?.paymentResult?.paymentId, // assuming the payment ID is sent in the request body
-      amount: order?.paymentResult!.amount,
-      shippingPrice: order?.paymentResult!.shippingPrice,
-      taxPrice: order?.paymentResult!.taxPrice,
-      totalPriceAfterDiscount: order?.paymentResult!.totalPriceAfterDiscount,
+      amount: order?.paymentResult?.amount as number,
+      shippingPrice: order?.paymentResult?.shippingPrice as number,
+      taxPrice: order?.paymentResult?.taxPrice as number,
+      totalPriceAfterDiscount: order?.paymentResult?.totalPriceAfterDiscount as number,
       status: 'Cash On Delivery',
     };
     const updatedOrder = await order.save();

@@ -1,6 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
 import asyncHandler from 'express-async-handler';
-import { validateMongoDbId } from '../Util/validateMongodbId';
 import EnquiryModel from '../model/EnquiryModel';
 
 export const createEnquiry = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
@@ -15,7 +14,6 @@ export const createEnquiry = asyncHandler(async (req: Request, res: Response, ne
 
 export const updateEnquiry = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
   const { _id } = req.params;
-  validateMongoDbId(_id);
   try {
     const updatedEnquiry = await EnquiryModel.findByIdAndUpdate(
       _id,
@@ -31,7 +29,6 @@ export const updateEnquiry = asyncHandler(async (req: Request, res: Response, ne
 
 export const deletEnquiry = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
   const { _id } = req.params;
-  validateMongoDbId(_id);
   try {
     const deletedEnquiry = await EnquiryModel.findByIdAndDelete(_id);
 
@@ -43,7 +40,6 @@ export const deletEnquiry = asyncHandler(async (req: Request, res: Response, nex
 
 export const getEnquiry = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
   const { _id } = req.params;
-  validateMongoDbId(_id);
   try {
     const getEnquiry = await EnquiryModel.findById(
       _id

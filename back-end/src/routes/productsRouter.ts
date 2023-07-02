@@ -1,6 +1,8 @@
 import express from 'express';
 import { auhtMiddleware, isAdmin } from '../middlewares/authentication';
 import * as ProductControllers from '../controllers/productCtr'
+import { productImgResize, uploadPhoto } from '../middlewares/uploadImgs';
+import { deleteImages, uploadImages } from '../controllers/uploadCtr';
 
 const productRouter = express.Router();
 
@@ -12,6 +14,17 @@ productRouter.get(
     '/:id',
     ProductControllers.getProduct
   );
+
+  productRouter.post(
+    '/upload' ,
+    auhtMiddleware,
+    isAdmin,
+    uploadPhoto.array("images", 10),
+    productImgResize,
+    uploadImages
+  )
+  
+  
   
 productRouter.post(
   '/',
@@ -44,6 +57,13 @@ productRouter.delete(
   ProductControllers.deleteProduct
   );
 
+  productRouter.delete(
+    '/delete-img/images/:id',
+    auhtMiddleware,
+    isAdmin,
+    deleteImages
+  );
+  
 
 
 

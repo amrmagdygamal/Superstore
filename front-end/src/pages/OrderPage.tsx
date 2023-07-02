@@ -14,7 +14,7 @@
 //   usePayPalScriptReducer,
 // } from '@paypal/react-paypal-js';
 
-const OrderPage = () => {
+// const OrderPage = () => {
 //   const navigate = useNavigate();
 
 
@@ -189,7 +189,7 @@ const OrderPage = () => {
 //     </>
 //   );
 
-  return <div>OrderPage</div>;
-};
+//   return <div>OrderPage</div>;
+// };
 
-export default OrderPage;
+// export default OrderPage;

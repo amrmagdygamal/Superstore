@@ -1,6 +1,5 @@
 import 'dotenv/config';
 import mongoose from 'mongoose';
-import path from "path";
 import express, { NextFunction, Request, Response } from 'express';
 
 import productRouter from './routes/productsRouter';
@@ -18,13 +17,12 @@ import brandRouter from './routes/brandRouter';
 import couponRouter from './routes/couponRouter';
 import colorRouter from './routes/colorRouter';
 import enquiryRouter from './routes/enquiryRouter';
-import uploadRouter from './routes/uploadRouter';
 
 
 
 mongoose.set('strictQuery', true);
 mongoose
-  .connect(process.env.MONGODB_CONNECT!)
+  .connect(process.env.MONGODB_CONNECT as string)
   .then(() => {
     console.log('connected to mongodb');
   })
@@ -59,7 +57,6 @@ app.use('/api/brands', brandRouter);
 app.use('/api/coupon', couponRouter);
 app.use('/api/colors', colorRouter);
 app.use('/api/enquiry', enquiryRouter);
-app.use('/api/upload', uploadRouter);
 
 app.use('/api/orders', orderRouter);
 app.use('/api/keys', KeyRouter);
