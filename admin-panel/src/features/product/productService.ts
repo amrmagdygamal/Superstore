@@ -7,6 +7,11 @@ const getProducts = async () => {
   return response.data;
 };
 
+const uploadImg = async (data: any) => {
+  const response = await axios.post(`${base_url}products/upload/`, data, config);
+  return response.data;
+};
+
 const getProduct = async (id: string) => {
   const response = await axios.get(`${base_url}products/${id}`, config);
 
@@ -34,11 +39,18 @@ const deleteProduct = async (id: string) => {
   return response.data;
 };
 
+const deleteImg = async (id: string) => {
+  const response = await axios.delete(`${base_url}products/delete-img/${id}`,config);
+  return response.data;
+};
+
 const ProductService = {
   getProducts,
   createProduct,
   getProduct,
   updateProduct,
   deleteProduct,
+  uploadImg,
+  deleteImg
 };
 export default ProductService;

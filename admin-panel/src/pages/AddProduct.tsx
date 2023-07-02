@@ -12,12 +12,14 @@ import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
 import { getColors } from '../features/color/colorSlice';
 import Dropzone from 'react-dropzone';
-import { deleteImg, uploadImg } from '../features/upload/uploadSlice';
 import {
+  Image,
   createProduct,
+  deleteImg,
   getProduct,
   resetState,
   updateProduct,
+  uploadImg,
 } from '../features/product/productSlice';
 import CustomInput from '../components/CustomInput';
 import { getprodCategories } from '../features/productcategory/prodCategorySlice';
@@ -46,9 +48,18 @@ const AddProduct = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const getProductId = location.pathname.split('/')[3];
+  const imgState = useSelector((state: any) => state.product.images);
+  
+  const [img, setImg] = useState<Array<Image>>([]);
+  useEffect(() => {
+    if (getProductId !== undefined) {
+      dispatch(getProduct(getProductId));
+    } else {
+      dispatch(resetState());
+    }
+  }, [getProductId]);
   const newProduct = useSelector((state: any) => state.product);
   const {
-    isSuccess,
     productName,
     productDesc,
     productCategory,
@@ -59,24 +70,22 @@ const AddProduct = () => {
     productImages,
   } = newProduct;
   
-  useEffect(() => {
-    if (getProductId !== undefined) {
-      dispatch(getProduct(getProductId));
-      console.log(productName, productDesc, productCategory)
-    } else {
-      dispatch(resetState());
-    }
-  }, [getProductId]);
-  const brandState = useSelector((state: any) => state.brand.brands);
-  const colorState = useSelector((state: any) => state.color.colors);
-  const imgState = useSelector((state: any) => state.img.images);
-  const prodCategoryState = useSelector(
-    (state: any) => state.prodCategory.prodCategories
-  );
-
+  
   const handleColors = (e: any) => {
     setColor(e);
   };
+
+  useEffect(() => {
+    const imag: Array<Image> = [];
+    imgState?.forEach((i: Image) => {
+      imag.push({
+        url: i.url,
+        public_id: i.public_id,
+      });
+    });
+    setImg(imag);
+  }, [imgState]);
+
 
 
   useEffect(() => {
@@ -84,59 +93,35 @@ const AddProduct = () => {
     dispatch(getColors());
     dispatch(getprodCategories());
   }, []);
+  const brandState = useSelector((state: any) => state.brand.brands);
+  const colorState = useSelector((state: any) => state.color.colors);
+  const prodCategoryState = useSelector(
+    (state: any) => state.prodCategory.prodCategories
+  );
 
   const colors: any = colorState.map((i: any) => ({
     _id: i._id,
     color: i.title,
   }));
 
-  const img: any = [];
-  imgState.forEach((i: any) => {
-    img.push({
-      url: i.url,
-      public_id: i.public_id,
-    });
-  });
 
-  useEffect(() => {
-
-    formik.values.color = color ? color : [];
-    formik.values.images = img;
-  }, [color, img]);
-
-  const [initialValues, setInitialValues] = useState({
-    name: '',
-    description: '',
-    category: '',
-    price: '',
-    color: [],
-    brand: '',
-    tag: '',
-    countInStock: '',
-    images: [],
-  });
   
-  useEffect(() => {
-    if ( productName | productDesc | productCategory | productPrice | productBrand | productTag | productQuant) {
-      setTimeout(() => {
-        setInitialValues({
-          name: productName,
-          description: productDesc,
-          category: productCategory,
-          price: productPrice,
-          color: [],
-          brand: productBrand,
-          tag: productTag,
-          countInStock: productQuant,
-          images: productImages,
-        });
-      }, 3000);
-    }
-  }, [isSuccess, productName, productDesc, productCategory, productPrice, productBrand, productTag, productQuant, productImages]);
+  
+  
   
 
   const formik = useFormik({
-    initialValues,
+    initialValues: {
+      name: productName || "",
+      description: productDesc || "",
+      category: productCategory || "",
+      price: productPrice || "",
+      color: [], 
+      brand: productBrand || "",
+      tag: productTag || "",
+      countInStock: productQuant || "",
+      images: productImages || [],
+    },
     validationSchema: schema,
     onSubmit: (values) => {
       if (getProductId !== undefined) {
@@ -154,7 +139,7 @@ const AddProduct = () => {
         dispatch(updateProduct(data));
         setTimeout(() => {
           navigate('/admin/product-list');
-        }, 400);
+        }, 800);
       } else {
         dispatch(
           createProduct({
@@ -168,12 +153,17 @@ const AddProduct = () => {
             images: values.images,
             tag: values.tag,
           })
-        );
-        formik.resetForm();
-        setColor([]);
-      }
-    },
-  });
+          );
+          formik.resetForm();
+          setColor([]);
+        }
+      },
+    });
+    useEffect(() => {
+  
+      formik.values.color = color ? color : [];
+      formik.values.images = img;
+    }, [color, img]);
   return (
     <div>
       <h3 className="mb-4 name">
@@ -332,30 +322,30 @@ const AddProduct = () => {
             </Dropzone>
           </div>
           <div className="showimages d-flex flex-wrap gap-3">
-            {productImages != undefined
-              ? productImages?.map((i: any, j: string) => {
+            {imgState != undefined
+              ? imgState?.map((i: any, j: string) => {
                   return (
                     <div className="position-relative" key={j}>
                       <button
                         type="button"
-                        onClick={() => dispatch(deleteImg(i.public_id))}
+                        onClick={() => dispatch(deleteImg(i?.public_id))}
                         className="btn-close position-absolute"
                         style={{ top: '.68rem', right: '.67rem' }}
                       ></button>
-                      <img src={i.url} alt="img" width={200} height={200} />
+                      <img src={i?.url} alt="img" width={200} height={200} />
                     </div>
                   );
                 })
-              : imgState.map((i: any, j: string) => {
+              : productImages && productImages?.map((i: any, j: string) => {
                   return (
                     <div className="position-relative" key={j}>
                       <button
                         type="button"
-                        onClick={() => dispatch(deleteImg(i.public_id))}
+                        onClick={() => dispatch(deleteImg(i?.public_id))}
                         className="btn-close position-absolute"
                         style={{ top: '.68rem', right: '.67rem' }}
                       ></button>
-                      <img src={i.url} alt="img" width={200} height={200} />
+                      <img src={i?.url} alt="img" width={200} height={200} />
                     </div>
                   );
                 })}

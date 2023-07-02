@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { NextFunction, Request, Response } from 'express';
 import {cloudinaryUploadImg, cloudinaryDeleteImg } from '../Util/cloudinary';
 import asyncHandler from 'express-async-handler';
@@ -42,7 +43,7 @@ export const deleteImages = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
     const {id} = req.params;
     try {
-      const deleted = cloudinaryDeleteImg(id, "images");
+      const deleted = cloudinaryDeleteImg("images/" + id, "images");
 
       res.json({ message: "Deleted"});
     } catch (error) {

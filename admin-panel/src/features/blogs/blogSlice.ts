@@ -3,6 +3,7 @@ import { createAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import blogService from './blogService';
 import { toast } from 'react-toastify';
 import Blogservice from './blogService';
+import { Image } from '../product/productSlice';
 
 export const getBlogs = createAsyncThunk(
   'blog/get-blogs',
@@ -16,7 +17,7 @@ export const getBlogs = createAsyncThunk(
 );
 
 export const uploadImg = createAsyncThunk(
-  'upload/an-image',
+  'upload/blog-image',
   async (data: any, thunkAPI) => {
     try {
       const formData = new FormData();
@@ -73,13 +74,26 @@ export const deleteBlog = createAsyncThunk(
   }
 );
 
+
+export const deleteImg = createAsyncThunk(
+  "delete/blog-image",
+  async (id: string, thunkAPI) => {
+    try {
+      return await Blogservice.deleteImg(id);
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
+
+
 export interface BlogInfo {
   _id?: string;
   title: string;
   description: string;
   category: string;
   author: string;
-  images: any;
+  images: Array<Image>;
 }
 
 interface BlogState {
@@ -95,8 +109,8 @@ interface BlogState {
   blogDesc?: string;
   blogCategory?: string;
   blogAuthor?: string;
-  blogImages?: any;
-  images?: any;
+  blogImages?: Array<Image>;
+  images?: Array<Image>;
 }
 
 const initialState: BlogState = {
@@ -234,6 +248,27 @@ export const blogSlice = createSlice({
         state.message = action.error.message ?? 'Some Thing went wrong';
         if (state.isError === true) {
           toast.error('Some Thing went wrong!');
+        }
+      })
+      .addCase(deleteImg.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(deleteImg.fulfilled, (state) => {
+        state.isLoading = false;
+        state.isError = false;
+        state.isSuccess = true;
+        state.images = [];
+        if(state.isSuccess ===true) {
+          toast.success("image deleted successfully!")
+        }
+      })
+      .addCase(deleteImg.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.isSuccess = false;
+        state.message = action.error.message ?? "";
+        if(state.isError === true){
+          toast.error("some thing went wrong!")
         }
       })
       .addCase(resetState, () => initialState);

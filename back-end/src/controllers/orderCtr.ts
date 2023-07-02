@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import asyncHandler from 'express-async-handler';
 import { NextFunction, Request, Response } from 'express';
 import OrderModel from '../model/OrderModel';

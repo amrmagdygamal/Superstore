@@ -13,6 +13,23 @@ export const getProducts = createAsyncThunk(
     }
   }
   );
+
+  
+export const uploadImg = createAsyncThunk(
+  'upload/product-image',
+  async (data: any, thunkAPI) => {
+    try {
+      const formData = new FormData();
+      for (let i = 0; i < data.length; i++) {
+        formData.append('images', data[i]);
+      }
+      return await ProductService.uploadImg(formData);
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
+
   
   export const getProduct = createAsyncThunk(
     'product/get-product',
@@ -64,6 +81,27 @@ export const deleteProduct = createAsyncThunk(
 );
 
 
+export interface Image {
+  public_id: string;
+  url: string;
+}
+
+
+
+export const deleteImg = createAsyncThunk(
+  "delete/product-image",
+  async (id: string, thunkAPI) => {
+    try {
+      return await ProductService.deleteImg(id);
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
+
+
+
+
 // interface Product {
 //   name: string
 //   images : []
@@ -88,12 +126,12 @@ interface ProductState {
   productDesc?: string;
   productCategory?: string;
   productPrice?: number;
-  productImages?: any;
+  productImages?: Array<Image>;
   productTag?: string
   productBrand?: string
   productColor?: any
   productQuant?: number
-
+  images?: Array<Image>;
 }
 
 const initialState: ProductState = {
@@ -128,6 +166,27 @@ export const productSlice = createSlice({
         state.isSuccess = false;
         state.isLoading = false;
         state.message = action.error.message ?? '';
+      })
+      .addCase(uploadImg.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(uploadImg.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isError = false;
+        state.isSuccess = true;
+        state.images = action.payload;
+        if (state.isSuccess === true) {
+          toast.success('image Uploaded successfully!');
+        }
+      })
+      .addCase(uploadImg.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.isSuccess = false;
+        state.message = action.error.message ?? '';
+        if (state.isError === true) {
+          toast.error('Some Thing went wrong!');
+        }
       })
       .addCase(getProduct.pending, (state) => {
         state.isLoading = true;
@@ -227,6 +286,27 @@ export const productSlice = createSlice({
         state.message = action.error.message ?? "Some Thing went wrong";
         if (state.isError === true) {
           toast.error('Some Thing went wrong!');
+        }
+      })
+      .addCase(deleteImg.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(deleteImg.fulfilled, (state) => {
+        state.isLoading = false;
+        state.isError = false;
+        state.isSuccess = true;
+        state.images = [];
+        if(state.isSuccess ===true) {
+          toast.success("image deleted successfully!")
+        }
+      })
+      .addCase(deleteImg.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.isSuccess = false;
+        state.message = action.error.message ?? "";
+        if(state.isError === true){
+          toast.error("some thing went wrong!")
         }
       })
       .addCase(resetState, () => initialState);

@@ -38,6 +38,12 @@ const deleteBlog = async (id: string) => {
   return response.data;
 };
 
+
+const deleteImg = async (id: string) => {
+  const response = await axios.delete(`${base_url}blogs/delete-img/${id}`,config);
+  return response.data;
+};
+
 const Blogservice = {
   getBlogs,
   createBlog,
@@ -45,5 +51,6 @@ const Blogservice = {
   updateBlog,
   deleteBlog,
   uploadImg,
+  deleteImg
 };
 export default Blogservice;
