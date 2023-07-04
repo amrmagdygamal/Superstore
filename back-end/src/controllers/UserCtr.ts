@@ -658,7 +658,6 @@ export const applyCoupon = asyncHandler(async (req, res, next) => {
     // Send the discounted total back to the client
     res.json(totalAfterDiscount);
   } catch (error) {
-    // Handle any errors that occur during the coupon application process
     next(error);
   }
 });

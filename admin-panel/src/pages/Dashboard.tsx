@@ -53,6 +53,7 @@ const columns: ColumnsType<DataType> = [
 
 const Dashboard = () => {
   const dispatch: AppDispatch = useDispatch();
+  
   const monthNames = [
     'January',
     'February',
@@ -224,7 +225,6 @@ const Dashboard = () => {
             <Column {...config2} />
           </div>
         </div>{' '}
-        flex-grow-1 w-50
       </div>
       <div className="mt-4">
         <h3 className="mb-5 title">Recent Orders</h3>

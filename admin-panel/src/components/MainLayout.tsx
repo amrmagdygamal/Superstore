@@ -29,9 +29,7 @@ const MainLayout = () => {
   const adminInf = JSON.parse(localStorage.getItem("admin") || "{}")
 
   useEffect(() => {
-    if(adminInf?.username !== undefined) {
-      navigate("/admin")
-    } else {
+    if(adminInf?.username === undefined || adminInf?.username === "") {
       navigate("/")
     }
   }, [adminInf?.username])
