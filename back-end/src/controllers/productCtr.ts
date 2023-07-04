@@ -58,7 +58,7 @@ export const getAllProducts = asyncHandler(async (req: Request, res: Response, n
 export const getProduct = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { id } = req.params;
-    const findProduct = await ProductModel.findById(id);
+    const findProduct = await ProductModel.findById(id).populate("color").exec();
 
     res.json(findProduct);
   } catch (error) {
@@ -78,8 +78,8 @@ export const updateProduct = asyncHandler(async (req: Request, res: Response, ne
   const { id } = req.params;
   try {
 
-    const updateProduct = await ProductModel.findOneAndUpdate(
-      {id} ,
+    const updateProduct = await ProductModel.findByIdAndUpdate(
+      id ,
       req.body,
       { new: true }
     );
@@ -92,8 +92,7 @@ export const updateProduct = asyncHandler(async (req: Request, res: Response, ne
 export const deleteProduct = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
   const { id } = req.params;
   try {
-    const deleteProduct = await ProductModel.findOneAndDelete({ id });
-
+    const deleteProduct = await ProductModel.findByIdAndDelete(id);
     res.json(deleteProduct);
   } catch (error) {
     next(error);

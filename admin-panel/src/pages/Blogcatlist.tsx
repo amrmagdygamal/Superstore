@@ -64,7 +64,7 @@ const Blogcatlist = () => {
       action: (
         <>
           <Link
-            to={`/admin/blog-category/${blogCategoryState[i]._id}`}
+            to={`/admin/add-blog-category/${blogCategoryState[i]._id}`}
             className="fs-3 text-dark"
           >
             <BiEdit />

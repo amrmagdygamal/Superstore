@@ -1,10 +1,37 @@
-
+import { ReactNode } from 'react';
 import { Navigate} from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { AppDispatch } from '../app/store';
+import { resetState } from '../features/user/userSlice';
 
+import jwtDecode from 'jwt-decode';
 
+type OpenRouterProps = {
+  children: ReactNode;
+};
 
-export const OpenRoutes = ({ children }: any) => {
-  const getTokenFromLocalStorage = JSON.parse(localStorage.getItem('userInfo')!);
+export const OpenRoutes = ({ children }: OpenRouterProps) => {
+  const getTokenFromLocalStorage = JSON.parse(localStorage.getItem('userInfo') as string);
 
-  return getTokenFromLocalStorage?.token === null ? children : (<Navigate to="/" replace={true} />)
+  const token = getTokenFromLocalStorage?.token;
+  const dispatch: AppDispatch = useDispatch();
+
+  if (token !== undefined) {
+    try {
+      const decodedToken: any = jwtDecode(token);
+      if (decodedToken.exp < Date.now() / 1000) {
+        localStorage.clear()
+        dispatch(resetState)
+
+        return children;
+      }
+      return (<Navigate to="/" replace={true} />);
+    } catch (err) {
+      console.error('Invalid token:', err);
+      
+      return children;
+    }
+  }
+
+  return children;
 };

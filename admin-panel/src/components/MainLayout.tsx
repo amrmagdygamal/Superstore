@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons';
 import {
   AiOutlineDashboard,
@@ -25,6 +25,17 @@ const MainLayout = () => {
     token: { colorBgContainer },
   } = theme.useToken();
   const navigate = useNavigate();
+
+  const adminInf = JSON.parse(localStorage.getItem("admin") || "{}")
+
+  useEffect(() => {
+    if(adminInf?.username !== undefined) {
+      navigate("/admin")
+    } else {
+      navigate("/")
+    }
+  }, [adminInf?.username])
+
   return (
     <Layout /* onContextMenu={(e) => e.preventDefault()} */>
       <Sider trigger={null} collapsible collapsed={collapsed}>
@@ -73,7 +84,7 @@ const MainLayout = () => {
                   label: 'Add Product',
                 },
                 {
-                  key: 'list-product',
+                  key: 'product-list',
                   icon: <AiOutlineShoppingCart className="fs-4" />,
                   label: 'Product List',
                 },

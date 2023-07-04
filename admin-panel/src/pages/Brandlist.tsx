@@ -62,7 +62,7 @@ const Brandlist = () => {
       action: (
         <>
           <Link
-            to={`/admin/brand/${brandState[i]._id}`}
+            to={`/admin/add-brand/${brandState[i]._id}`}
             className="fs-3 text-dark"
           >
             <BiEdit />

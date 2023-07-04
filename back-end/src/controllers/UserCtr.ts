@@ -554,11 +554,9 @@ export const deleteFromCart = asyncHandler(async (req: Request, res: Response, n
   try {
       console.log(_id)
       const user = await UserModel.findById(_id);
-      console.log(user)
 
       // Find the cart for the current user
       const cart = await CartModel.findOne({ customer: user?._id });
-      console.log(cart)
         
 
       

@@ -22,7 +22,6 @@ const Addbrand = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const getBrandId = location.pathname.split('/')[3];
-  console.log(getBrandId);
 
   const {
     brandName,

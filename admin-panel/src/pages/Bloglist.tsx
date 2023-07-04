@@ -73,7 +73,7 @@ const Bloglist = () => {
       action: (
         <>
           <Link
-            to={`/admin/blog/${blogState[i]._id}`}
+            to={`/admin/add-blog/${blogState[i]._id}`}
             className="fs-3 text-dark"
           >
             <BiEdit />

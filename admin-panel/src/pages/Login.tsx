@@ -36,14 +36,15 @@ const Login = () => {
       dispatch(login(values));
     },
   });
+  const adminInf = JSON.parse(localStorage.getItem("admin") || "{}")
 
   useEffect(() => {
-    if(authState?.userInfo || authState?.userInfo !== null) {
+    if(adminInf?.username !== undefined) {
       navigate("/admin")
     } else {
-      navigate("/login-admin")
+      navigate("/")
     }
-  }, [authState])
+  }, [adminInf?.username])
 
   return (
     <>

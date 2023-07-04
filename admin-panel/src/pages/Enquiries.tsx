@@ -86,7 +86,7 @@ const Enquiries = () => {
       action: (
         <>
           <Link
-            to={`/admin/enquiry/${enquiryState[i]._id}`}
+            to={`/admin/enquiries/${enquiryState[i]._id}`}
             className="fs-3 text-dark"
           >
             <AiOutlineEye />

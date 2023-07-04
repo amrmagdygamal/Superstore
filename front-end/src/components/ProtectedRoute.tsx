@@ -1,15 +1,25 @@
-import { Navigate } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';import { ReactNode } from 'react';
 import jwtDecode from 'jwt-decode';
+import { useDispatch } from 'react-redux';
+import { AppDispatch } from '../app/store';
+import { resetState } from '../features/user/userSlice';
 
-export const ProtectedRoute = ({ children }: any) => {
-  const getTokenFromLocalStorage = JSON.parse(localStorage.getItem('userInfo')!)
+type ProtRouterProps = {
+  children: ReactNode;
+};
+
+export const ProtectedRoute = ({ children }: ProtRouterProps) => {
+  const getTokenFromLocalStorage = JSON.parse(localStorage.getItem('userInfo') as string)
   const token = getTokenFromLocalStorage?.token;
+  const dispatch: AppDispatch = useDispatch();
 
-  if (token) {
+
+  if (token !== undefined) {
     try {
       const decodedToken: any = jwtDecode(token);
       if (decodedToken.exp < Date.now() / 1000) {
         localStorage.clear()
+        dispatch(resetState)
         return <Navigate to="/login" replace={true} />;
       }
       return children;

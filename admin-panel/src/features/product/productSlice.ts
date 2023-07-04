@@ -295,7 +295,6 @@ export const productSlice = createSlice({
         state.isLoading = false;
         state.isError = false;
         state.isSuccess = true;
-        state.images = [];
         if(state.isSuccess ===true) {
           toast.success("image deleted successfully!")
         }

@@ -839,39 +839,41 @@ a {
   background-color: white;
   padding: 20px;
   border-radius: .6rem;
+  overflow: hidden;
 }
 
 .product-image-section>div {
   border: 1px solid rgba(0, 0, 0, 0.25);
+  overflow: hidden;
+  text-align: center;
+  padding: 20px;
+  height: 34rem;
+  
 }
 
 .product-image-section img {
-  width: 100% !important;
-  height: 600px !important;
+  height: 100%;
   object-fit: cover;
 }
 
-.product-image-section .js-image-zoom__zoomed-image {
-  left: 50px !important;
-  padding: 10px;
-  background-color: white;
-  border-radius: 10px;
-  z-index: 1000;
-  position: absolute;
-  /* Add this line */
-}
 
 .other-images {
   background-color: white;
   padding: 1.29rem;
-
   background-size: cover;
 }
 
 .other-images>div {
   padding: 20px;
   width: 48%;
+  height: 20rem;
+  overflow: hidden;
   border: 1px solid rgba(0, 0, 0, 0.25);
+}
+
+.other-images>div>img {
+  height: 100%;
+  width: 100%;
 }
 
 .product-page-details {

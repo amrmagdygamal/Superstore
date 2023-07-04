@@ -41,6 +41,7 @@ const AddBlogPage = () => {
   const blogImgState = useSelector((state: any) => state.blog.images);
 
   const [img, setImg] = useState<Array<Image>>([]);
+  const [blogImgSt, setBlogImgSt] = useState<Array<Image>>([]);
 
   useEffect(() => {
     if (getBlogId !== undefined) {
@@ -55,16 +56,31 @@ const AddBlogPage = () => {
   const { blogName, blogDesc, blogCategory, blogAuthor, blogImages } =
     blogState;
 
+
+    useEffect(() => {
+      if (getBlogId !== undefined && blogImgState === undefined) {
+        setBlogImgSt(blogImages)
+      } else if (blogImgState !== undefined) {
+  
+        setBlogImgSt(blogImgState)
+      }
+    }, [blogImgState, blogImages])
+  
+    const handleDelImg = (e: string) => {
+      dispatch(deleteImg(e));
+      setBlogImgSt(prevState => prevState.filter((j: Image) => j.public_id !== e));
+    }
+
   useEffect(() => {
     const imag: Array<Image> = [];
-    blogImgState?.forEach((i: Image) => {
+    blogImgSt?.forEach((i: Image) => {
       imag.push({
         url: i.url,
         public_id: i.public_id,
       });
     });
     setImg(imag);
-  }, [blogImgState]);
+  }, [blogImgSt]);
 
   useEffect(() => {
     dispatch(getBlogCategories());
@@ -74,11 +90,8 @@ const AddBlogPage = () => {
     (state: any) => state.blogCategory.blogCategories
   );
 
-  useEffect(() => {
-    formik.values.images = img;
-  }, [img]);
-
   const formik = useFormik({
+    enableReinitialize: true,
     initialValues: {
       title: blogName || '',
       description: blogDesc || '',
@@ -111,11 +124,15 @@ const AddBlogPage = () => {
             author: values.author,
             images: values.images,
           })
-        );
-        formik.resetForm();
-      }
-    },
-  });
+          );
+          formik.resetForm();
+        }
+      },
+    });
+    
+    useEffect(() => {
+      formik.values.images = img;
+    }, [img]);
 
   return (
     <div>
@@ -208,22 +225,7 @@ const AddBlogPage = () => {
             </Dropzone>
           </div>
           <div className="showimages d-flex mt-3 flex-wrap gap-3">
-            {blogImgState != undefined
-              ? blogImgState?.map((i: any, j: string) => {
-                  return (
-                    <div className="position-relative" key={j}>
-                      <button
-                        type="button"
-                        onClick={() => dispatch(deleteImg(i.public._id))}
-                        className="btn-close position-absolute"
-                        style={{ top: '.68rem', right: '.67rem' }}
-                      ></button>
-                      <img src={i.url} alt="img" width={405} height={280} />
-                    </div>
-                  );
-                })
-              : blogImages &&
-                blogImages?.map((i: any, j: string) => {
+            {blogImgSt && blogImgSt?.map((i: Image, j: number) => {
                   return (
                     <div className="position-relative" key={j}>
                       <button
@@ -232,7 +234,7 @@ const AddBlogPage = () => {
                         className="btn-close position-absolute"
                         style={{ top: '.68rem', right: '.67rem' }}
                       ></button>
-                      <img src={i?.url} alt="img" width={200} height={200} />
+                      <img src={i?.url} alt="img" width={405} height={280} />
                     </div>
                   );
                 })}

@@ -52,7 +52,7 @@ const Orders = () => {
       key: i + 1,
       product: AllOrderState[i]?.name,
       name: AllOrderState[i]?.products?.map((i: any, j: number) => {
-        <Link key={j} to={`/admin/order/${AllOrderState[i]?.orderby._id}`} >
+        <Link key={j} to={`/admin/view-order/${AllOrderState[i]?.orderby._id}`} >
           View Order
         </Link>
       }),

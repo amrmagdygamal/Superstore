@@ -32,7 +32,7 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route
-          path="/login-admin"
+          path="/"
           element={
             <OpenRoutes>
               <Login />
@@ -63,7 +63,7 @@ function App() {
             <Route path="list-brand" element={<Brandlist />} />
             <Route path="add-brand" element={<AddBrand />} />
             <Route path="add-brand/:id" element={<AddBrand />} />
-            <Route path="list-product" element={<Productlist />} />
+            <Route path="product-list" element={<Productlist />} />
             <Route path="add-product" element={<AddProduct />} />
             <Route path="add-product/:id" element={<AddProduct />} />
             <Route path="coupon-list" element={<Couponlist />} />

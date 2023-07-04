@@ -30,17 +30,11 @@ const HomePage = () => {
   const productState = useSelector((state: any) => state.product.products);
   const blogState = useSelector((state: any) => state.blog.blogs);
 
-  const getAllProducts = () => {
-    dispatch(getproducts({}));
-  };
 
-  const getAllBlogs = () => {
-    dispatch(getBlogs());
-  };
-
+  
   useEffect(() => {
-    getAllProducts();
-    getAllBlogs();
+    dispatch(getproducts({}));
+    dispatch(getBlogs());
   }, []);
 
   function createSlide1() {

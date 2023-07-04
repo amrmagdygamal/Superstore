@@ -27,6 +27,7 @@ import Checkout from './pages/Checkout';
 
 import Profile from './pages/Profile';
 import { ProtectedRoute } from './components/ProtectedRoute';
+import { OpenRoutes } from './components/OpenRouter';
 
 
 function App() {
@@ -36,9 +37,9 @@ function App() {
         <main>
           <Routes>
             <Route path="/" element={<Layout />}>
-              <Route path="home" element={<HomePage />} />
+              <Route index element={<HomePage />} />
               <Route path="signup" element={<SignUpPage />} />
-              <Route path="login" element={<LoginPage />} />
+              <Route path="login" element={<OpenRoutes><LoginPage /></OpenRoutes>} />
               <Route path="about" element={<About />} />
               <Route path="contact" element={<Contact />} />
               <Route path="blogs" element={<Blog />} />

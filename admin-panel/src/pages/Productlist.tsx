@@ -95,7 +95,7 @@ const Productlist = () => {
       action: (
         <>
           <Link
-            to={`/admin/product/${productState[i]._id}`}
+            to={`/admin/add-product/${productState[i]._id}`}
             className="fs-3 text-dark" 
           >
             <BiEdit />
@@ -116,7 +116,7 @@ const Productlist = () => {
     setOpen(false);
     setTimeout(() => {
       dispatch(getProducts());
-    }, 700);
+    }, 900);
   };
 
   return (

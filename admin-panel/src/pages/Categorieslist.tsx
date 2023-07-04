@@ -63,7 +63,7 @@ const Categorieslist = () => {
       action: (
         <>
           <Link
-            to={`/admin/category/${prodCategoryState[i]._id}`}
+            to={`/admin/add-category/${prodCategoryState[i]._id}`}
             className="fs-3 text-dark"
           >
             <BiEdit />

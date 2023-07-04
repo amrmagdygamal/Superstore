@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { createAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import authService from './authService';
 
 const getUserformLocalStorage = localStorage.getItem('admin')
@@ -27,6 +27,7 @@ export const login = createAsyncThunk(
   }
 );
 
+export const resetState = createAction('Reset_all');
 export const authSlice = createSlice({
   name: 'auth',
   initialState,
@@ -49,6 +50,8 @@ export const authSlice = createSlice({
         state.isLoading = false;
         state.message = action.error.message ?? '';
       })
+      .addCase(resetState, () => initialState);
+
   },
 });
 

@@ -68,13 +68,13 @@ const Couponlist = () => {
   for (let i = 0; i < CouponState.length; i++) {
     data1.push({
       key: i + 1,
-      name: CouponState[i].name,
-      expiry: CouponState[i].expiry.toLocaleString(),
-      discount: CouponState[i].discount,
+      name: CouponState[i]?.name,
+      expiry: CouponState[i]?.expiry?.toLocaleString().substring(0, 10),
+      discount: CouponState[i]?.discount,
       action: (
         <>
           <Link
-            to={`/admin/brand/${CouponState[i]._id}`}
+            to={`/admin/add-coupon/${CouponState[i]._id}`}
             className="fs-3 text-dark"
           >
             <BiEdit />
