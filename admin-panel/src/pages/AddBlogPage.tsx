@@ -230,7 +230,7 @@ const AddBlogPage = () => {
                     <div className="position-relative" key={j}>
                       <button
                         type="button"
-                        onClick={() => dispatch(deleteImg(i?.public_id))}
+                        onClick={() => handleDelImg(i?.public_id)}
                         className="btn-close position-absolute"
                         style={{ top: '.68rem', right: '.67rem' }}
                       ></button>

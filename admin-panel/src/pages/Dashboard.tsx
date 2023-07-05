@@ -1,6 +1,5 @@
 import { BsArrowDownRight } from 'react-icons/bs';
 import { BsArrowUpRight } from 'react-icons/bs';
-import { Column } from '@ant-design/charts';
 import React, { useEffect, useState } from 'react';
 import { Table } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
@@ -76,8 +75,8 @@ const Dashboard = () => {
   );
   const allOrdersState = useSelector((state: any) => state.order.orders);
 
-  const [dataMonthly, setDataMonthly] = useState([]);
-  const [dataMonthlySales, setDataMonthlySales] = useState([]);
+  // const [dataMonthly, setDataMonthly] = useState([]);
+  // const [dataMonthlySales, setDataMonthlySales] = useState([]);
   const [orderData, setOrderData] = useState<DataType[]>([]);
 
   useEffect(() => {
@@ -99,8 +98,8 @@ const Dashboard = () => {
       });
     }
 
-    setDataMonthly(data);
-    setDataMonthlySales(monthOrderCount);
+    // setDataMonthly(data);
+    // setDataMonthlySales(monthOrderCount);
 
     const data1: DataType[] = [];
     for (let i = 0; i < allOrdersState; i++) {
@@ -116,66 +115,66 @@ const Dashboard = () => {
     setOrderData(data1)
   }, [orderMonthState | allOrdersState | orderyearState]);
 
-  const config = {
-    data: dataMonthly,
-    xField: 'type',
-    yField: 'income',
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    color: () => {
-      return '#e9b10d';
-    },
-    label: {
-      fields: ['sales'],
-      style: {
-        fill: '#FFFFFF',
-        opacity: 1,
-      },
-    },
-    xAxis: {
-      label: {
-        autoHide: true,
-        autoRotate: false,
-      },
-    },
-    meta: {
-      type: {
-        alias: 'Month',
-      },
-      sales: {
-        alias: 'Income',
-      },
-    },
-  };
-  const config2 = {
-    data: dataMonthlySales,
-    xField: 'type',
-    yField: 'sales',
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    color: () => {
-      return '#e9b10d';
-    },
-    label: {
-      fields: ['sales'],
-      style: {
-        fill: '#FFFFFF',
-        opacity: 1,
-      },
-    },
-    xAxis: {
-      label: {
-        autoHide: true,
-        autoRotate: false,
-      },
-    },
-    meta: {
-      type: {
-        alias: 'Month',
-      },
-      sales: {
-        alias: 'Sales',
-      },
-    },
-  };
+  // const config = {
+  //   data: dataMonthly,
+  //   xField: 'type',
+  //   yField: 'income',
+  //   // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  //   color: () => {
+  //     return '#e9b10d';
+  //   },
+  //   label: {
+  //     fields: ['sales'],
+  //     style: {
+  //       fill: '#FFFFFF',
+  //       opacity: 1,
+  //     },
+  //   },
+  //   xAxis: {
+  //     label: {
+  //       autoHide: true,
+  //       autoRotate: false,
+  //     },
+  //   },
+  //   meta: {
+  //     type: {
+  //       alias: 'Month',
+  //     },
+  //     sales: {
+  //       alias: 'Income',
+  //     },
+  //   },
+  // };
+  // const config2 = {
+  //   data: dataMonthlySales,
+  //   xField: 'type',
+  //   yField: 'sales',
+  //   // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  //   color: () => {
+  //     return '#e9b10d';
+  //   },
+  //   label: {
+  //     fields: ['sales'],
+  //     style: {
+  //       fill: '#FFFFFF',
+  //       opacity: 1,
+  //     },
+  //   },
+  //   xAxis: {
+  //     label: {
+  //       autoHide: true,
+  //       autoRotate: false,
+  //     },
+  //   },
+  //   meta: {
+  //     type: {
+  //       alias: 'Month',
+  //     },
+  //     sales: {
+  //       alias: 'Sales',
+  //     },
+  //   },
+  // };
 
   return (
     <>
@@ -212,7 +211,7 @@ const Dashboard = () => {
           </div>
         </div>
       </div>
-      <div className="d-flex justify-conetent-between gap-3">
+      {/* <div className="d-flex justify-conetent-between gap-3">
         <div className="mt-4 flex-grow-1 w-50 title">
           <h3 className="mb-5">InCome Statics</h3>
           <div className="">
@@ -225,7 +224,7 @@ const Dashboard = () => {
             <Column {...config2} />
           </div>
         </div>{' '}
-      </div>
+      </div> */}
       <div className="mt-4">
         <h3 className="mb-5 title">Recent Orders</h3>
         <div>
